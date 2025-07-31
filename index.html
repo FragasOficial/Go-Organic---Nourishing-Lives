@@ -6,25 +6,7 @@
     <title>Go Organic - Marketplace de Produtos Orgânicos</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    
 </head>
-<!-- Modal do Chat -->
-<div id="chatModal" class="modal">
-    <div class="modal-content chat-modal-content">
-        <span class="close">&times;</span>
-        <div class="chat-header">
-            <h3 id="chatSellerName"></h3>
-            <p id="chatProductInfo"></p>
-        </div>
-        <div class="chat-messages" id="chatMessages">
-            <!-- Mensagens serão exibidas aqui -->
-        </div>
-        <div class="chat-input">
-            <input type="text" id="chatMessageInput" placeholder="Digite sua mensagem..." autocomplete="off">
-            <button id="sendMessageBtn"><i class="fas fa-paper-plane"></i></button>
-        </div>
-    </div>
-</div>
 <body>
     <header class="header">
         <div class="container">
@@ -184,6 +166,7 @@
             </div>
         </div>
     </div>
+
     <!-- Modal do Chat -->
     <div id="chatModal" class="modal">
         <div class="modal-content chat-modal-content">
@@ -196,11 +179,12 @@
                 <!-- Mensagens serão exibidas aqui -->
             </div>
             <div class="chat-input">
-                <input type="text" id="chatMessageInput" placeholder="Digite sua mensagem...">
+                <input type="text" id="chatMessageInput" placeholder="Digite sua mensagem..." autocomplete="off">
                 <button id="sendMessageBtn"><i class="fas fa-paper-plane"></i></button>
             </div>
         </div>
     </div>
-<script src="./script.js"></script>
+
+    <script src="script.js"></script>
 </body>
 </html>
