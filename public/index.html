@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Go Organic - Marketplace de Produtos Orgânicos</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <h1>Go Organic</h1>
+                <p class="slogan">By Francisco Costa – Bringing Harmony to Your Health</p>
+            </div>
+            
+            <div class="search-container">
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="Pesquisar produtos...">
+                    <button id="searchButton"><i class="fas fa-search"></i></button>
+                </div>
+                <div class="filters">
+                    <select id="stateFilter">
+                        <option value="">Todos os estados</option>
+                        <option value="SP">São Paulo</option>
+                        <option value="RJ">Rio de Janeiro</option>
+                        <option value="MG">Minas Gerais</option>
+                        <option value="RS">Rio Grande do Sul</option>
+                        <option value="PR">Paraná</option>
+                    </select>
+                    <select id="cityFilter">
+                        <option value="">Todas as cidades</option>
+                        <option value="São Paulo">São Paulo</option>
+                        <option value="Rio de Janeiro">Rio de Janeiro</option>
+                        <option value="Belo Horizonte">Belo Horizonte</option>
+                        <option value="Porto Alegre">Porto Alegre</option>
+                        <option value="Curitiba">Curitiba</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="user-actions">
+                <button id="loginBtn" class="btn"><i class="fas fa-user"></i> Login</button>
+                <button id="registerBtn" class="btn"><i class="fas fa-user-plus"></i> Cadastro</button>
+                <button id="cartBtn" class="btn cart-btn">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span id="cartCount">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="container">
+            <div class="products-grid" id="productsGrid">
+                <!-- Produtos serão carregados aqui via JavaScript -->
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal de Login -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Login</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="loginEmail">Email</label>
+                    <input type="email" id="loginEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Senha</label>
+                    <input type="password" id="loginPassword" required>
+                </div>
+                <button type="submit" class="btn">Entrar</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal de Cadastro -->
+    <div id="registerModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Cadastro</h2>
+            <form id="registerForm">
+                <div class="form-group">
+                    <label for="registerName">Nome Completo</label>
+                    <input type="text" id="registerName" required>
+                </div>
+                <div class="form-group">
+                    <label for="registerEmail">Email</label>
+                    <input type="email" id="registerEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="registerPassword">Senha</label>
+                    <input type="password" id="registerPassword" required>
+                </div>
+                <div class="form-group">
+                    <label for="registerState">Estado</label>
+                    <select id="registerState" required>
+                        <option value="">Selecione</option>
+                        <option value="SP">São Paulo</option>
+                        <option value="RJ">Rio de Janeiro</option>
+                        <option value="MG">Minas Gerais</option>
+                        <option value="RS">Rio Grande do Sul</option>
+                        <option value="PR">Paraná</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="registerCity">Cidade</label>
+                    <input type="text" id="registerCity" required>
+                </div>
+                <button type="submit" class="btn">Cadastrar</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal do Carrinho -->
+    <div id="cartModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Seu Carrinho</h2>
+            <div id="cartItems">
+                <!-- Itens do carrinho serão carregados aqui -->
+                <p class="empty-cart">Seu carrinho está vazio</p>
+            </div>
+            <div class="cart-total">
+                <p>Total: <span id="cartTotal">R$ 0,00</span></p>
+                <button id="checkoutBtn" class="btn">Finalizar Compra</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
