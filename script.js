@@ -1,4 +1,4 @@
-// Dados dos produtos
+// Array de produtos completo com informações nutricionais
 const products = [
     {
         id: 1,
@@ -9,7 +9,16 @@ const products = [
         state: "SP",
         city: "São Paulo",
         image: "https://images.unsplash.com/photo-1568702846914-96b305d2aaeb?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
-        description: "Maçãs cultivadas sem agrotóxicos, colhidas no ponto ideal de maturação."
+        description: "Maçãs cultivadas sem agrotóxicos, colhidas no ponto ideal de maturação.",
+        nutrition: {
+            portion: "100g",
+            calories: "52 kcal",
+            carbs: "14g",
+            proteins: "0.3g",
+            fats: "0.2g",
+            fibers: "2.4g",
+            vitamins: "Vitamina C, K"
+        }
     },
     {
         id: 2,
@@ -20,7 +29,16 @@ const products = [
         state: "RJ",
         city: "Rio de Janeiro",
         image: "https://images.unsplash.com/photo-1603833665858-e61d17a86224?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
-        description: "Bananas cultivadas com adubação orgânica e sem pesticidas químicos."
+        description: "Bananas cultivadas com adubação orgânica e sem pesticidas químicos.",
+        nutrition: {
+            portion: "100g",
+            calories: "89 kcal",
+            carbs: "23g",
+            proteins: "1.1g",
+            fats: "0.3g",
+            fibers: "2.6g",
+            vitamins: "Vitamina B6, C"
+        }
     },
     {
         id: 3,
@@ -31,7 +49,16 @@ const products = [
         state: "MG",
         city: "Belo Horizonte",
         image: "https://images.unsplash.com/photo-1601050690597-df0568f70950?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
-        description: "Arroz integral cultivado de forma sustentável, rico em fibras e nutrientes."
+        description: "Arroz integral cultivado de forma sustentável, rico em fibras e nutrientes.",
+        nutrition: {
+            portion: "100g cozido",
+            calories: "111 kcal",
+            carbs: "23g",
+            proteins: "2.6g",
+            fats: "0.9g",
+            fibers: "1.8g",
+            vitamins: "Vitamina B1, B3"
+        }
     },
     {
         id: 4,
@@ -42,7 +69,16 @@ const products = [
         state: "RS",
         city: "Porto Alegre",
         image: "https://images.unsplash.com/photo-1587049352851-8d4e89133924?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
-        description: "Mel puro produzido por abelhas em áreas de floresta nativa."
+        description: "Mel puro produzido por abelhas em áreas de floresta nativa.",
+        nutrition: {
+            portion: "20g (1 colher)",
+            calories: "64 kcal",
+            carbs: "17g",
+            proteins: "0.1g",
+            fats: "0g",
+            fibers: "0g",
+            vitamins: "Antioxidantes"
+        }
     },
     {
         id: 5,
@@ -53,7 +89,16 @@ const products = [
         state: "PR",
         city: "Curitiba",
         image: "https://images.unsplash.com/photo-1447933601403-0c6688de566e?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
-        description: "Café cultivado em sistema agroflorestal, com torra média para melhor sabor."
+        description: "Café cultivado em sistema agroflorestal, com torra média para melhor sabor.",
+        nutrition: {
+            portion: "100ml (1 xícara)",
+            calories: "2 kcal",
+            carbs: "0g",
+            proteins: "0.3g",
+            fats: "0g",
+            fibers: "0g",
+            vitamins: "Vitamina B2, B3"
+        }
     },
     {
         id: 6,
@@ -64,7 +109,16 @@ const products = [
         state: "SP",
         city: "Campinas",
         image: "https://images.unsplash.com/photo-1587486913049-53fc88980cfc?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
-        description: "Ovos de galinhas criadas soltas, alimentadas com ração orgânica."
+        description: "Ovos de galinhas criadas soltas, alimentadas com ração orgânica.",
+        nutrition: {
+            portion: "1 ovo (50g)",
+            calories: "70 kcal",
+            carbs: "0.6g",
+            proteins: "6g",
+            fats: "5g",
+            fibers: "0g",
+            vitamins: "Vitamina A, D, B12"
+        }
     },
     {
         id: 7,
@@ -75,7 +129,16 @@ const products = [
         state: "RJ",
         city: "Niterói",
         image: "https://images.unsplash.com/photo-1594282416557-6c5d2609122a?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
-        description: "Tomates cultivados sem agrotóxicos, colhidos diariamente."
+        description: "Tomates cultivados sem agrotóxicos, colhidos diariamente.",
+        nutrition: {
+            portion: "100g",
+            calories: "18 kcal",
+            carbs: "3.9g",
+            proteins: "0.9g",
+            fats: "0.2g",
+            fibers: "1.2g",
+            vitamins: "Vitamina C, K"
+        }
     },
     {
         id: 8,
@@ -86,7 +149,16 @@ const products = [
         state: "RS",
         city: "Pelotas",
         image: "https://images.unsplash.com/photo-1519817650390-64a93db51149?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
-        description: "Azeite extra virgem prensado a frio, de olivas cultivadas organicamente."
+        description: "Azeite extra virgem prensado a frio, de olivas cultivadas organicamente.",
+        nutrition: {
+            portion: "15ml (1 colher)",
+            calories: "120 kcal",
+            carbs: "0g",
+            proteins: "0g",
+            fats: "14g",
+            fibers: "0g",
+            vitamins: "Vitamina E, K"
+        }
     },
     {
         id: 9,
@@ -97,7 +169,16 @@ const products = [
         state: "MG",
         city: "Ouro Preto",
         image: "https://images.unsplash.com/photo-1559177581-5373e8a697f0?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
-        description: "Chá verde cultivado em montanhas, rico em antioxidantes."
+        description: "Chá verde cultivado em montanhas, rico em antioxidantes.",
+        nutrition: {
+            portion: "240ml (1 xícara)",
+            calories: "2 kcal",
+            carbs: "0g",
+            proteins: "0g",
+            fats: "0g",
+            fibers: "0g",
+            vitamins: "Antioxidantes"
+        }
     },
     {
         id: 10,
@@ -108,50 +189,115 @@ const products = [
         state: "PR",
         city: "Londrina",
         image: "https://images.unsplash.com/photo-1600857544200-b2f666a9a2ec?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
-        description: "Sabonetes artesanais feitos com óleos vegetais e essências naturais."
+        description: "Sabonetes artesanais feitos com óleos vegetais e essências naturais.",
+        nutrition: null // Sem informações nutricionais para produtos não alimentícios
     }
 ];
 
-// Carrinho de compras
+// Estado da aplicação
 let cart = [];
 let cartCount = 0;
-
-// Sistema de Chat
+let selectedState = '';
+let selectedCity = '';
+let isMobileView = window.innerWidth <= 768;
 let currentChatProduct = null;
 let chatMessages = JSON.parse(localStorage.getItem('goOrganicChatMessages')) || {};
+let headerExpanded = true;
 
 // Elementos do DOM
-const productsGrid = document.getElementById('productsGrid');
-const searchInput = document.getElementById('searchInput');
-const searchButton = document.getElementById('searchButton');
-const stateFilter = document.getElementById('stateFilter');
-const cityFilter = document.getElementById('cityFilter');
-const loginBtn = document.getElementById('loginBtn');
-const registerBtn = document.getElementById('registerBtn');
-const cartBtn = document.getElementById('cartBtn');
-const cartCountElement = document.getElementById('cartCount');
-const loginModal = document.getElementById('loginModal');
-const registerModal = document.getElementById('registerModal');
-const cartModal = document.getElementById('cartModal');
-const closeButtons = document.querySelectorAll('.close');
-const loginForm = document.getElementById('loginForm');
-const registerForm = document.getElementById('registerForm');
-const cartItems = document.getElementById('cartItems');
-const cartTotal = document.getElementById('cartTotal');
-const checkoutBtn = document.getElementById('checkoutBtn');
-const clientType = document.getElementById('clientType');
-const sellerType = document.getElementById('sellerType');
-const sellerFields = document.getElementById('sellerFields');
-const chatModal = document.getElementById('chatModal');
-const sendMessageBtn = document.getElementById('sendMessageBtn');
-const chatMessageInput = document.getElementById('chatMessageInput');
+const elements = {
+    productsGrid: document.getElementById('productsGrid'),
+    searchInput: document.getElementById('searchInput'),
+    searchButton: document.getElementById('searchButton'),
+    stateFilter: document.getElementById('stateFilter'),
+    cityFilter: document.getElementById('cityFilter'),
+    loginBtn: document.getElementById('loginBtn'),
+    registerBtn: document.getElementById('registerBtn'),
+    cartBtn: document.getElementById('cartBtn'),
+    cartCountElement: document.getElementById('cartCount'),
+    loginModal: document.getElementById('loginModal'),
+    registerModal: document.getElementById('registerModal'),
+    cartModal: document.getElementById('cartModal'),
+    closeButtons: document.querySelectorAll('.close'),
+    loginForm: document.getElementById('loginForm'),
+    registerForm: document.getElementById('registerForm'),
+    cartItems: document.getElementById('cartItems'),
+    cartTotal: document.getElementById('cartTotal'),
+    checkoutBtn: document.getElementById('checkoutBtn'),
+    clientType: document.getElementById('clientType'),
+    sellerType: document.getElementById('sellerType'),
+    sellerFields: document.getElementById('sellerFields'),
+    chatModal: document.getElementById('chatModal'),
+    chatMessages: document.getElementById('chatMessages'),
+    sendMessageBtn: document.getElementById('sendMessageBtn'),
+    chatMessageInput: document.getElementById('chatMessageInput'),
+    chatSellerName: document.getElementById('chatSellerName'),
+    chatProductInfo: document.getElementById('chatProductInfo')
+};
 
-// Função para renderizar os produtos
+// Funções de Utilidade
+function checkMobileView() {
+    isMobileView = window.innerWidth <= 768;
+}
+
+function showFilters() {
+    if (!isMobileView) return;
+    document.querySelector('.filters').classList.add('active');
+    document.querySelector('.user-actions')?.classList.remove('active');
+}
+
+function showUserActions() {
+    if (!isMobileView) return;
+    document.querySelector('.user-actions').classList.add('active');
+    document.querySelector('.filters')?.classList.remove('active');
+}
+
+// Funções de Filtro e Pesquisa
+function updateCities() {
+    const state = elements.stateFilter.value;
+    elements.cityFilter.innerHTML = '<option value="">Todas as cidades</option>';
+    
+    if (!state) return;
+    
+    const cities = [...new Set(products
+        .filter(p => p.state === state)
+        .map(p => p.city)
+    )];
+    
+    cities.forEach(city => {
+        const option = document.createElement('option');
+        option.value = city;
+        option.textContent = city;
+        elements.cityFilter.appendChild(option);
+    });
+    
+    if (isMobileView) showUserActions();
+}
+
+function filterProducts() {
+    const searchTerm = elements.searchInput.value.toLowerCase();
+    const selectedState = elements.stateFilter.value;
+    const selectedCity = elements.cityFilter.value;
+    
+    const filteredProducts = products.filter(product => {
+        const matchesSearch = product.name.toLowerCase().includes(searchTerm) || 
+                            product.description.toLowerCase().includes(searchTerm) ||
+                            product.seller.toLowerCase().includes(searchTerm);
+        const matchesState = selectedState ? product.state === selectedState : true;
+        const matchesCity = selectedCity ? product.city === selectedCity : true;
+        
+        return matchesSearch && matchesState && matchesCity;
+    });
+    
+    renderProducts(filteredProducts);
+}
+
+// Funções de Renderização
 function renderProducts(productsToRender) {
-    productsGrid.innerHTML = '';
+    elements.productsGrid.innerHTML = '';
     
     if (productsToRender.length === 0) {
-        productsGrid.innerHTML = '<p class="no-products">Nenhum produto encontrado</p>';
+        elements.productsGrid.innerHTML = '<p class="no-products">Nenhum produto encontrado</p>';
         return;
     }
     
@@ -168,6 +314,47 @@ function renderProducts(productsToRender) {
                     <i class="fas fa-map-marker-alt"></i> ${product.city}, ${product.state}
                 </p>
                 <p class="product-price">R$ ${product.price.toFixed(2)}</p>
+                
+                ${product.nutrition ? `
+                <div class="nutrition-section">
+                    <a href="#" class="toggle-nutrition" data-id="${product.id}">
+                        <i class="fas fa-utensils"></i> Informações Nutricionais
+                    </a>
+                    <div class="nutrition-info" id="nutrition-${product.id}" style="display: none;">
+                        <div class="nutrition-grid">
+                            <div class="nutrition-item">
+                                <span class="nutrition-label">Porção:</span>
+                                <span class="nutrition-value">${product.nutrition.portion}</span>
+                            </div>
+                            <div class="nutrition-item">
+                                <span class="nutrition-label">Calorias:</span>
+                                <span class="nutrition-value">${product.nutrition.calories}</span>
+                            </div>
+                            <div class="nutrition-item">
+                                <span class="nutrition-label">Carboidratos:</span>
+                                <span class="nutrition-value">${product.nutrition.carbs}</span>
+                            </div>
+                            <div class="nutrition-item">
+                                <span class="nutrition-label">Proteínas:</span>
+                                <span class="nutrition-value">${product.nutrition.proteins}</span>
+                            </div>
+                            <div class="nutrition-item">
+                                <span class="nutrition-label">Gorduras:</span>
+                                <span class="nutrition-value">${product.nutrition.fats}</span>
+                            </div>
+                            <div class="nutrition-item">
+                                <span class="nutrition-label">Fibras:</span>
+                                <span class="nutrition-value">${product.nutrition.fibers}</span>
+                            </div>
+                            <div class="nutrition-item full-width">
+                                <span class="nutrition-label">Vitaminas:</span>
+                                <span class="nutrition-value">${product.nutrition.vitamins}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                ` : ''}
+                
                 <div class="product-actions">
                     <div class="quantity-control">
                         <button class="decrease-btn" data-id="${product.id}">-</button>
@@ -187,10 +374,14 @@ function renderProducts(productsToRender) {
             </div>
         `;
         
-        productsGrid.appendChild(productCard);
+        elements.productsGrid.appendChild(productCard);
     });
     
-    // Adiciona eventos aos botões de quantidade
+    addProductEvents();
+}
+
+function addProductEvents() {
+    // Eventos de quantidade
     document.querySelectorAll('.decrease-btn').forEach(btn => {
         btn.addEventListener('click', decreaseQuantity);
     });
@@ -199,12 +390,22 @@ function renderProducts(productsToRender) {
         btn.addEventListener('click', increaseQuantity);
     });
     
-    // Adiciona eventos aos botões de adicionar ao carrinho
+    // Eventos de carrinho
     document.querySelectorAll('.add-to-cart').forEach(btn => {
-        btn.addEventListener('click', addToCart);
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            const productId = parseInt(e.target.getAttribute('data-id'));
+            const product = products.find(p => p.id === productId);
+            
+            if (!checkProductRegion(product)) {
+                return;
+            }
+            
+            addToCartConfirmed(productId);
+        });
     });
     
-    // Adiciona eventos aos botões de contato
+    // Eventos de contato
     document.querySelectorAll('.whatsapp-btn').forEach(btn => {
         btn.addEventListener('click', openWhatsApp);
     });
@@ -212,29 +413,114 @@ function renderProducts(productsToRender) {
     document.querySelectorAll('.chat-btn').forEach(btn => {
         btn.addEventListener('click', openChat);
     });
+    
+    // Eventos de informações nutricionais
+    document.querySelectorAll('.toggle-nutrition').forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const productId = this.getAttribute('data-id');
+            const nutritionInfo = document.getElementById(`nutrition-${productId}`);
+            
+            if (nutritionInfo.style.display === 'none') {
+                nutritionInfo.style.display = 'block';
+                this.innerHTML = '<i class="fas fa-utensils"></i> Ocultar Informações';
+            } else {
+                nutritionInfo.style.display = 'none';
+                this.innerHTML = '<i class="fas fa-utensils"></i> Informações Nutricionais';
+            }
+        });
+    });
 }
 
-// Função para filtrar produtos
-function filterProducts() {
-    const searchTerm = searchInput.value.toLowerCase();
-    const selectedState = stateFilter.value;
-    const selectedCity = cityFilter.value;
+// Funções do Carrinho
+function addToCartConfirmed(productId) {
+    const product = products.find(p => p.id === productId);
+    const quantityElement = document.querySelector(`.quantity[data-id="${productId}"]`);
+    const quantity = parseInt(quantityElement.textContent);
     
-    const filteredProducts = products.filter(product => {
-        const matchesSearch = product.name.toLowerCase().includes(searchTerm) || 
-                            product.description.toLowerCase().includes(searchTerm) ||
-                            product.seller.toLowerCase().includes(searchTerm);
-        const matchesState = selectedState ? product.state === selectedState : true;
-        const matchesCity = selectedCity ? product.city === selectedCity : true;
+    const existingItem = cart.find(item => item.id === productId);
+    if (existingItem) {
+        existingItem.quantity += quantity;
+    } else {
+        cart.push({ ...product, quantity });
+    }
+    
+    cartCount += quantity;
+    elements.cartCountElement.textContent = cartCount;
+    quantityElement.textContent = '1';
+    
+    // Feedback visual
+    const addButton = document.querySelector(`.add-to-cart[data-id="${productId}"]`);
+    addButton.textContent = 'Adicionado!';
+    setTimeout(() => addButton.textContent = 'Adicionar', 1000);
+}
+
+function renderCart() {
+    elements.cartItems.innerHTML = '';
+    
+    if (cart.length === 0) {
+        elements.cartItems.innerHTML = '<p class="empty-cart">Seu carrinho está vazio</p>';
+        elements.cartTotal.textContent = 'R$ 0,00';
+        return;
+    }
+    
+    let total = 0;
+    
+    cart.forEach(item => {
+        const itemTotal = item.price * item.quantity;
+        total += itemTotal;
         
-        return matchesSearch && matchesState && matchesCity;
+        const cartItemElement = document.createElement('div');
+        cartItemElement.className = 'cart-item';
+        cartItemElement.innerHTML = `
+            <div class="cart-item-info">
+                <p class="cart-item-title">${item.name}</p>
+                <p>${item.quantity} x R$ ${item.price.toFixed(2)}</p>
+            </div>
+            <div>
+                <p class="cart-item-price">R$ ${itemTotal.toFixed(2)}</p>
+                <span class="cart-item-remove" data-id="${item.id}">Remover</span>
+            </div>
+        `;
+        
+        elements.cartItems.appendChild(cartItemElement);
     });
     
-    renderProducts(filteredProducts);
-    setTimeout(handleScroll, 100);
+    elements.cartTotal.textContent = `R$ ${total.toFixed(2)}`;
+    
+    // Eventos de remoção
+    document.querySelectorAll('.cart-item-remove').forEach(btn => {
+        btn.addEventListener('click', removeFromCart);
+    });
 }
 
-// Função para diminuir quantidade
+function removeFromCart(e) {
+    const productId = parseInt(e.target.getAttribute('data-id'));
+    const itemIndex = cart.findIndex(item => item.id === productId);
+    
+    if (itemIndex !== -1) {
+        cartCount -= cart[itemIndex].quantity;
+        cart.splice(itemIndex, 1);
+        elements.cartCountElement.textContent = cartCount;
+        renderCart();
+    }
+}
+
+function checkout() {
+    if (cart.length === 0) {
+        alert('Seu carrinho está vazio!');
+        return;
+    }
+    
+    alert('Compra finalizada com sucesso! Obrigado por comprar na Go Organic.');
+    cart = [];
+    cartCount = 0;
+    elements.cartCountElement.textContent = '0';
+    elements.cartModal.style.display = 'none';
+    renderCart();
+}
+
+// Funções de Controle de Quantidade
 function decreaseQuantity(e) {
     const productId = parseInt(e.target.getAttribute('data-id'));
     const quantityElement = document.querySelector(`.quantity[data-id="${productId}"]`);
@@ -246,7 +532,6 @@ function decreaseQuantity(e) {
     }
 }
 
-// Função para aumentar quantidade
 function increaseQuantity(e) {
     const productId = parseInt(e.target.getAttribute('data-id'));
     const quantityElement = document.querySelector(`.quantity[data-id="${productId}"]`);
@@ -256,38 +541,7 @@ function increaseQuantity(e) {
     quantityElement.textContent = quantity;
 }
 
-// Função para adicionar ao carrinho
-function addToCart(e) {
-    const productId = parseInt(e.target.getAttribute('data-id'));
-    const product = products.find(p => p.id === productId);
-    const quantityElement = document.querySelector(`.quantity[data-id="${productId}"]`);
-    const quantity = parseInt(quantityElement.textContent);
-    
-    const existingItem = cart.find(item => item.id === productId);
-    
-    if (existingItem) {
-        existingItem.quantity += quantity;
-    } else {
-        cart.push({
-            ...product,
-            quantity: quantity
-        });
-    }
-    
-    cartCount += quantity;
-    cartCountElement.textContent = cartCount;
-    
-    // Reset quantity
-    quantityElement.textContent = '1';
-    
-    // Mostra feedback visual
-    e.target.textContent = 'Adicionado!';
-    setTimeout(() => {
-        e.target.textContent = 'Adicionar';
-    }, 1000);
-}
-
-// Função para abrir WhatsApp
+// Funções de Contato
 function openWhatsApp(e) {
     e.preventDefault();
     const phone = e.target.getAttribute('data-phone');
@@ -299,15 +553,13 @@ function openWhatsApp(e) {
     window.open(whatsappUrl, '_blank');
 }
 
-// Função para salvar mensagens no localStorage
+// Funções do Chat
 function saveChatMessages() {
     localStorage.setItem('goOrganicChatMessages', JSON.stringify(chatMessages));
 }
 
-// Função para renderizar mensagens do chat
 function renderChatMessages(productId) {
-    const chatContainer = document.getElementById('chatMessages');
-    chatContainer.innerHTML = '';
+    elements.chatMessages.innerHTML = '';
     
     if (chatMessages[productId]) {
         chatMessages[productId].forEach((msg, index) => {
@@ -317,27 +569,24 @@ function renderChatMessages(productId) {
                 <div>${msg.text}</div>
                 <div class="message-time">${msg.time} - ${msg.sender === 'seller' ? currentChatProduct.seller : 'Você'}</div>
             `;
-            chatContainer.appendChild(messageDiv);
+            elements.chatMessages.appendChild(messageDiv);
         });
     }
     
-    chatContainer.scrollTop = chatContainer.scrollHeight;
+    elements.chatMessages.scrollTop = elements.chatMessages.scrollHeight;
 }
 
-// Função para enviar mensagem
 function sendMessage() {
-    const message = chatMessageInput.value.trim();
+    const message = elements.chatMessageInput.value.trim();
     
     if (message && currentChatProduct) {
         const productId = currentChatProduct.id;
         const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
         
-        // Inicializa array de mensagens se não existir
         if (!chatMessages[productId]) {
             chatMessages[productId] = [];
         }
         
-        // Adiciona mensagem do usuário
         chatMessages[productId].push({
             text: message,
             sender: 'user',
@@ -346,9 +595,9 @@ function sendMessage() {
         
         saveChatMessages();
         renderChatMessages(productId);
-        chatMessageInput.value = '';
+        elements.chatMessageInput.value = '';
         
-        // Simula resposta do vendedor após 1-3 segundos
+        // Simula resposta do vendedor
         setTimeout(() => {
             const responses = [
                 "Obrigado pela sua mensagem! Como posso ajudar?",
@@ -377,7 +626,6 @@ function sendMessage() {
     }
 }
 
-// Função para abrir o chat
 function openChat(e) {
     e.preventDefault();
     const productId = e.target.getAttribute('data-id');
@@ -386,7 +634,6 @@ function openChat(e) {
     
     currentChatProduct = product;
     
-    // Inicializa mensagens se não existirem
     if (!chatMessages[productId]) {
         chatMessages[productId] = [
             {
@@ -398,89 +645,18 @@ function openChat(e) {
         saveChatMessages();
     }
     
-    // Atualiza o cabeçalho do chat
-    document.getElementById('chatSellerName').textContent = seller;
-    document.getElementById('chatProductInfo').textContent = `Produto: ${product.name} - R$ ${product.price.toFixed(2)}`;
+    elements.chatSellerName.textContent = seller;
+    elements.chatProductInfo.textContent = `Produto: ${product.name} - R$ ${product.price.toFixed(2)}`;
     
-    // Renderiza as mensagens
     renderChatMessages(productId);
+    elements.chatModal.style.display = 'block';
+    elements.chatMessageInput.focus();
     
-    // Abre o modal e foca no input
-    chatModal.style.display = 'block';
-    chatMessageInput.focus();
+    // Remove notificação de nova mensagem
+    e.target.classList.remove('has-new-message');
 }
 
-// Função para renderizar o carrinho
-function renderCart() {
-    cartItems.innerHTML = '';
-    
-    if (cart.length === 0) {
-        cartItems.innerHTML = '<p class="empty-cart">Seu carrinho está vazio</p>';
-        cartTotal.textContent = 'R$ 0,00';
-        return;
-    }
-    
-    let total = 0;
-    
-    cart.forEach(item => {
-        const itemTotal = item.price * item.quantity;
-        total += itemTotal;
-        
-        const cartItemElement = document.createElement('div');
-        cartItemElement.className = 'cart-item';
-        cartItemElement.innerHTML = `
-            <div class="cart-item-info">
-                <p class="cart-item-title">${item.name}</p>
-                <p>${item.quantity} x R$ ${item.price.toFixed(2)}</p>
-            </div>
-            <div>
-                <p class="cart-item-price">R$ ${itemTotal.toFixed(2)}</p>
-                <span class="cart-item-remove" data-id="${item.id}">Remover</span>
-            </div>
-        `;
-        
-        cartItems.appendChild(cartItemElement);
-    });
-    
-    cartTotal.textContent = `R$ ${total.toFixed(2)}`;
-    
-    // Adiciona eventos aos botões de remover
-    document.querySelectorAll('.cart-item-remove').forEach(btn => {
-        btn.addEventListener('click', removeFromCart);
-    });
-}
-
-// Função para remover do carrinho
-function removeFromCart(e) {
-    const productId = parseInt(e.target.getAttribute('data-id'));
-    const itemIndex = cart.findIndex(item => item.id === productId);
-    
-    if (itemIndex !== -1) {
-        cartCount -= cart[itemIndex].quantity;
-        cart.splice(itemIndex, 1);
-        cartCountElement.textContent = cartCount;
-        renderCart();
-    }
-}
-
-// Função para finalizar compra
-function checkout() {
-    if (cart.length === 0) {
-        alert('Seu carrinho está vazio!');
-        return;
-    }
-    
-    alert('Compra finalizada com sucesso! Obrigado por comprar na Go Organic.');
-    cart = [];
-    cartCount = 0;
-    cartCountElement.textContent = '0';
-    cartModal.style.display = 'none';
-    renderCart();
-}
-
-// Função para inicializar o sistema de chat
 function initChatSystem() {
-    // Verifica se há mensagens não lidas
     Object.keys(chatMessages).forEach(productId => {
         const lastMessage = chatMessages[productId][chatMessages[productId].length - 1];
         if (lastMessage.sender === 'seller') {
@@ -492,16 +668,67 @@ function initChatSystem() {
     });
 }
 
-// Variável para controle do estado do header
-let headerExpanded = true;
+// Funções de Região
+function checkProductRegion(product) {
+    if (!isMobileView) return true;
+    
+    if (!selectedState || !selectedCity) {
+        showRegionConfirmModal(product);
+        return false;
+    }
+    
+    return product.state === selectedState && product.city === selectedCity;
+}
 
-// Função para manipular o scroll
+function showRegionConfirmModal(product) {
+    const modal = document.createElement('div');
+    modal.className = 'modal region-confirm-modal';
+    modal.innerHTML = `
+        <div class="modal-content">
+            <h3>Confirme sua região</h3>
+            <p>O produto "${product.name}" está disponível em ${product.city}, ${product.state}. Deseja:</p>
+            <div class="region-confirm-buttons">
+                <button id="confirmSameRegion" class="btn">Usar esta região</button>
+                <button id="searchOtherRegion" class="btn">Procurar na minha região</button>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(modal);
+    modal.style.display = 'block';
+    
+    document.getElementById('confirmSameRegion').addEventListener('click', () => {
+        selectedState = product.state;
+        selectedCity = product.city;
+        elements.stateFilter.value = selectedState;
+        updateCities();
+        elements.cityFilter.value = selectedCity;
+        modal.style.display = 'none';
+        document.body.removeChild(modal);
+        addToCartConfirmed(product.id);
+    });
+    
+    document.getElementById('searchOtherRegion').addEventListener('click', () => {
+        elements.searchInput.value = product.name;
+        elements.searchInput.focus();
+        showFilters();
+        modal.style.display = 'none';
+        document.body.removeChild(modal);
+    });
+    
+    modal.querySelector('.modal-content').addEventListener('click', e => e.stopPropagation());
+    modal.addEventListener('click', () => {
+        modal.style.display = 'none';
+        document.body.removeChild(modal);
+    });
+}
+
+// Funções de Scroll e Header
 function handleScroll() {
     const header = document.querySelector('.header');
     const scrollPosition = window.scrollY;
-    const productsGrid = document.getElementById('productsGrid');
+    const productsGrid = elements.productsGrid;
     
-    // Verifica se há produtos visíveis na tela
     const isProductVisible = () => {
         if (productsGrid.children.length === 0) return false;
         const firstProduct = productsGrid.children[0];
@@ -522,157 +749,185 @@ function handleScroll() {
     }
 }
 
-// Observador de mutação para detectar adição de produtos
-const observer = new MutationObserver((mutations) => {
-    mutations.forEach((mutation) => {
-        if (mutation.addedNodes.length > 0) {
-            const header = document.querySelector('.header');
-            header.classList.remove('scrolled');
-            headerExpanded = true;
+// Funções de Autenticação e Cadastro
+function setupAuthForms() {
+    // Mostrar/ocultar campos de vendedor
+    elements.clientType.addEventListener('change', function() {
+        if(this.checked) {
+            elements.sellerFields.style.display = 'none';
         }
     });
-});
 
-// Event Listeners
-searchInput.addEventListener('input', filterProducts);
-searchButton.addEventListener('click', filterProducts);
-stateFilter.addEventListener('change', filterProducts);
-cityFilter.addEventListener('change', filterProducts);
-
-loginBtn.addEventListener('click', () => {
-    loginModal.style.display = 'block';
-});
-
-registerBtn.addEventListener('click', () => {
-    registerModal.style.display = 'block';
-});
-
-cartBtn.addEventListener('click', () => {
-    renderCart();
-    cartModal.style.display = 'block';
-});
-
-closeButtons.forEach(button => {
-    button.addEventListener('click', () => {
-        loginModal.style.display = 'none';
-        registerModal.style.display = 'none';
-        cartModal.style.display = 'none';
-        chatModal.style.display = 'none';
+    elements.sellerType.addEventListener('change', function() {
+        if(this.checked) {
+            elements.sellerFields.style.display = 'block';
+        }
     });
-});
 
-window.addEventListener('click', (e) => {
-    if (e.target === loginModal) {
-        loginModal.style.display = 'none';
-    }
-    if (e.target === registerModal) {
-        registerModal.style.display = 'none';
-    }
-    if (e.target === cartModal) {
-        cartModal.style.display = 'none';
-    }
-    if (e.target === chatModal) {
-        chatModal.style.display = 'none';
-    }
-});
-
-loginForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const email = document.getElementById('loginEmail').value;
-    const password = document.getElementById('loginPassword').value;
-    
-    // Simulação de login
-    alert(`Login realizado com o email: ${email}`);
-    loginModal.style.display = 'none';
-    loginForm.reset();
-});
-
-// Mostrar/ocultar campos de vendedor
-clientType.addEventListener('change', function() {
-    if(this.checked) {
-        sellerFields.style.display = 'none';
-    }
-});
-
-sellerType.addEventListener('change', function() {
-    if(this.checked) {
-        sellerFields.style.display = 'block';
-    }
-});
-
-registerForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    
-    const userType = document.querySelector('input[name="userType"]:checked').value;
-    const name = document.getElementById('registerName').value;
-    const email = document.getElementById('registerEmail').value;
-    const password = document.getElementById('registerPassword').value;
-    const state = document.getElementById('registerState').value;
-    const city = document.getElementById('registerCity').value;
-    
-    let userData = {
-        userType,
-        name,
-        email,
-        password,
-        state,
-        city
-    };
-    
-    if(userType === 'seller') {
-        userData.businessName = document.getElementById('sellerBusinessName').value;
-        userData.cnpj = document.getElementById('sellerCNPJ').value;
-        userData.description = document.getElementById('sellerDescription').value;
-        userData.phone = document.getElementById('sellerPhone').value;
+    elements.loginForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const email = document.getElementById('loginEmail').value;
+        const password = document.getElementById('loginPassword').value;
         
-        // Adiciona o vendedor como um novo produto (simulação)
-        if(userData.businessName && userData.phone) {
-            const newSellerProduct = {
-                id: products.length + 1,
-                name: `Produto de ${userData.businessName}`,
-                price: 0,
-                seller: userData.businessName,
-                phone: userData.phone,
-                state: userData.state,
-                city: userData.city,
-                image: "https://images.unsplash.com/photo-1498837167922-ddd27525d352?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
-                description: userData.description || "Novo produto orgânico"
-            };
-            products.push(newSellerProduct);
+        alert(`Login realizado com o email: ${email}`);
+        elements.loginModal.style.display = 'none';
+        elements.loginForm.reset();
+    });
+
+    elements.registerForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        const userType = document.querySelector('input[name="userType"]:checked').value;
+        const name = document.getElementById('registerName').value;
+        const email = document.getElementById('registerEmail').value;
+        const password = document.getElementById('registerPassword').value;
+        const state = document.getElementById('registerState').value;
+        const city = document.getElementById('registerCity').value;
+        
+        let userData = {
+            userType,
+            name,
+            email,
+            password,
+            state,
+            city
+        };
+        
+        if(userType === 'seller') {
+            userData.businessName = document.getElementById('sellerBusinessName').value;
+            userData.cnpj = document.getElementById('sellerCNPJ').value;
+            userData.description = document.getElementById('sellerDescription').value;
+            userData.phone = document.getElementById('sellerPhone').value;
+            
+            // Adiciona o vendedor como um novo produto (simulação)
+            if(userData.businessName && userData.phone) {
+                const newSellerProduct = {
+                    id: products.length + 1,
+                    name: `Produto de ${userData.businessName}`,
+                    price: 0,
+                    seller: userData.businessName,
+                    phone: userData.phone,
+                    state: userData.state,
+                    city: userData.city,
+                    image: "https://images.unsplash.com/photo-1498837167922-ddd27525d352?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+                    description: userData.description || "Novo produto orgânico"
+                };
+                products.push(newSellerProduct);
+            }
         }
-    }
+        
+        alert(`Cadastro de ${userType === 'client' ? 'Cliente' : 'Vendedor'} realizado com sucesso!\nNome: ${name}\nEmail: ${email}`);
+        elements.registerModal.style.display = 'none';
+        elements.registerForm.reset();
+        elements.sellerFields.style.display = 'none';
+        elements.clientType.checked = true;
+        
+        filterProducts();
+    });
+}
+
+// Configuração de Event Listeners
+function setupEventListeners() {
+    // Pesquisa e filtros
+    elements.searchInput.addEventListener('input', function() {
+        filterProducts();
+        if (isMobileView && this.value.length > 0) showFilters();
+    });
     
-    // Simulação de cadastro
-    alert(`Cadastro de ${userType === 'client' ? 'Cliente' : 'Vendedor'} realizado com sucesso!\nNome: ${name}\nEmail: ${email}`);
-    registerModal.style.display = 'none';
-    registerForm.reset();
-    sellerFields.style.display = 'none';
-    clientType.checked = true;
+    elements.searchButton.addEventListener('click', filterProducts);
+    elements.stateFilter.addEventListener('change', function() {
+        selectedState = this.value;
+        updateCities();
+        filterProducts();
+    });
     
-    // Atualiza a lista de produtos
-    filterProducts();
-});
+    elements.cityFilter.addEventListener('change', function() {
+        selectedCity = this.value;
+        filterProducts();
+        if (isMobileView && this.value) showUserActions();
+    });
+    
+    // Modais
+    elements.loginBtn.addEventListener('click', () => {
+        elements.loginModal.style.display = 'block';
+    });
 
-checkoutBtn.addEventListener('click', checkout);
+    elements.registerBtn.addEventListener('click', () => {
+        elements.registerModal.style.display = 'block';
+    });
 
-// Event Listeners para o chat
-sendMessageBtn.addEventListener('click', sendMessage);
+    elements.cartBtn.addEventListener('click', () => {
+        renderCart();
+        elements.cartModal.style.display = 'block';
+    });
 
-chatMessageInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') {
-        sendMessage();
-    }
-});
+    elements.closeButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            elements.loginModal.style.display = 'none';
+            elements.registerModal.style.display = 'none';
+            elements.cartModal.style.display = 'none';
+            elements.chatModal.style.display = 'none';
+        });
+    });
 
-// Inicialização da página
-document.addEventListener('DOMContentLoaded', () => {
+    window.addEventListener('click', (e) => {
+        if (e.target === elements.loginModal) {
+            elements.loginModal.style.display = 'none';
+        }
+        if (e.target === elements.registerModal) {
+            elements.registerModal.style.display = 'none';
+        }
+        if (e.target === elements.cartModal) {
+            elements.cartModal.style.display = 'none';
+        }
+        if (e.target === elements.chatModal) {
+            elements.chatModal.style.display = 'none';
+        }
+    });
+    
+    // Chat
+    elements.sendMessageBtn.addEventListener('click', sendMessage);
+    elements.chatMessageInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            sendMessage();
+        }
+    });
+    
+    // Checkout
+    elements.checkoutBtn.addEventListener('click', checkout);
+    
+    // Redimensionamento
+    window.addEventListener('resize', function() {
+        checkMobileView();
+        if (!isMobileView) {
+            document.querySelector('.filters')?.classList.remove('active');
+            document.querySelector('.user-actions')?.classList.remove('active');
+        }
+    });
+}
+
+// Inicialização
+function init() {
+    checkMobileView();
     renderProducts(products);
+    setupAuthForms();
+    setupEventListeners();
     initChatSystem();
+    updateCities();
     
     // Configura o observador para monitorar adições de produtos
-    const productsGrid = document.getElementById('productsGrid');
-    observer.observe(productsGrid, { childList: true });
+    const observer = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+            if (mutation.addedNodes.length > 0) {
+                const header = document.querySelector('.header');
+                header.classList.remove('scrolled');
+                headerExpanded = true;
+            }
+        });
+    });
     
-    // Adiciona o event listener para scroll
+    observer.observe(elements.productsGrid, { childList: true });
     window.addEventListener('scroll', handleScroll);
-});
+}
+
+document.addEventListener('DOMContentLoaded', init);

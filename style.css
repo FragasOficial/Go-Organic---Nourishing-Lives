@@ -570,6 +570,149 @@ body {
     border: 2px solid white;
 }
 
+/* Estilos para informações nutricionais */
+.nutrition-info {
+    margin: 15px 0;
+    padding: 12px;
+    background-color: rgba(46, 125, 50, 0.05);
+    border-radius: 6px;
+    border-left: 3px solid var(--primary-light);
+}
+
+.nutrition-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--primary-dark);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.nutrition-title i {
+    color: var(--primary-color);
+}
+
+.nutrition-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+}
+
+.nutrition-item {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+}
+
+.nutrition-item.full-width {
+    grid-column: span 2;
+}
+
+.nutrition-label {
+    font-weight: 600;
+    color: var(--primary-dark);
+}
+
+.nutrition-value {
+    color: #555;
+}
+
+/* Estilos para a seção de nutrição */
+.nutrition-section {
+    margin: 12px 0;
+}
+
+.toggle-nutrition {
+    display: inline-block;
+    color: var(--primary-dark);
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    margin-bottom: 8px;
+    transition: color 0.3s;
+}
+
+.toggle-nutrition:hover {
+    color: var(--primary-color);
+    text-decoration: underline;
+}
+
+.toggle-nutrition i {
+    margin-right: 6px;
+    color: var(--primary-color);
+}
+
+.nutrition-info {
+    padding: 10px;
+    background-color: rgba(46, 125, 50, 0.05);
+    border-radius: 6px;
+    border-left: 3px solid var(--primary-light);
+    margin-top: 5px;
+    animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.nutrition-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+}
+
+.nutrition-item {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    padding: 4px 0;
+}
+
+.nutrition-item.full-width {
+    grid-column: span 2;
+}
+
+.nutrition-label {
+    font-weight: 600;
+    color: var(--primary-dark);
+}
+
+.nutrition-value {
+    color: #555;
+}
+
+/* Ajustes para responsividade */
+@media (max-width: 480px) {
+    .nutrition-grid {
+        grid-template-columns: 1fr;
+    }
+
+     .user-actions{
+        display: none;
+    }
+    
+    .nutrition-item.full-width {
+        grid-column: span 1;
+    }
+    
+    .toggle-nutrition {
+        font-size: 13px;
+    }
+}
+
+/* Ajuste para telas pequenas */
+@media (max-width: 480px) {
+    .nutrition-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .nutrition-item.full-width {
+        grid-column: span 1;
+    }
+}
+
 /* Animation for new messages */
 @keyframes pulse {
     0% { transform: scale(1); }
@@ -583,6 +726,10 @@ body {
 
 /* Responsive Styles */
 @media (max-width: 768px) {
+    .filters{
+        display: none;
+    }
+   
     .header .container {
         flex-direction: column;
     }
@@ -631,4 +778,317 @@ body {
     .header.scrolled {
         background-color: var(--primary-color);
     }
+}
+
+/* Responsividade para telas menores que 768px */
+@media (max-width: 768px) {
+    .header .container {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .search-container {
+        order: 2;
+        width: 100%;
+    }
+    
+    .user-actions {
+        display: none; /* Escondido inicialmente */
+        order: 3;
+        width: 100%;
+        justify-content: center;
+        margin-top: 10px;
+    }
+    
+    .filters {
+        display: none; /* Escondido inicialmente */
+        width: 100%;
+        margin-top: 10px;
+    }
+    
+    /* Mostrar elementos quando ativos */
+    .filters.active,
+    .user-actions.active {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    /* Ajuste para os selects */
+    .filters select {
+        width: 100%;
+    }
+    
+    /* Ajuste para o botão de pesquisa */
+    .search-box button {
+        padding: 0 20px;
+    }
+}
+
+/* Ajustes específicos para telas muito pequenas */
+@media (max-width: 480px) {
+    .product-actions {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .quantity-control {
+        justify-content: center;
+    }
+    
+    .add-to-cart {
+        width: 100%;
+    }
+}
+
+/* Estilos para responsividade mobile */
+@media (max-width: 768px) {
+    .filters {
+        display: none;
+        flex-direction: column;
+        gap: 8px;
+        margin-top: 10px;
+    }
+    
+    .filters.active {
+        display: flex;
+    }
+    
+    .user-actions {
+        display: none;
+        justify-content: center;
+        margin-top: 10px;
+    }
+    
+    .user-actions.active {
+        display: flex;
+    }
+    
+    .search-container {
+        order: 2;
+        width: 100%;
+    }
+    
+    .logo {
+        order: 1;
+        width: 100%;
+        text-align: center;
+    }
+    
+    .user-actions {
+        order: 3;
+    }
+    
+    /* Modal de confirmação de região */
+    .region-confirm-modal {
+        text-align: center;
+    }
+    
+    .region-confirm-modal .modal-content {
+        max-width: 350px;
+    }
+    
+    .region-confirm-buttons {
+        display: flex;
+        gap: 10px;
+        margin-top: 20px;
+        justify-content: center;
+    }
+    
+    .region-confirm-buttons button {
+        flex: 1;
+    }
+}
+
+/* Ajustes para telas muito pequenas */
+@media (max-width: 480px) {
+    .btn {
+        padding: 8px 10px;
+        font-size: 13px;
+    }
+    
+    .contact-btn {
+        font-size: 12px;
+    }
+    
+    .region-confirm-buttons {
+        flex-direction: column;
+    }
+    
+    .region-confirm-buttons button {
+        width: 100%;
+    }
+}
+
+/* Adicione estas regras ao seu arquivo style.css */
+
+/* Estilos para os botões de ação no topo em telas pequenas */
+@media (max-width: 768px) {
+    .user-actions {
+        display: flex;
+        justify-content: space-around;
+        width: 100%;
+        padding: 10px 0;
+        background-color: white;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        position: sticky;
+        top: 0;
+        z-index: 90;
+        order: 1; /* Posiciona acima da barra de pesquisa */
+    }
+    
+    .header .container {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .logo {
+        order: 2;
+        margin-top: 10px;
+    }
+    
+    .search-container {
+        order: 3;
+        margin-top: 10px;
+    }
+    
+    .user-actions .btn {
+        flex: 1;
+        max-width: 120px;
+        padding: 8px 5px;
+        margin: 0 3px;
+        border-radius: 20px;
+        font-size: 13px;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 45px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        transition: all 0.3s ease;
+    }
+    
+    .user-actions .btn i {
+        font-size: 16px;
+        margin-bottom: 2px;
+    }
+    
+    .user-actions .btn span {
+        font-size: 11px;
+        display: flex;
+        flex-wrap: wrap;
+        
+    }
+    
+    .user-actions .cart-btn span.cart-count {
+        display: flex;
+        top: -2px;
+        right: -2px;
+        width: 16px;
+        height: 16px;
+        font-size: 10px;
+    }
+    
+    /* Ajuste para telas um pouco maiores */
+    @media (min-width: 480px) {
+        .user-actions .btn {
+            flex-direction: row;
+            padding: 8px 10px;
+            font-size: 14px;
+            display: flex;
+            flex-wrap: wrap;
+        }
+        
+        .user-actions .btn i {
+            margin-right: 5px;
+            margin-bottom: 0;
+            font-size: 18px;
+        }
+    }
+    
+    /* Efeito de hover para mobile */
+    .user-actions .btn:active {
+        transform: scale(0.95);
+        box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    }
+    
+    /* Ajuste quando o header está scrolled */
+    .header.scrolled .user-actions {
+        top: 0;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+}
+
+/* Ajustes para melhor organização em mobile */
+@media (max-width: 768px) {
+    .header {
+        padding-bottom: 0;
+    }
+    
+    .header.scrolled {
+        padding: 5px 0;
+    }
+    
+    .header.scrolled .logo,
+    .header.scrolled .slogan {
+        display: none;
+    }
+    
+    .header.scrolled .search-container {
+        margin-top: 5px;
+    }
+    
+    /* Ajuste para quando os filtros estão ativos */
+    .filters.active {
+        margin-top: 10px;
+        order: 4;
+    }
+}
+
+/* Melhorias para telas muito pequenas */
+@media (max-width: 480px) {
+    .user-actions .btn {
+        padding: 6px 3px;
+        font-size: 12px;
+        height: 40px;
+    }
+    
+    .user-actions .btn i {
+        font-size: 14px;
+    }
+    
+    .user-actions .btn span {
+        font-size: 10px;
+    }
+    
+    /* Em orientação paisagem, aproveitar melhor o espaço */
+    @media (orientation: landscape) {
+        .user-actions {
+            padding: 5px 0;
+            display: flex;
+            flex-wrap: wrap;
+        }
+        
+        .user-actions .btn {
+            height: 35px;
+            padding: 0 8px;
+        }
+    }
+}
+
+/* Animação suave para quando os botões aparecem */
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.user-actions.active {
+    animation: fadeInDown 0.3s ease-out;
 }
