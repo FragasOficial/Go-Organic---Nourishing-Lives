@@ -509,6 +509,15 @@ function setupRegionModal() {
 
 function checkMobileView() {
     isMobileView = window.innerWidth <= 768;
+    
+    // Atualiza a exibição dos botões baseado no tamanho da tela
+    if (isMobileView) {
+        document.querySelector('.user-actions').style.display = 'none';
+        document.querySelector('.mobile-bottom-actions').style.display = 'flex';
+    } else {
+        document.querySelector('.user-actions').style.display = 'flex';
+        document.querySelector('.mobile-bottom-actions').style.display = 'none';
+    }
 }
 
 function showFilters() {
@@ -546,8 +555,19 @@ function filterProducts() {
         return matchesSearch && matchesState && matchesCity;
     });
     
-        renderProducts(filteredProducts);
-        checkShowUserActions(); // Adicione esta linha
+    renderProducts(filteredProducts);
+    
+    // Em mobile, mostra os filtros quando há pesquisa ou seleção
+    if (isMobileView) {
+        if (searchTerm || selectedState || selectedCity) {
+            document.querySelector('.filters').classList.add('active');
+        } else {
+            document.querySelector('.filters').classList.remove('active');
+        }
+        
+        document.querySelector('.user-actions').style.display = 'none';
+        document.querySelector('.mobile-bottom-actions').style.display = 'flex';
+    }
 }
 
 // Funções de Renderização
@@ -1060,27 +1080,18 @@ elements.cityFilter.addEventListener('change', function() {
 
 // Funções de Scroll e Header
 // Substitua a função handleScroll existente por esta versão atualizada
+// Substitua a função handleScroll existente por esta versão
 function handleScroll() {
     const header = document.querySelector('.header');
     const scrollPosition = window.scrollY;
     
-    // Usamos requestAnimationFrame para otimizar o desempenho
-    requestAnimationFrame(() => {
-        // Sempre mostra tudo quando no topo da página
-        if (scrollPosition === 0) {
-            header.classList.remove('scrolled', 'scrolled-up');
-            return;
-        }
-        
-        // Apenas adiciona/remove classes quando necessário
-        if (scrollPosition > 100) { // Limiar para evitar flickering
-            header.classList.add('scrolled');
-            header.classList.remove('scrolled-up');
-        } else {
-            header.classList.add('scrolled-up');
-            header.classList.remove('scrolled');
-        }
-    });
+    if (isMobileView) return; // Não aplica em mobile
+    
+    if (scrollPosition > 100) {
+        header.classList.add('scrolled');
+    } else {
+        header.classList.remove('scrolled');
+    }
 }
 
 // Funções de Autenticação e Cadastro
@@ -1175,7 +1186,9 @@ function setupEventListeners() {
     // Pesquisa e filtros
     elements.searchInput.addEventListener('input', function() {
         filterProducts();
-        if (isMobileView && this.value.length > 0) showFilters();
+        if (isMobileView && this.value.length > 0) {
+            document.querySelector('.filters').classList.add('active');
+        }
     });
     
     elements.searchButton.addEventListener('click', filterProducts);
@@ -1253,7 +1266,7 @@ function setupEventListeners() {
 // Inicialização
 // Modifique a inicialização para usar passive event listeners
 function init() {
-        checkMobileView();
+    checkMobileView();
     populateStateFilter();
     renderProducts(products);
     setupAuthForms();
@@ -1341,7 +1354,8 @@ function init() {
     });
     
     // Adiciona o event listener de scroll com a opção passive
-    window.addEventListener('scroll', handleScroll, { passive: true });
+    // Dentro da função init(), adicione:
+    window.addEventListener('scroll', handleScroll);
 }
 
 document.addEventListener('DOMContentLoaded', init);

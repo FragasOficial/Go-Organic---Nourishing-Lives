@@ -1368,6 +1368,229 @@ body {
     }
 }
 
+/* Adicione estas regras ao final do arquivo style.css */
+
+@media (max-width: 768px) {
+    /* Esconde os botões originais no topo */
+    .user-actions {
+        display: none !important;
+    }
+    
+    /* Estilo para os botões na base */
+    .mobile-bottom-actions {
+        display: flex;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: white;
+        box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+        z-index: 100;
+        padding: 10px 15px;
+        justify-content: space-around;
+    }
+    
+    .mobile-bottom-actions .btn {
+        flex: 1;
+        max-width: 120px;
+        padding: 8px 5px;
+        margin: 0 3px;
+        border-radius: 20px;
+        font-size: 13px;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 45px;
+    }
+    
+    .mobile-bottom-actions .btn i {
+        font-size: 16px;
+        margin-bottom: 2px;
+    }
+    
+    .mobile-bottom-actions .cart-btn span {
+        position: static;
+        background-color: var(--primary-color);
+        color: white;
+        margin-left: 5px;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .mobile-bottom-actions .btn {
+        padding: 6px 3px;
+        font-size: 12px;
+        height: 40px;
+    }
+    
+    .mobile-bottom-actions .btn i {
+        font-size: 14px;
+    }
+}
+
+/* Adicione estas regras ao final do arquivo */
+
+/* Garante que o carrinho seja visível em todas as telas */
+.cart-btn, .mobile-cart-btn {
+    display: flex !important;
+}
+
+/* Ajuste para o modal do carrinho */
+#cartModal .modal-content {
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+/* Ajuste para o botão de checkout */
+#checkoutBtn {
+    width: 100%;
+    padding: 12px;
+    margin-top: 15px;
+    background-color: var(--primary-dark);
+    font-size: 16px;
+}
+
+/* Esconde os botões originais em mobile */
+@media (max-width: 768px) {
+    .user-actions {
+        display: none !important;
+    }
+    
+    /* Mostra apenas os botões móveis na base */
+    .mobile-bottom-actions {
+        display: flex;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: white;
+        box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+        z-index: 100;
+        padding: 10px 15px;
+        justify-content: space-around;
+    }
+}
+
+/* Em telas maiores, esconde os botões móveis */
+@media (min-width: 769px) {
+    .mobile-bottom-actions {
+        display: none !important;
+    }
+}
+
+/* Adicione estas regras no final do arquivo style.css */
+
+/* Estilos para o header em telas grandes com scroll */
+@media (min-width: 769px) {
+    .header.scrolled {
+        padding: 10px 0;
+    }
+    
+    .header.scrolled .container {
+        align-items: center;
+    }
+    
+    .header.scrolled .logo {
+        display: none;
+    }
+    
+    .header.scrolled .search-container {
+        flex-grow: 1;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+    
+    .header.scrolled .user-actions {
+        display: flex;
+        margin-left: auto;
+        order: 3;
+    }
+    
+    /* Ajuste para manter os botões visíveis */
+    .header.scrolled .user-actions .btn {
+        white-space: nowrap;
+    }
+    
+    /* Garante que a barra de pesquisa e filtros fiquem alinhadas */
+    .header.scrolled .search-box {
+        margin-bottom: 0;
+    }
+    
+    /* Ajuste para os filtros ficarem na mesma linha */
+    .header.scrolled .filters {
+        display: flex;
+        gap: 10px;
+        margin-top: 0;
+    }
+    
+    /* Ajuste para o container do header scrolled */
+    .header.scrolled .container {
+        display: flex;
+        flex-wrap: nowrap;
+        gap: 20px;
+    }
+}
+
+/* Adicione uma transição suave para o header */
+.header {
+    transition: all 0.3s ease;
+}
+
+/* Ajuste para o container manter o layout em telas grandes */
+@media (min-width: 769px) {
+    .header .container {
+        display: flex;
+        flex-wrap: nowrap;
+        align-items: flex-start;
+    }
+    
+    .logo {
+        min-width: 200px;
+    }
+}
+
+/* Adicione estas regras no final do arquivo style.css */
+
+/* Ajustes para os filtros em mobile */
+@media (max-width: 768px) {
+    .filters {
+        display: none;
+        flex-direction: row; /* Altera para linha (lado a lado) */
+        gap: 10px;
+        margin-top: 10px;
+        width: 100%;
+    }
+    
+    .filters.active {
+        display: flex;
+    }
+    
+    .filters select {
+        flex: 1; /* Faz os selects ocuparem espaço igual */
+        min-width: 0; /* Permite que eles encolham */
+    }
+    
+    /* Ajuste para o container do search em mobile */
+    .search-container {
+        display: flex;
+        flex-direction: column;
+    }
+    
+    /* Espaçamento entre a barra de pesquisa e os filtros */
+    .search-box {
+        margin-bottom: 10px;
+    }
+}
+
 /* Animação suave para quando os botões aparecem */
 @keyframes fadeInDown {
     from {
