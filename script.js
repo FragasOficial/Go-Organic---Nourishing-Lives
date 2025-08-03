@@ -1264,3 +1264,12 @@ function init() {
 }
 
 document.addEventListener('DOMContentLoaded', init);
+
+function debounce(func, wait = 10) {
+  let timeout;
+  return () => {
+    clearTimeout(timeout);
+    timeout = setTimeout(func, wait);
+  };
+}
+window.addEventListener('scroll', debounce(handleScroll));
