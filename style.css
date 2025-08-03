@@ -683,6 +683,8 @@ body {
     color: #555;
 }
 
+
+
 /* Ajustes para responsividade */
 @media (max-width: 480px) {
     .nutrition-grid {

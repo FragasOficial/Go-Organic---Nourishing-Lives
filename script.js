@@ -642,12 +642,13 @@ function addProductEvents() {
     });
     
     // Eventos de carrinho
-    document.querySelectorAll('.add-to-cart').forEach(btn => {
+     document.querySelectorAll('.add-to-cart').forEach(btn => {
         btn.addEventListener('click', function(e) {
             e.preventDefault();
             const productId = parseInt(e.target.getAttribute('data-id'));
             const product = products.find(p => p.id === productId);
             
+            // Sempre mostra o modal de confirmação de região
             showRegionConfirmModal(product, productId);
         });
     });
@@ -1031,29 +1032,31 @@ elements.cityFilter.addEventListener('change', function() {
 });
 
 // Funções de Scroll e Header
+// Substitua a função handleScroll existente por esta versão atualizada
 function handleScroll() {
     const header = document.querySelector('.header');
     const scrollPosition = window.scrollY;
-    const productsGrid = elements.productsGrid;
+    const lastScrollPosition = header.dataset.lastScroll || 0;
     
-    const isProductVisible = () => {
-        if (productsGrid.children.length === 0) return false;
-        const firstProduct = productsGrid.children[0];
-        const rect = firstProduct.getBoundingClientRect();
-        return rect.top < window.innerHeight;
-    };
-
-    if (scrollPosition > 100 && !isProductVisible()) {
-        if (headerExpanded) {
-            header.classList.add('scrolled');
-            headerExpanded = false;
-        }
-    } else {
-        if (!headerExpanded) {
-            header.classList.remove('scrolled');
-            headerExpanded = true;
-        }
+    // Sempre mostra tudo quando no topo da página
+    if (scrollPosition === 0) {
+        header.classList.remove('scrolled', 'scrolled-up');
+        header.dataset.lastScroll = 0;
+        return;
     }
+    
+    // Determina a direção do scroll
+    if (scrollPosition > lastScrollPosition) {
+        // Scroll para baixo
+        header.classList.add('scrolled');
+        header.classList.remove('scrolled-up');
+    } else {
+        // Scroll para cima
+        header.classList.add('scrolled-up');
+        header.classList.remove('scrolled');
+    }
+    
+    header.dataset.lastScroll = scrollPosition;
 }
 
 // Funções de Autenticação e Cadastro
@@ -1230,6 +1233,7 @@ function init() {
     renderProducts(products);
     setupAuthForms();
     setupEventListeners();
+    setupRegionModal();
     initChatSystem();
     updateCities();
     checkShowUserActions();
