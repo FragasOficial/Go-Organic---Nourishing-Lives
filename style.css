@@ -1077,6 +1077,99 @@ body {
     }
 }
 
+/* Adicione estas regras ao final do arquivo */
+
+@media (max-width: 768px) {
+    .user-actions {
+        display: none;
+        justify-content: space-around;
+        width: 100%;
+        padding: 10px 0;
+        background-color: white;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        position: sticky;
+        top: 0;
+        z-index: 90;
+    }
+
+    #displayLogo {
+        flex-direction: column; /* Empilha em telas pequenas */
+        gap: 5px;               /* Reduz o espaçamento */
+        text-align: center;     /* Centraliza o texto */
+    }
+
+    
+    
+    .user-actions.active {
+        display: flex;
+        animation: fadeInDown 0.3s ease-out;
+    }
+    
+    .user-actions .btn {
+        flex: 1;
+        max-width: 120px;
+        padding: 8px 5px;
+        margin: 0 3px;
+        border-radius: 20px;
+        font-size: 13px;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 45px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    
+    .user-actions .btn i {
+        font-size: 16px;
+        margin-bottom: 2px;
+    }
+    
+    .user-actions .btn span {
+        font-size: 11px;
+    }
+    
+    .user-actions .cart-btn span.cart-count {
+        top: -2px;
+        right: -2px;
+        width: 16px;
+        height: 16px;
+        font-size: 10px;
+    }
+    
+    /* Mostrar apenas quando necessário */
+    .user-actions:not(.force-show) {
+        display: none !important;
+    }
+    
+    .user-actions.force-show {
+        display: flex !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .user-actions .btn {
+        padding: 6px 3px;
+        font-size: 12px;
+        height: 40px;
+    }
+    
+    .user-actions .btn i {
+        font-size: 14px;
+    }
+    
+    .user-actions .btn span {
+        font-size: 10px;
+    }
+
+    #displayLogo {
+        flex-direction: row;
+        display: inline;
+        flex-wrap: wrap;
+    }
+}
+
 /* Animação suave para quando os botões aparecem */
 @keyframes fadeInDown {
     from {

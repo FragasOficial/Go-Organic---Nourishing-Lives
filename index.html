@@ -22,7 +22,7 @@
 <body>
     <header class="header">
         <div class="container">
-            <div class="logo">
+            <div class="logo" id="displayLogo">
                 <h1>Go Organic</h1>
                 <p class="slogan">By Francisco Costa – Bringing Harmony to Your Health</p>
             </div>
@@ -33,21 +33,13 @@
                     <button id="searchButton"><i class="fas fa-search"></i></button>
                 </div>
                 <div class="filters">
-                    <select id="stateFilter">
+                   <select id="stateFilter">
                         <option value="">Todos os estados</option>
-                        <option value="SP">São Paulo</option>
-                        <option value="RJ">Rio de Janeiro</option>
-                        <option value="MG">Minas Gerais</option>
-                        <option value="RS">Rio Grande do Sul</option>
-                        <option value="PR">Paraná</option>
+                        <!-- Estados serão preenchidos via JavaScript -->
                     </select>
                     <select id="cityFilter">
                         <option value="">Todas as cidades</option>
-                        <option value="São Paulo">São Paulo</option>
-                        <option value="Rio de Janeiro">Rio de Janeiro</option>
-                        <option value="Belo Horizonte">Belo Horizonte</option>
-                        <option value="Porto Alegre">Porto Alegre</option>
-                        <option value="Curitiba">Curitiba</option>
+                        <!-- Cidades serão preenchidas via JavaScript -->
                     </select>
                 </div>
             </div>

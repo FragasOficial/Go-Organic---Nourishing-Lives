@@ -1,3 +1,252 @@
+// Estados e cidades disponíveis
+const brazilianStates = [
+    { code: "AC", name: "Acre" },
+    { code: "AL", name: "Alagoas" },
+    { code: "AP", name: "Amapá" },
+    { code: "AM", name: "Amazonas" },
+    { code: "BA", name: "Bahia" },
+    { code: "CE", name: "Ceará" },
+    { code: "DF", name: "Distrito Federal" },
+    { code: "ES", name: "Espírito Santo" },
+    { code: "GO", name: "Goiás" },
+    { code: "MA", name: "Maranhão" },
+    { code: "MT", name: "Mato Grosso" },
+    { code: "MS", name: "Mato Grosso do Sul" },
+    { code: "MG", name: "Minas Gerais" },
+    { code: "PA", name: "Pará" },
+    { code: "PB", name: "Paraíba" },
+    { code: "PR", name: "Paraná" },
+    { code: "PE", name: "Pernambuco" },
+    { code: "PI", name: "Piauí" },
+    { code: "RJ", name: "Rio de Janeiro" },
+    { code: "RN", name: "Rio Grande do Norte" },
+    { code: "RS", name: "Rio Grande do Sul" },
+    { code: "RO", name: "Rondônia" },
+    { code: "RR", name: "Roraima" },
+    { code: "SC", name: "Santa Catarina" },
+    { code: "SP", name: "São Paulo" },
+    { code: "SE", name: "Sergipe" },
+    { code: "TO", name: "Tocantins" }
+];
+
+// Cidades por estado (principais cidades)
+const citiesByState = {
+    "AC": [
+        "Rio Branco", "Cruzeiro do Sul", "Sena Madureira", "Tarauacá",
+        "Feijó", "Brasiléia", "Senador Guiomard", "Plácido de Castro",
+        "Xapuri", "Mâncio Lima", "Rodrigues Alves", "Porto Acre",
+        "Epitaciolândia", "Marechal Thaumaturgo", "Porto Walter",
+        "Capixaba", "Bujari", "Acrelândia", "Assis Brasil", "Manoel Urbano"
+    ],
+    "AL": [
+        "Maceió", "Arapiraca", "Palmeira dos Índios", "Rio Largo",
+        "União dos Palmares", "Penedo", "São Miguel dos Campos", "Santana do Ipanema",
+        "Delmiro Gouveia", "Campo Alegre", "Coruripe", "Teotônio Vilela",
+        "Pilar", "São Luís do Quitunde", "Atalaia", "Marechal Deodoro",
+        "Murici", "Matriz de Camaragibe", "Piranhas", "Boca da Mata"
+    ],
+    "AM": [
+        "Manaus", "Parintins", "Itacoatiara", "Manacapuru",
+        "Coari", "Tabatinga", "Maues", "Tefé",
+        "Humaitá", "São Gabriel da Cachoeira", "Iranduba", "Manicoré",
+        "Lábrea", "Borba", "Benjamin Constant", "Autazes",
+        "Careiro", "Eirunepé", "Nova Olinda do Norte", "Presidente Figueiredo"
+    ],
+    "AP": [
+        "Macapá", "Santana", "Laranjal do Jari", "Oiapoque",
+        "Porto Grande", "Mazagão", "Tartarugalzinho", "Pedra Branca do Amapari",
+        "Calçoene", "Amapá", "Ferreira Gomes", "Cutias",
+        "Pracuúba", "Serra do Navio", "Itaubal", "Vitória do Jari",
+        "Augusto Correa", "Cachoeira do Arari", "Curralinho", "São Sebastião da Boa Vista"
+    ],
+    "BA": [
+        "Salvador", "Feira de Santana", "Vitória da Conquista", "Camaçari",
+        "Itabuna", "Juazeiro", "Lauro de Freitas", "Ilhéus",
+        "Jequié", "Barreiras", "Teixeira de Freitas", "Porto Seguro",
+        "Alagoinhas", "Simões Filho", "Paulo Afonso", "Eunápolis",
+        "Santo Antônio de Jesus", "Valença", "Candeias", "Guanambi"
+    ],
+    "CE": [
+        "Fortaleza", "Caucaia", "Juazeiro do Norte", "Maracanaú",
+        "Sobral", "Crato", "Itapipoca", "Maranguape",
+        "Iguatu", "Quixadá", "Pacatuba", "Quixeramobim",
+        "Aracati", "Canindé", "Crateús", "Aquiraz",
+        "Russas", "Tianguá", "Cascavel", "Horizonte"
+    ],
+    "DF": [
+        "Brasília", "Ceilândia", "Taguatinga", "Samambaia",
+        "Planaltina", "Gama", "Santa Maria", "São Sebastião",
+        "Recanto das Emas", "Sobradinho", "Guará", "Paranoá",
+        "Águas Claras", "Riacho Fundo", "Núcleo Bandeirante", "Lago Sul",
+        "Candangolândia", "Cruzeiro", "Varjão", "Sudoeste/Octogonal"
+    ],
+    "ES": [
+        "Vitória", "Vila Velha", "Serra", "Cariacica",
+        "Linhares", "São Mateus", "Guarapari", "Aracruz",
+        "Colatina", "Cachoeiro de Itapemirim", "Viana", "Nova Venécia",
+        "Barra de São Francisco", "Santa Maria de Jetibá", "Marataízes", "Domingos Martins",
+        "Anchieta", "Itapemirim", "Conceição da Barra", "Afonso Cláudio"
+    ],
+    "GO": [
+        "Goiânia", "Aparecida de Goiânia", "Anápolis", "Rio Verde",
+        "Luziânia", "Águas Lindas de Goiás", "Valparaíso de Goiás", "Trindade",
+        "Formosa", "Novo Gama", "Itumbiara", "Senador Canedo",
+        "Catalão", "Jataí", "Planaltina", "Caldas Novas",
+        "Santo Antônio do Descoberto", "Goianésia", "Mineiros", "Hidrolândia"
+    ],
+    "MA": [
+        "São Luís", "Imperatriz", "São José de Ribamar", "Timon",
+        "Caxias", "Codó", "Paço do Lumiar", "Açailândia",
+        "Bacabal", "Santa Inês", "Barra do Corda", "Pinheiro",
+        "Chapadinha", "Buriticupu", "Santa Luzia", "Coroatá",
+        "Grajaú", "Itapecuru Mirim", "Balsas", "Barreirinhas"
+    ],
+    "MG": [
+        "Belo Horizonte", "Uberlândia", "Contagem", "Juiz de Fora",
+        "Betim", "Montes Claros", "Ribeirão das Neves", "Uberaba",
+        "Governador Valadares", "Ipatinga", "Sete Lagoas", "Divinópolis",
+        "Santa Luzia", "Ibirité", "Poços de Caldas", "Patos de Minas",
+        "Teófilo Otoni", "Pouso Alegre", "Barbacena", "Sabará"
+    ],
+    "MS": [
+        "Campo Grande", "Dourados", "Três Lagoas", "Corumbá",
+        "Ponta Porã", "Naviraí", "Nova Andradina", "Aquidauana",
+        "Sidrolândia", "Paranaíba", "Maracaju", "Coxim",
+        "Amambai", "Rio Brilhante", "Caarapó", "Miranda",
+        "Bela Vista", "São Gabriel do Oeste", "Jardim", "Bataguassu"
+    ],
+    "MT": [
+        "Cuiabá", "Várzea Grande", "Rondonópolis", "Sinop",
+        "Tangará da Serra", "Cáceres", "Sorriso", "Lucas do Rio Verde",
+        "Primavera do Leste", "Barra do Garças", "Alta Floresta", "Pontes e Lacerda",
+        "Juína", "Campo Verde", "Nova Mutum", "Campo Novo do Parecis",
+        "Peixoto de Azevedo", "Guarantã do Norte", "Poconé", "Diamantino"
+    ],
+    "PA": [
+        "Belém", "Ananindeua", "Santarém", "Marabá",
+        "Parauapebas", "Castanhal", "Abaetetuba", "Itaituba",
+        "Cametá", "Bragança", "São Félix do Xingu", "Barcarena",
+        "Altamira", "Tucuruí", "Breves", "Tailândia",
+        "Paragominas", "Redenção", "Moju", "Capanema"
+    ],
+    "PB": [
+        "João Pessoa", "Campina Grande", "Santa Rita", "Patos",
+        "Bayeux", "Sousa", "Cajazeiras", "Cabedelo",
+        "Guarabira", "Sapé", "Mamanguape", "Monteiro",
+        "Pombal", "Itabaiana", "Catolé do Rocha", "Esperança",
+        "Queimadas", "Alagoa Grande", "Rio Tinto", "Bananeiras"
+    ],
+    "PE": [
+        "Recife", "Jaboatão dos Guararapes", "Olinda", "Caruaru",
+        "Petrolina", "Paulista", "Cabo de Santo Agostinho", "Camaragibe",
+        "Garanhuns", "Vitória de Santo Antão", "Igarassu", "São Lourenço da Mata",
+        "Abreu e Lima", "Santa Cruz do Capibaribe", "Ipojuca", "Serra Talhada",
+        "Gravatá", "Araripina", "Goiana", "Belo Jardim"
+    ],
+    "PI": [
+        "Teresina", "Parnaíba", "Picos", "Piripiri",
+        "Floriano", "Campo Maior", "Barras", "União",
+        "Altos", "Esperantina", "José de Freitas", "Oeiras",
+        "Miguel Alves", "São Raimundo Nonato", "Corrente", "Pedro II",
+        "Luís Correia", "Batalha", "Uruçuí", "Valença do Piauí"
+    ],
+    "PR": [
+        "Curitiba", "Londrina", "Maringá", "Ponta Grossa",
+        "Cascavel", "São José dos Pinhais", "Foz do Iguaçu", "Colombo",
+        "Guarapuava", "Paranaguá", "Araucária", "Toledo",
+        "Apucarana", "Pinhais", "Campo Largo", "Arapongas",
+        "Almirante Tamandaré", "Umuarama", "Cambé", "Piraquara"
+    ],
+    "RJ": [
+        "Rio de Janeiro", "São Gonçalo", "Duque de Caxias", "Nova Iguaçu",
+        "Niterói", "Belford Roxo", "São João de Meriti", "Campos dos Goytacazes",
+        "Petrópolis", "Volta Redonda", "Magé", "Itaboraí", "Macaé",
+        "Mesquita", "Cabo Frio", "Queimados", "Angra dos Reis",
+        "Nova Friburgo", "Barra Mansa", "Teresópolis"
+    ],
+    "RN": [
+        "Natal", "Mossoró", "Parnamirim", "São Gonçalo do Amarante",
+        "Macaíba", "Ceará-Mirim", "Caicó", "Açu",
+        "Currais Novos", "São José de Mipibu", "Santa Cruz", "Apodi",
+        "João Câmara", "Touros", "Pau dos Ferros", "Nova Cruz",
+        "Areia Branca", "Extremoz", "Monte Alegre", "Baraúna"
+    ],
+    "RO": [
+        "Porto Velho", "Ji-Paraná", "Ariquemes", "Vilhena",
+        "Cacoal", "Rolim de Moura", "Guajará-Mirim", "Jaru",
+        "Ouro Preto do Oeste", "Pimenta Bueno", "Buritis", "Machadinho d'Oeste",
+        "Espigão d'Oeste", "Alta Floresta d'Oeste", "Nova Mamoré", "Presidente Médici",
+        "São Miguel do Guaporé", "Candeias do Jamari", "Alto Alegre dos Parecis", "Theobroma"
+    ],
+    "RR": [
+        "Boa Vista", "Rorainópolis", "Caracaraí", "Alto Alegre",
+        "Mucajaí", "Cantá", "Bonfim", "Pacaraima",
+        "Amajari", "Iracema", "Uiramutã", "Normandia",
+        "São João da Baliza", "São Luiz", "Caroebe", "Cristalândia do Oeste",
+        "Governador Jorge Teixeira", "Mirante da Serra", "Nova Brasilândia d'Oeste", "Vale do Anari"
+    ],
+    "RS": [
+        "Porto Alegre", "Caxias do Sul", "Pelotas", "Canoas",
+        "Santa Maria", "Gravataí", "Viamão", "Novo Hamburgo",
+        "São Leopoldo", "Rio Grande", "Alvorada", "Passo Fundo",
+        "Sapucaia do Sul", "Uruguaiana", "Bagé", "Bento Gonçalves",
+        "Erechim", "Guaíba", "Santa Cruz do Sul", "Cachoeirinha"
+    ],
+    "SC": [
+        "Florianópolis", "Joinville", "Blumenau", "São José",
+        "Chapecó", "Itajaí", "Criciúma", "Lages",
+        "Jaraguá do Sul", "Palhoça", "Balneário Camboriú", "Brusque",
+        "Tubarão", "Rio do Sul", "Navegantes", "São Bento do Sul",
+        "Concórdia", "Caçador", "Araranguá", "Içara"
+    ],
+    "SE": [
+        "Aracaju", "Nossa Senhora do Socorro", "Lagarto", "Itabaiana",
+        "São Cristóvão", "Estância", "Tobias Barreto", "Itaporanga d'Ajuda",
+        "Simão Dias", "Poço Redondo", "Capela", "Propriá",
+        "Porto da Folha", "Nossa Senhora da Glória", "Boquim", "Canindé de São Francisco",
+        "Barra dos Coqueiros", "Riachão do Dantas", "Umbaúba", "Japaratuba"
+    ],
+    "SP": [
+        "São Paulo", "Guarulhos", "Campinas", "São Bernardo do Campo", 
+        "Santo André", "Osasco", "São José dos Campos", "Ribeirão Preto",
+        "Sorocaba", "Mauá", "São José do Rio Preto", "Santos", 
+        "Mogi das Cruzes", "Diadema", "Jundiaí", "Carapicuíba",
+        "Piracicaba", "Bauru", "Itaquaquecetuba", "São Vicente"
+    ],
+    "TO": [
+        "Palmas", "Araguaína", "Gurupi", "Porto Nacional",
+        "Paraíso do Tocantins", "Araguatins", "Colinas do Tocantins", "Guaraí",
+        "Tocantinópolis", "Dianópolis", "Formoso do Araguaia", "Miracema do Tocantins",
+        "Augustinópolis", "Pedro Afonso", "Taguatinga", "Wanderlândia",
+        "Xambioá", "Lagoa da Confusão", "Nova Olinda", "Peixe"
+    ]
+};
+function populateStateFilter() {
+    const stateFilter = document.getElementById('stateFilter');
+    
+    brazilianStates.forEach(state => {
+        const option = document.createElement('option');
+        option.value = state.code;
+        option.textContent = state.name;
+        stateFilter.appendChild(option);
+    });
+}
+
+function populateCityFilter(state) {
+    const cityFilter = document.getElementById('cityFilter');
+    cityFilter.innerHTML = '<option value="">Todas as cidades</option>';
+    
+    if (!state) return;
+    
+    const cities = citiesByState[state] || [];
+    cities.forEach(city => {
+        const option = document.createElement('option');
+        option.value = city;
+        option.textContent = city;
+        cityFilter.appendChild(option);
+    });
+}
+
 // Array de produtos completo com informações nutricionais
 const products = [
     {
@@ -236,6 +485,21 @@ const elements = {
 };
 
 // Funções de Utilidade
+function setupRegionModal() {
+    const modal = document.getElementById('regionConfirmModal');
+    const closeBtn = modal.querySelector('.close');
+    
+    closeBtn.addEventListener('click', () => {
+        modal.style.display = 'none';
+    });
+    
+    window.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            modal.style.display = 'none';
+        }
+    });
+}
+
 function checkMobileView() {
     isMobileView = window.innerWidth <= 768;
 }
@@ -255,21 +519,7 @@ function showUserActions() {
 // Funções de Filtro e Pesquisa
 function updateCities() {
     const state = elements.stateFilter.value;
-    elements.cityFilter.innerHTML = '<option value="">Todas as cidades</option>';
-    
-    if (!state) return;
-    
-    const cities = [...new Set(products
-        .filter(p => p.state === state)
-        .map(p => p.city)
-    )];
-    
-    cities.forEach(city => {
-        const option = document.createElement('option');
-        option.value = city;
-        option.textContent = city;
-        elements.cityFilter.appendChild(option);
-    });
+    populateCityFilter(state);
     
     if (isMobileView) showUserActions();
 }
@@ -289,7 +539,8 @@ function filterProducts() {
         return matchesSearch && matchesState && matchesCity;
     });
     
-    renderProducts(filteredProducts);
+        renderProducts(filteredProducts);
+        checkShowUserActions(); // Adicione esta linha
 }
 
 // Funções de Renderização
@@ -397,14 +648,10 @@ function addProductEvents() {
             const productId = parseInt(e.target.getAttribute('data-id'));
             const product = products.find(p => p.id === productId);
             
-            if (!checkProductRegion(product)) {
-                return;
-            }
-            
-            addToCartConfirmed(productId);
+            showRegionConfirmModal(product, productId);
         });
     });
-    
+        
     // Eventos de contato
     document.querySelectorAll('.whatsapp-btn').forEach(btn => {
         btn.addEventListener('click', openWhatsApp);
@@ -448,6 +695,7 @@ function addToCartConfirmed(productId) {
     cartCount += quantity;
     elements.cartCountElement.textContent = cartCount;
     quantityElement.textContent = '1';
+    checkShowUserActions(); // Adicione esta linha
     
     // Feedback visual
     const addButton = document.querySelector(`.add-to-cart[data-id="${productId}"]`);
@@ -503,6 +751,7 @@ function removeFromCart(e) {
         cart.splice(itemIndex, 1);
         elements.cartCountElement.textContent = cartCount;
         renderCart();
+        checkShowUserActions(); // Adicione esta linha
     }
 }
 
@@ -516,6 +765,7 @@ function checkout() {
     cart = [];
     cartCount = 0;
     elements.cartCountElement.textContent = '0';
+    checkShowUserActions(); // Adicione esta linha
     elements.cartModal.style.display = 'none';
     renderCart();
 }
@@ -680,48 +930,105 @@ function checkProductRegion(product) {
     return product.state === selectedState && product.city === selectedCity;
 }
 
-function showRegionConfirmModal(product) {
-    const modal = document.createElement('div');
-    modal.className = 'modal region-confirm-modal';
-    modal.innerHTML = `
-        <div class="modal-content">
-            <h3>Confirme sua região</h3>
-            <p>O produto "${product.name}" está disponível em ${product.city}, ${product.state}. Deseja:</p>
-            <div class="region-confirm-buttons">
-                <button id="confirmSameRegion" class="btn">Usar esta região</button>
-                <button id="searchOtherRegion" class="btn">Procurar na minha região</button>
-            </div>
-        </div>
-    `;
+function checkShowUserActions() {
+    const userActions = document.querySelector('.user-actions');
+    if (isMobileView) {
+        if (cartCount > 0 || elements.searchInput.value.trim() !== '' || 
+            elements.stateFilter.value !== '' || elements.cityFilter.value !== '') {
+            userActions.classList.add('force-show');
+        } else {
+            userActions.classList.remove('force-show');
+        }
+    }
+}
+
+function showRegionConfirmModal(product, productId) {
+    const modal = document.getElementById('regionConfirmModal');
+    const confirmText = document.getElementById('regionConfirmText');
+    const confirmBtn = document.getElementById('confirmSameRegion');
+    const searchBtn = document.getElementById('searchOtherRegion');
     
-    document.body.appendChild(modal);
-    modal.style.display = 'block';
+    confirmText.textContent = `O produto "${product.name}" está disponível em ${product.city}, ${product.state}. Deseja:`;
     
-    document.getElementById('confirmSameRegion').addEventListener('click', () => {
+    // Remove event listeners anteriores para evitar duplicação
+    confirmBtn.replaceWith(confirmBtn.cloneNode(true));
+    searchBtn.replaceWith(searchBtn.cloneNode(true));
+    
+    // Obtém novas referências após clonar
+    const newConfirmBtn = document.getElementById('confirmSameRegion');
+    const newSearchBtn = document.getElementById('searchOtherRegion');
+    
+    newConfirmBtn.addEventListener('click', () => {
+        // Define a região do produto como filtro atual
         selectedState = product.state;
         selectedCity = product.city;
         elements.stateFilter.value = selectedState;
-        updateCities();
+        populateCityFilter(selectedState);
         elements.cityFilter.value = selectedCity;
+        
+        // Fecha o modal e adiciona ao carrinho
         modal.style.display = 'none';
-        document.body.removeChild(modal);
-        addToCartConfirmed(product.id);
+        addToCartConfirmed(productId);
     });
     
-    document.getElementById('searchOtherRegion').addEventListener('click', () => {
+    newSearchBtn.addEventListener('click', () => {
+        // Define o nome do produto como termo de pesquisa
         elements.searchInput.value = product.name;
         elements.searchInput.focus();
-        showFilters();
+        
+        // Mostra os filtros (para mobile)
+        if (isMobileView) {
+            document.querySelector('.filters').classList.add('active');
+            document.querySelector('.user-actions')?.classList.remove('active');
+        }
+        
+        // Fecha o modal
         modal.style.display = 'none';
-        document.body.removeChild(modal);
+        
+        // Mostra o filtro de estado após a pesquisa
+        document.querySelector('.filters').style.display = 'flex';
+        elements.stateFilter.style.display = 'block';
+        elements.cityFilter.style.display = 'none';
+        
+        // Filtra os produtos
+        filterProducts();
     });
     
-    modal.querySelector('.modal-content').addEventListener('click', e => e.stopPropagation());
-    modal.addEventListener('click', () => {
-        modal.style.display = 'none';
-        document.body.removeChild(modal);
-    });
+    modal.style.display = 'block';
 }
+
+// Add event listeners for the search flow
+elements.searchInput.addEventListener('input', function() {
+    if (this.value.length > 0) {
+        // Show state filter when typing in search
+        document.querySelector('.filters').style.display = 'flex';
+        elements.stateFilter.style.display = 'block';
+        elements.cityFilter.style.display = 'none';
+    } else {
+        // Hide both filters when search is empty
+        document.querySelector('.filters').style.display = 'none';
+    }
+    filterProducts();
+});
+
+elements.stateFilter.addEventListener('change', function() {
+    selectedState = this.value;
+    if (selectedState) {
+        // Show city filter when state is selected
+        elements.cityFilter.style.display = 'block';
+        updateCities();
+    } else {
+        // Hide city filter if no state is selected
+        elements.cityFilter.style.display = 'none';
+    }
+    filterProducts();
+});
+
+elements.cityFilter.addEventListener('change', function() {
+    selectedCity = this.value;
+    filterProducts();
+    if (isMobileView && this.value) showUserActions();
+});
 
 // Funções de Scroll e Header
 function handleScroll() {
@@ -751,6 +1058,16 @@ function handleScroll() {
 
 // Funções de Autenticação e Cadastro
 function setupAuthForms() {
+    // Preenche o select de estados no formulário de cadastro
+    const registerStateSelect = document.getElementById('registerState');
+    registerStateSelect.innerHTML = '<option value="">Selecione</option>';
+    
+    brazilianStates.forEach(state => {
+        const option = document.createElement('option');
+        option.value = state.code;
+        option.textContent = state.name;
+        registerStateSelect.appendChild(option);
+    });
     // Mostrar/ocultar campos de vendedor
     elements.clientType.addEventListener('change', function() {
         if(this.checked) {
@@ -909,13 +1226,19 @@ function setupEventListeners() {
 // Inicialização
 function init() {
     checkMobileView();
+    populateStateFilter();
     renderProducts(products);
     setupAuthForms();
     setupEventListeners();
     initChatSystem();
     updateCities();
+    checkShowUserActions();
     
-    // Configura o observador para monitorar adições de produtos
+    // Initially hide the filters
+    document.querySelector('.filters').style.display = 'none';
+    elements.stateFilter.style.display = 'none';
+    elements.cityFilter.style.display = 'none';
+    
     const observer = new MutationObserver((mutations) => {
         mutations.forEach((mutation) => {
             if (mutation.addedNodes.length > 0) {
@@ -929,5 +1252,4 @@ function init() {
     observer.observe(elements.productsGrid, { childList: true });
     window.addEventListener('scroll', handleScroll);
 }
-
 document.addEventListener('DOMContentLoaded', init);
