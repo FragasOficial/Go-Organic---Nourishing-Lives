@@ -454,6 +454,7 @@ let chatMessages = JSON.parse(localStorage.getItem('goOrganicChatMessages')) || 
 let headerExpanded = true;
 
 // Elementos do DOM
+// Substitua a seleção de elementos por esta versão mais segura
 const elements = {
     productsGrid: document.getElementById('productsGrid'),
     searchInput: document.getElementById('searchInput'),
@@ -481,7 +482,13 @@ const elements = {
     sendMessageBtn: document.getElementById('sendMessageBtn'),
     chatMessageInput: document.getElementById('chatMessageInput'),
     chatSellerName: document.getElementById('chatSellerName'),
-    chatProductInfo: document.getElementById('chatProductInfo')
+    chatProductInfo: document.getElementById('chatProductInfo'),
+    mobileLoginBtn: document.getElementById('mobileLoginBtn'),
+    mobileRegisterBtn: document.getElementById('mobileRegisterBtn'),
+    mobileCartBtn: document.getElementById('mobileCartBtn'),
+    mobileCartCount: document.getElementById('mobileCartCount'),
+    cartBtnTop: null,
+    cartCountTop: null
 };
 
 // Funções de Utilidade
@@ -680,7 +687,6 @@ function addProductEvents() {
     });
 }
 
-// Funções do Carrinho
 function addToCartConfirmed(productId) {
     const product = products.find(p => p.id === productId);
     const quantityElement = document.querySelector(`.quantity[data-id="${productId}"]`);
@@ -694,15 +700,24 @@ function addToCartConfirmed(productId) {
     }
     
     cartCount += quantity;
-    elements.cartCountElement.textContent = cartCount;
+    
+    // Atualiza todos os contadores de carrinho existentes
+    if (elements.cartCountElement) elements.cartCountElement.textContent = cartCount;
+    if (elements.mobileCartCount) elements.mobileCartCount.textContent = cartCount;
+    if (elements.cartCountTop) elements.cartCountTop.textContent = cartCount;
+    
     quantityElement.textContent = '1';
-    checkShowUserActions(); // Adicione esta linha
     
     // Feedback visual
     const addButton = document.querySelector(`.add-to-cart[data-id="${productId}"]`);
-    addButton.textContent = 'Adicionado!';
-    setTimeout(() => addButton.textContent = 'Adicionar', 1000);
+    if (addButton) {
+        addButton.textContent = 'Adicionado!';
+        setTimeout(() => {
+            if (addButton) addButton.textContent = 'Adicionar';
+        }, 1000);
+    }
 }
+
 
 function renderCart() {
     elements.cartItems.innerHTML = '';
@@ -743,6 +758,7 @@ function renderCart() {
     });
 }
 
+
 function removeFromCart(e) {
     const productId = parseInt(e.target.getAttribute('data-id'));
     const itemIndex = cart.findIndex(item => item.id === productId);
@@ -750,9 +766,13 @@ function removeFromCart(e) {
     if (itemIndex !== -1) {
         cartCount -= cart[itemIndex].quantity;
         cart.splice(itemIndex, 1);
-        elements.cartCountElement.textContent = cartCount;
+        
+        // Atualiza todos os contadores de carrinho existentes
+        if (elements.cartCountElement) elements.cartCountElement.textContent = cartCount;
+        if (elements.mobileCartCount) elements.mobileCartCount.textContent = cartCount;
+        if (elements.cartCountTop) elements.cartCountTop.textContent = cartCount;
+        
         renderCart();
-        checkShowUserActions(); // Adicione esta linha
     }
 }
 
@@ -765,9 +785,16 @@ function checkout() {
     alert('Compra finalizada com sucesso! Obrigado por comprar na Go Organic.');
     cart = [];
     cartCount = 0;
-    elements.cartCountElement.textContent = '0';
-    checkShowUserActions(); // Adicione esta linha
-    elements.cartModal.style.display = 'none';
+    
+    // Atualiza todos os contadores de carrinho existentes
+    if (elements.cartCountElement) elements.cartCountElement.textContent = '0';
+    if (elements.mobileCartCount) elements.mobileCartCount.textContent = '0';
+    if (elements.cartCountTop) elements.cartCountTop.textContent = '0';
+    
+    if (elements.cartModal) {
+        elements.cartModal.style.display = 'none';
+    }
+    
     renderCart();
 }
 
@@ -1226,7 +1253,7 @@ function setupEventListeners() {
 // Inicialização
 // Modifique a inicialização para usar passive event listeners
 function init() {
-    checkMobileView();
+        checkMobileView();
     populateStateFilter();
     renderProducts(products);
     setupAuthForms();
@@ -1234,8 +1261,62 @@ function init() {
     setupRegionModal();
     initChatSystem();
     updateCities();
-    checkShowUserActions();
     
+    // Cria o botão do carrinho no topo apenas para mobile
+    if (isMobileView) {
+        const logoContainer = document.getElementById('displayLogo');
+        if (logoContainer) {
+            const cartBtnTop = document.createElement('button');
+            cartBtnTop.className = 'btn cart-btn-top';
+            cartBtnTop.innerHTML = '<i class="fas fa-shopping-cart"></i> <span id="cartCountTop">0</span>';
+            cartBtnTop.id = 'cartBtnTop';
+            elements.cartBtnTop = cartBtnTop;
+            logoContainer.appendChild(cartBtnTop);
+            
+            // Seleciona o contador após criar o elemento
+            elements.cartCountTop = document.getElementById('cartCountTop');
+            if (elements.cartCountTop) {
+                elements.cartCountTop.textContent = cartCount;
+            }
+            
+            // Adiciona event listener apenas se o elemento existir
+            if (elements.cartBtnTop) {
+                elements.cartBtnTop.addEventListener('click', () => {
+                    renderCart();
+                    if (elements.cartModal) {
+                        elements.cartModal.style.display = 'block';
+                    }
+                });
+            }
+        }
+        
+        // Configura os botões móveis apenas se existirem
+        if (elements.mobileLoginBtn) {
+            elements.mobileLoginBtn.addEventListener('click', () => {
+                if (elements.loginModal) {
+                    elements.loginModal.style.display = 'block';
+                }
+            });
+        }
+        
+        if (elements.mobileRegisterBtn) {
+            elements.mobileRegisterBtn.addEventListener('click', () => {
+                if (elements.registerModal) {
+                    elements.registerModal.style.display = 'block';
+                }
+            });
+        }
+        
+        if (elements.mobileCartBtn) {
+            elements.mobileCartBtn.addEventListener('click', () => {
+                renderCart();
+                if (elements.cartModal) {
+                    elements.cartModal.style.display = 'block';
+                }
+            });
+        }
+    }
+
     // Initially hide the filters
     document.querySelector('.filters').style.display = 'none';
     elements.stateFilter.style.display = 'none';

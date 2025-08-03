@@ -1246,6 +1246,128 @@ body {
     }
 }
 
+/* Adicione estas regras ao final do arquivo style.css */
+
+@media (max-width: 768px) {
+    /* Ajuste para o header no topo */
+    .header {
+        padding: 10px 0;
+    }
+    
+    .header .container {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    /* Ajuste para o logo */
+    #displayLogo {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+    
+    #displayLogo h1 {
+        margin: 0;
+        font-size: 24px;
+    }
+    
+    #displayLogo .slogan {
+        display: none;
+    }
+    
+    /* Ajuste para a barra de pesquisa */
+    .search-container {
+        order: 2;
+        width: 100%;
+    }
+    
+    /* Ajuste para o carrinho no topo */
+    .cart-btn-top {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: transparent;
+        color: var(--primary-color);
+        padding: 0;
+        margin-left: 10px;
+    }
+    
+    .cart-btn-top span {
+        position: static;
+        background-color: var(--primary-color);
+        color: white;
+        margin-left: 5px;
+        width: 20px;
+        height: 20px;
+    }
+    
+    /* Ajuste para os botões na base */
+    .mobile-bottom-actions {
+        display: flex;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: white;
+        box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+        z-index: 100;
+        padding: 10px 15px;
+        justify-content: space-around;
+    }
+    
+    .mobile-bottom-actions .btn {
+        flex: 1;
+        max-width: 120px;
+        padding: 8px 5px;
+        margin: 0 3px;
+        border-radius: 20px;
+        font-size: 13px;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 45px;
+    }
+    
+    .mobile-bottom-actions .btn i {
+        font-size: 16px;
+        margin-bottom: 2px;
+    }
+    
+    /* Esconde os botões originais */
+    .user-actions {
+        display: none !important;
+    }
+    
+    /* Ajuste quando scrolled */
+    .header.scrolled #displayLogo h1 {
+        display: none;
+    }
+    
+    .header.scrolled .cart-btn-top {
+        display: none;
+    }
+}
+
+@media (max-width: 480px) {
+    .mobile-bottom-actions .btn {
+        padding: 6px 3px;
+        font-size: 12px;
+        height: 40px;
+    }
+    
+    .mobile-bottom-actions .btn i {
+        font-size: 14px;
+    }
+    
+    #displayLogo h1 {
+        font-size: 20px;
+    }
+}
+
 /* Animação suave para quando os botões aparecem */
 @keyframes fadeInDown {
     from {
