@@ -1036,27 +1036,24 @@ elements.cityFilter.addEventListener('change', function() {
 function handleScroll() {
     const header = document.querySelector('.header');
     const scrollPosition = window.scrollY;
-    const lastScrollPosition = header.dataset.lastScroll || 0;
     
-    // Sempre mostra tudo quando no topo da página
-    if (scrollPosition === 0) {
-        header.classList.remove('scrolled', 'scrolled-up');
-        header.dataset.lastScroll = 0;
-        return;
-    }
-    
-    // Determina a direção do scroll
-    if (scrollPosition > lastScrollPosition) {
-        // Scroll para baixo
-        header.classList.add('scrolled');
-        header.classList.remove('scrolled-up');
-    } else {
-        // Scroll para cima
-        header.classList.add('scrolled-up');
-        header.classList.remove('scrolled');
-    }
-    
-    header.dataset.lastScroll = scrollPosition;
+    // Usamos requestAnimationFrame para otimizar o desempenho
+    requestAnimationFrame(() => {
+        // Sempre mostra tudo quando no topo da página
+        if (scrollPosition === 0) {
+            header.classList.remove('scrolled', 'scrolled-up');
+            return;
+        }
+        
+        // Apenas adiciona/remove classes quando necessário
+        if (scrollPosition > 100) { // Limiar para evitar flickering
+            header.classList.add('scrolled');
+            header.classList.remove('scrolled-up');
+        } else {
+            header.classList.add('scrolled-up');
+            header.classList.remove('scrolled');
+        }
+    });
 }
 
 // Funções de Autenticação e Cadastro
@@ -1227,6 +1224,7 @@ function setupEventListeners() {
 }
 
 // Inicialização
+// Modifique a inicialização para usar passive event listeners
 function init() {
     checkMobileView();
     populateStateFilter();
@@ -1243,6 +1241,7 @@ function init() {
     elements.stateFilter.style.display = 'none';
     elements.cityFilter.style.display = 'none';
     
+    // Otimização: MutationObserver com config mais eficiente
     const observer = new MutationObserver((mutations) => {
         mutations.forEach((mutation) => {
             if (mutation.addedNodes.length > 0) {
@@ -1253,7 +1252,15 @@ function init() {
         });
     });
     
-    observer.observe(elements.productsGrid, { childList: true });
-    window.addEventListener('scroll', handleScroll);
+    observer.observe(elements.productsGrid, { 
+        childList: true,
+        subtree: true,
+        attributes: false,
+        characterData: false
+    });
+    
+    // Adiciona o event listener de scroll com a opção passive
+    window.addEventListener('scroll', handleScroll, { passive: true });
 }
+
 document.addEventListener('DOMContentLoaded', init);

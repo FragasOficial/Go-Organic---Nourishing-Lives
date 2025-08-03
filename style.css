@@ -49,6 +49,80 @@ body {
     gap: 20px;
 }
 
+/* Adicione estas regras ao seu arquivo style.css */
+
+/* Otimizações para performance de scroll */
+html {
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+}
+
+body {
+    overflow-x: hidden;
+    /* Evita mudanças de layout durante o scroll */
+    scrollbar-gutter: stable;
+}
+
+/* Otimizações para o header */
+.header {
+    will-change: transform; /* Otimiza animações */
+    transform: translateZ(0); /* Aceleração por hardware */
+    backface-visibility: hidden; /* Melhora performance em mobile */
+    perspective: 1000px;
+}
+
+/* Melhorias para a transição do header */
+.header.scrolled {
+    transition: transform 0.2s ease-out, background-color 0.2s ease-out;
+    transform: translateY(0);
+}
+
+/* Previne flickering em mobile */
+@media (max-width: 768px) {
+    .header {
+        -webkit-transform: translate3d(0,0,0);
+        transform: translate3d(0,0,0);
+    }
+    
+    .user-actions {
+        will-change: transform;
+        transform: translateZ(0);
+    }
+}
+
+/* Otimizações para os cards de produtos */
+.product-card {
+    will-change: transform;
+    backface-visibility: hidden;
+}
+
+/* Melhora performance do modal */
+.modal-content {
+    transform: translateZ(0);
+    will-change: transform, opacity;
+}
+
+/* Adiciona estas regras para melhorar a performance em iOS */
+@supports (-webkit-touch-callout: none) {
+    body {
+        /* Previne scroll jerk em iOS */
+        position: fixed;
+        width: 100%;
+        overflow-y: scroll;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .header {
+        position: sticky;
+        top: 0;
+    }
+}
+
+/* Remove transformações durante o scroll para melhorar performance */
+.disable-hover {
+    pointer-events: none;
+}
+
 .logo h1 {
     font-size: 28px;
     font-weight: 700;
