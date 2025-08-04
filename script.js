@@ -1,3 +1,36 @@
+// Adicione esta função no início do arquivo (junto com outras funções de utilidade)
+function setupLoginForm() {
+    const loginForm = document.getElementById('loginForm');
+    const switchToRegister = document.getElementById('switchToRegister');
+    
+    // Alternar para o modal de cadastro
+    switchToRegister.addEventListener('click', (e) => {
+        e.preventDefault();
+        elements.loginModal.style.display = 'none';
+        elements.registerModal.style.display = 'block';
+    });
+    
+    // Submissão do formulário de login
+    loginForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        const userType = document.querySelector('input[name="userTypeLogin"]:checked').value;
+        const email = document.getElementById('loginEmail').value;
+        const password = document.getElementById('loginPassword').value;
+        
+        // Aqui você pode adicionar a lógica de autenticação diferenciada
+        if (userType === 'client') {
+            alert(`Login realizado como Cliente\nEmail: ${email}`);
+        } else {
+            alert(`Login realizado como Vendedor\nEmail: ${email}`);
+        }
+        
+        // Fechar o modal e resetar o formulário
+        elements.loginModal.style.display = 'none';
+        loginForm.reset();
+    });
+}
+
 // Estados e cidades disponíveis
 const brazilianStates = [
     { code: "AC", name: "Acre" },
@@ -1270,8 +1303,10 @@ function init() {
     populateStateFilter();
     renderProducts(products);
     setupAuthForms();
+    setupLoginForm(); // Adicione esta linha
     setupEventListeners();
     setupRegionModal();
+    setupScrollBehavior();
     initChatSystem();
     updateCities();
     
@@ -1368,3 +1403,47 @@ function debounce(func, wait = 10) {
   };
 }
 window.addEventListener('scroll', debounce(handleScroll));
+
+document.addEventListener('DOMContentLoaded', () => {
+    const nodes = document.body.childNodes;
+    nodes.forEach(node => {
+        if (node.nodeType === 8) { // Tipo 8 = Comentário
+            console.log('Comentário encontrado:', node.nodeValue);
+        }
+    });
+});
+
+function setupScrollBehavior() {
+    let lastScroll = 0;
+    const header = document.querySelector('.header');
+    const searchContainer = document.querySelector('.search-container');
+    const logo = document.querySelector('.logo');
+    
+    window.addEventListener('scroll', function() {
+        if (window.innerWidth <= 768) { // Apenas para mobile
+            const currentScroll = window.pageYOffset;
+            
+            if (currentScroll > 100) { // Quando rolar para baixo
+                header.classList.add('scrolled');
+                
+                // Esconde outros elementos se estiver rolando para baixo
+                if (currentScroll > lastScroll) {
+                    logo.style.opacity = '0';
+                    logo.style.transition = 'opacity 0.3s ease';
+                } 
+                // Mostra ao rolar para cima
+                else if (currentScroll < lastScroll && currentScroll < 50) {
+                    header.classList.remove('scrolled');
+                    logo.style.opacity = '1';
+                }
+            } 
+            // Quando voltar ao topo
+            else if (currentScroll <= 10) {
+                header.classList.remove('scrolled');
+                logo.style.opacity = '1';
+            }
+            
+            lastScroll = currentScroll;
+        }
+    });
+}

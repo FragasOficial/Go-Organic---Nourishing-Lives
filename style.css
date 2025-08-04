@@ -129,6 +129,66 @@ body {
     margin-bottom: 5px;
 }
 
+/* Estilos para o modal de login */
+.login-switch {
+    text-align: center;
+    margin-top: 15px;
+    font-size: 14px;
+}
+
+.login-switch a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.login-switch a:hover {
+    text-decoration: underline;
+}
+
+/* Estilo para o seletor de tipo de usuário */
+.user-type-selector {
+    display: flex;
+    gap: 15px;
+    margin: 10px 0;
+}
+
+.user-type-selector input[type="radio"] {
+    display: none;
+}
+
+.user-type-selector label {
+    padding: 10px 15px;
+    background-color: #f0f0f0;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-align: center;
+    flex: 1;
+}
+
+.user-type-selector input[type="radio"]:checked + label {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+/* Ajustes para mobile */
+@media (max-width: 480px) {
+    .user-type-selector {
+        flex-direction: column;
+        gap: 8px;
+    }
+}
+
+/* Adicione isso temporariamente ao seu style.css */
+html {
+    cursor: default !important;
+}
+
+body {
+    user-select: auto !important;
+}
+
 .slogan {
     font-size: 14px;
     font-style: italic;
@@ -229,6 +289,7 @@ body {
 }
 
 .products-grid {
+
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 25px;
@@ -1589,6 +1650,56 @@ body {
     .search-box {
         margin-bottom: 10px;
     }
+}
+
+/* Header dinâmico para mobile */
+.header {
+    transition: all 0.3s ease;
+}
+
+.header.scrolled {
+    padding: 10px 0;
+    background-color: white;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.header.scrolled .logo,
+.header.scrolled .user-actions,
+.header.scrolled .filters {
+    display: none;
+}
+
+.header.scrolled .search-container {
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+}
+
+/* Ajustes específicos para mobile */
+@media (max-width: 480px) {
+    .header {
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        background-color: var(--seundary-color);
+    }
+    
+    .header.scrolled {
+        padding: 8px 0;
+    }
+    
+    .header.scrolled .search-box {
+        margin-bottom: 0;
+    }
+}
+
+/* Adicione ao seu CSS */
+.logo {
+    transition: all 0.3s ease;
+}
+
+.search-box {
+    transition: all 0.3s ease;
 }
 
 /* Animação suave para quando os botões aparecem */
