@@ -410,7 +410,7 @@ const products = [
         phone: "5521998765432",
         state: "RJ",
         city: "Niterói",
-        image: "https://images.unsplash.com/photo-1594282416557-6c5d2609122a?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+        image: "https://cdn.awsli.com.br/380x380/998/998380/produto/36869389/b2b2356ed9.jpg",
         description: "Tomates cultivados sem agrotóxicos, colhidos diariamente.",
         nutrition: {
             portion: "100g",
@@ -430,7 +430,7 @@ const products = [
         phone: "5551998765432",
         state: "RS",
         city: "Pelotas",
-        image: "https://images.unsplash.com/photo-1519817650390-64a93db51149?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+        image: "https://admin.cnnbrasil.com.br/wp-content/uploads/sites/12/2022/07/azeite.jpg?w=1200&h=900&crop=0",
         description: "Azeite extra virgem prensado a frio, de olivas cultivadas organicamente.",
         nutrition: {
             portion: "15ml (1 colher)",
@@ -450,7 +450,7 @@ const products = [
         phone: "5531998765432",
         state: "MG",
         city: "Ouro Preto",
-        image: "https://images.unsplash.com/photo-1559177581-5373e8a697f0?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+        image: "https://image.tuasaude.com/media/article/bm/iw/beneficios-do-cha-verde_13570.jpg?width=686&height=487",
         description: "Chá verde cultivado em montanhas, rico em antioxidantes.",
         nutrition: {
             portion: "240ml (1 xícara)",
@@ -1297,7 +1297,6 @@ function setupEventListeners() {
 }
 
 // Inicialização
-// Modifique a inicialização para usar passive event listeners
 function init() {
     checkMobileView();
     populateStateFilter();

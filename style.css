@@ -7,6 +7,9 @@
     --light-text: #fff;
     --border-color: #ddd;
     --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    --z-header: 100;
+    --z-modal-backdrop: 9999;
+    --z-modal-content: 10000;
 }
 
 * {
@@ -37,7 +40,7 @@ body {
     box-shadow: var(--shadow);
     position: sticky;
     top: 0;
-    z-index: 100;
+    z-index: var(--z-header);
     transition: all 0.3s ease;
 }
 
@@ -443,7 +446,7 @@ body {
 .modal {
     display: none;
     position: fixed;
-    z-index: 1000;
+    z-index: var(--z-modal-backdrop);
     left: 0;
     top: 0;
     width: 100%;
@@ -453,6 +456,7 @@ body {
 }
 
 .modal-content {
+    z-index: var(--z-modal-content);
     background-color: white;
     margin: 5% auto;
     padding: 25px;
@@ -1028,12 +1032,30 @@ body {
     .region-confirm-buttons {
         display: flex;
         gap: 10px;
+        align-items: center;
         margin-top: 20px;
         justify-content: center;
+        flex-direction: row;
+        flex-wrap: wrap;
     }
     
+        .region-confirm-buttons button {
+        flex: 1 0 auto; /* permite encolher, mas não força quebra */
+        min-width: 140px;
+        max-width: 200px;
+        white-space: nowrap;
+    }
+
+}
+
+@media (max-width: 480px) {
+    .region-confirm-buttons {
+        flex-direction: column;
+    }
+
     .region-confirm-buttons button {
-        flex: 1;
+        width: 100%;
+        max-width: none;
     }
 }
 
@@ -1509,6 +1531,16 @@ body {
 #cartModal .modal-content {
     max-height: 80vh;
     overflow-y: auto;
+}
+
+/* Garante que os modais fiquem sempre acima de tudo */
+.modal {
+    z-index: 9999 !important;
+}
+
+.modal-content {
+    z-index: 10000 !important;
+    position: relative;
 }
 
 /* Ajuste para o botão de checkout */
