@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Painel do Cliente - Go Organic</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="header">
+    <div class="container">
+      <h1>Painel do Cliente</h1>
+      <a href="index.html" class="btn">Voltar para Loja</a>
+    </div>
+  </header>
+
+  <main class="main container">
+    <section>
+      <h2>Meus Pedidos</h2>
+      <div id="pedidosCliente">
+        <!-- Lista de pedidos vai aqui -->
+      </div>
+    </section>
+
+    <section>
+      <h2>Meu Perfil</h2>
+      <form id="formPerfilCliente">
+        <label>Nome:</label>
+        <input type="text" id="clienteNome" value="Cliente Exemplo">
+
+        <label>Email:</label>
+        <input type="email" id="clienteEmail" value="cliente@exemplo.com">
+
+        <label>Telefone:</label>
+        <input type="tel" id="clienteTelefone" value="(99) 99999-9999">
+
+        <button type="submit" class="btn">Salvar alterações</button>
+      </form>
+    </section>
+
+    <section>
+      <h2>Atendimento</h2>
+      <button class="btn" onclick="abrirChat()">Abrir Chat com Suporte</button>
+    </section>
+  </main>
+  <script src="script.js"></script>
+</body>
+</html>

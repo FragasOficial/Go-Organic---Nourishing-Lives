@@ -165,17 +165,54 @@
     </div>
     <!-- Modal do Carrinho -->
     <div id="cartModal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <h2>Seu Carrinho</h2>
-            <div id="cartItems">
-                <!-- Itens do carrinho serão carregados aqui -->
-                <p class="empty-cart">Seu carrinho está vazio</p>
-            </div>
+        <div class="modal-content cart-modal-content">
+            <span class="close" id="closeCartModal">&times;</span>
+            <h3>Seu Carrinho</h3>
+            <div id="cartItems" class="cart-items">
+                </div>
             <div class="cart-total">
                 <p>Total: <span id="cartTotal">R$ 0,00</span></p>
                 <button id="checkoutBtn" class="btn">Finalizar Compra</button>
             </div>
+        </div>
+    </div>
+    <div id="checkoutModal" class="modal">
+        <div class="modal-content checkout-modal-content">
+            <span class="close" id="closeCheckoutModal">&times;</span>
+            <h3>Finalizar Compra</h3>
+            <div class="checkout-summary">
+                <h4>Resumo do Pedido</h4>
+                <div id="checkoutSummaryItems" class="checkout-summary-items">
+                    </div>
+                <p class="checkout-summary-total">Total: <span id="checkoutSummaryTotal">R$ 0,00</span></p>
+            </div>
+
+            <div class="payment-methods">
+                <h4>Formas de Pagamento</h4>
+                <div class="payment-options">
+                    <label class="payment-option">
+                        <input type="radio" name="paymentMethod" value="pix" checked>
+                        <i class="fas fa-qrcode"></i> PIX
+                    </label>
+                    <label class="payment-option">
+                        <input type="radio" name="paymentMethod" value="creditCard">
+                        <i class="fas fa-credit-card"></i> Cartão de Crédito
+                    </label>
+                    <label class="payment-option">
+                        <input type="radio" name="paymentMethod" value="debitCard">
+                        <i class="fas fa-credit-card"></i> Cartão de Débito
+                    </label>
+                    <label class="payment-option">
+                        <input type="radio" name="paymentMethod" value="cash">
+                        <i class="fas fa-money-bill-wave"></i> Dinheiro
+                    </label>
+                </div>
+            </div>
+
+            <div id="paymentDetails" class="payment-details">
+                </div>
+
+            <button id="confirmPurchaseBtn" class="btn primary-btn">Confirmar Pagamento</button>
         </div>
     </div>
     <!-- Modal do Chat -->

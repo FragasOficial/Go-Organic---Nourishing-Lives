@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Painel do Vendedor - Go Organic</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="header">
+    <div class="container">
+      <h1>Painel do Vendedor</h1>
+      <a href="index.html" class="btn">Voltar para Loja</a>
+    </div>
+  </header>
+
+  <main class="main container">
+    <section>
+      <h2>Meus Produtos</h2>
+      <div id="listaProdutos">
+        <!-- Produtos cadastrados -->
+      </div>
+      <button class="btn" onclick="cadastrarProduto()">Cadastrar Novo Produto</button>
+    </section>
+
+    <section>
+      <h2>Pedidos Recebidos</h2>
+      <div id="pedidosRecebidos">
+        <!-- Lista de pedidos recebidos -->
+      </div>
+    </section>
+  </main>
+<script src="script.js"></script>
+</body>
+</html>

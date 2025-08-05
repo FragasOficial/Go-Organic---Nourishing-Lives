@@ -477,6 +477,8 @@ const products = [
 ];
 
 // Estado da aplicação
+let isLoggedIn = false;
+let user = null; // Dados do usuário logado
 let cart = [];
 let cartCount = 0;
 let selectedState = '';
@@ -489,6 +491,7 @@ let headerExpanded = true;
 // Elementos do DOM
 // Substitua a seleção de elementos por esta versão mais segura
 const elements = {
+    
     productsGrid: document.getElementById('productsGrid'),
     searchInput: document.getElementById('searchInput'),
     searchButton: document.getElementById('searchButton'),
@@ -523,6 +526,19 @@ const elements = {
     cartBtnTop: null,
     cartCountTop: null
 };
+
+function fecharCheckoutModal() {
+  const checkoutModal = document.getElementById('checkoutModal');
+  if (checkoutModal) {
+    checkoutModal.style.display = 'none';
+  }
+}
+
+const closeCheckoutModal = document.getElementById('closeCheckoutModal');
+if (closeCheckoutModal) {
+  closeCheckoutModal.addEventListener('click', fecharCheckoutModal);
+}
+
 
 // Funções de Utilidade
 function setupRegionModal() {
@@ -572,6 +588,122 @@ function updateCities() {
     
     if (isMobileView) showUserActions();
 }
+
+// Função para renderizar os itens no modal do carrinho
+    function updateCartModal() {
+        const cartItemsContainer = document.getElementById('cartItems');
+        let total = 0;
+        cartItemsContainer.innerHTML = ''; // Limpa o conteúdo atual
+
+        cart.forEach(item => {
+            const itemTotal = item.price * item.quantity;
+            total += itemTotal;
+
+            const cartItemDiv = document.createElement('div');
+            cartItemDiv.className = 'cart-item';
+            cartItemDiv.innerHTML = `
+                <img src="${item.image}" alt="${item.name}">
+                <div class="cart-item-details">
+                    <h4>${item.name}</h4>
+                    <p>Preço: R$ ${item.price.toFixed(2)}</p>
+                    <div class="cart-item-controls">
+                        <button class="quantity-btn decrease" data-product-id="${item.id}">-</button>
+                        <input type="text" value="${item.quantity}" readonly>
+                        <button class="quantity-btn increase" data-product-id="${item.id}">+</button>
+                        <button class="remove-from-cart-btn" data-product-id="${item.id}"><i class="fas fa-trash"></i></button>
+                    </div>
+                </div>
+                <p class="cart-item-total">R$ ${itemTotal.toFixed(2)}</p>
+            `;
+            cartItemsContainer.appendChild(cartItemDiv);
+        });
+
+        document.getElementById('cartTotal').innerText = `R$ ${total.toFixed(2)}`;
+    }
+
+    // Adicione os event listeners para os botões de quantidade e remoção dentro de uma função
+    function setupCartListeners() {
+        const cartItemsContainer = document.getElementById('cartItems');
+        cartItemsContainer.addEventListener('click', (e) => {
+            if (e.target.classList.contains('decrease') || e.target.closest('.decrease')) {
+                const productId = e.target.dataset.productId || e.target.closest('.decrease').dataset.productId;
+                updateQuantity(productId, -1);
+            }
+            if (e.target.classList.contains('increase') || e.target.closest('.increase')) {
+                const productId = e.target.dataset.productId || e.target.closest('.increase').dataset.productId;
+                updateQuantity(productId, 1);
+            }
+            if (e.target.classList.contains('remove-from-cart-btn') || e.target.closest('.remove-from-cart-btn')) {
+                const productId = e.target.dataset.productId || e.target.closest('.remove-from-cart-btn').dataset.productId;
+                removeFromCart(productId);
+            }
+        });
+    }
+
+    // Função para atualizar a quantidade de um item no carrinho
+    function updateQuantity(productId, change) {
+        const item = cart.find(p => p.id == productId);
+        if (item) {
+            item.quantity += change;
+            if (item.quantity <= 0) {
+                removeFromCart(productId);
+            } else {
+                updateCartModal();
+            }
+        }
+    }
+
+    // Event listener para o botão de checkout
+    document.getElementById('checkoutBtn').addEventListener('click', () => {
+        // Esconde o modal do carrinho
+        document.getElementById('cartModal').style.display = 'none';
+        
+        // Exibe o modal de checkout
+        document.getElementById('checkoutModal').style.display = 'block';
+        
+        // Atualiza o resumo do pedido no modal de checkout
+        updateCheckoutSummary();
+    });
+
+    // Event listener para o botão de confirmação de compra
+    document.getElementById('confirmPurchaseBtn').addEventListener('click', () => {
+        const selectedMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
+        alert(`Compra confirmada com sucesso! Forma de pagamento: ${selectedMethod}`);
+        
+        // Limpa o carrinho e fecha o modal
+        cart = [];
+        updateCartModal();
+        document.getElementById('checkoutModal').style.display = 'none';
+    });
+
+    // Função para atualizar o resumo do pedido no modal de checkout
+    function updateCheckoutSummary() {
+        const summaryItemsContainer = document.getElementById('checkoutSummaryItems');
+        const summaryTotalContainer = document.getElementById('checkoutSummaryTotal');
+        let total = 0;
+        summaryItemsContainer.innerHTML = '';
+
+        cart.forEach(item => {
+            const itemTotal = item.price * item.quantity;
+            total += itemTotal;
+
+            const summaryItemDiv = document.createElement('div');
+            summaryItemDiv.className = 'checkout-summary-item';
+            summaryItemDiv.innerHTML = `
+                <span>${item.name} x${item.quantity}</span>
+                <span>R$ ${itemTotal.toFixed(2)}</span>
+            `;
+            summaryItemsContainer.appendChild(summaryItemDiv);
+        });
+
+        summaryTotalContainer.innerText = `R$ ${total.toFixed(2)}`;
+    }
+
+    // Chame a função de setup ao carregar a página
+    document.addEventListener('DOMContentLoaded', () => {
+        setupCartListeners();
+        // Outras inicializações de funções...
+    });
 
 function filterProducts() {
     const searchTerm = elements.searchInput.value.toLowerCase();
@@ -835,7 +967,7 @@ function checkout() {
         return;
     }
     
-    alert('Compra finalizada com sucesso! Obrigado por comprar na Go Organic.');
+    alert('Estamos quase lá! Agora iremos confirmar a forma de pagamento.');
     cart = [];
     cartCount = 0;
     
@@ -1446,3 +1578,32 @@ function setupScrollBehavior() {
         }
     });
 }
+
+    // Simula login baseado em localStorage
+    const userType = localStorage.getItem("userType");
+
+    if (userType === "cliente") {
+      document.getElementById("clientePainelLink").style.display = "inline-block";
+    } else if (userType === "vendedor") {
+      document.getElementById("vendedorPainelLink").style.display = "inline-block";
+    } else if (userType === "admin") {
+      document.getElementById("adminPainelLink").style.display = "inline-block";
+    }
+
+    
+  //Painel do Cliente
+    function abrirChat() {
+      alert('Abrindo chat com suporte...');
+    }
+
+    document.getElementById('formPerfilCliente').addEventListener('submit', function(e) {
+      e.preventDefault();
+      alert('Perfil atualizado com sucesso!');
+    });
+
+    //Painel do vendedor
+    function cadastrarProduto() {
+      alert('Abrir modal/formulário para cadastro de produto');
+    }
+  
+  
