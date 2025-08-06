@@ -330,7 +330,7 @@ const products = [
         phone: "5531987654321",
         state: "MG",
         city: "Belo Horizonte",
-        image: "https://images.unsplash.com/photo-1601050690597-df0568f70950?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+        image: "https://organic4.com.br/wp-content/uploads/2023/04/img-site-3-arroz-integral-700x544.jpg",
         description: "Arroz integral cultivado de forma sustentável, rico em fibras e nutrientes.",
         nutrition: {
             portion: "100g cozido",
@@ -488,10 +488,10 @@ let currentChatProduct = null;
 let chatMessages = JSON.parse(localStorage.getItem('goOrganicChatMessages')) || {};
 let headerExpanded = true;
 
+
 // Elementos do DOM
 // Substitua a seleção de elementos por esta versão mais segura
 const elements = {
-    
     productsGrid: document.getElementById('productsGrid'),
     searchInput: document.getElementById('searchInput'),
     searchButton: document.getElementById('searchButton'),
@@ -1606,4 +1606,161 @@ function setupScrollBehavior() {
       alert('Abrir modal/formulário para cadastro de produto');
     }
   
+    // Adicione esta função para injetar os campos de pagamento dinamicamente
+function renderPaymentDetails(method) {
+    const paymentDetailsDiv = document.getElementById('paymentDetails');
+    paymentDetailsDiv.innerHTML = ''; // Limpa os detalhes anteriores
+
+    switch (method) {
+        case 'creditCard':
+            paymentDetailsDiv.innerHTML = `
+                <div class="form-group full-width">
+                    <label for="cardName">Nome no Cartão</label>
+                    <input type="text" id="cardName" placeholder="Nome Completo" required>
+                </div>
+                <div class="form-group full-width">
+                    <label for="cardNumber">Número do Cartão</label>
+                    <input type="text" id="cardNumber" placeholder="0000 0000 0000 0000" required>
+                </div>
+                <div class="credit-card-info">
+                    <div class="form-group">
+                        <label for="cardExpiry">Validade</label>
+                        <input type="text" id="cardExpiry" placeholder="MM/AA" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="cardCvv">CVV</label>
+                        <input type="text" id="cardCvv" placeholder="123" required>
+                    </div>
+                </div>
+            `;
+            break;
+        case 'pix':
+            paymentDetailsDiv.innerHTML = `
+                <p>Escaneie o QR Code abaixo para pagar. O pedido será confirmado após o pagamento.</p>
+                <div class="pix-qr-code" style="text-align: center; padding: 20px;">
+                    <img src="https://via.placeholder.com/150" alt="QR Code Pix" style="width: 150px; height: 150px;">
+                    <p>Chave PIX: goorganic@pix.com.br</p>
+                </div>
+            `;
+            break;
+        case 'boleto':
+            paymentDetailsDiv.innerHTML = `
+                <p>Um boleto será gerado e enviado para seu e-mail. Você terá 3 dias para pagar.</p>
+                <p>Por favor, verifique sua caixa de entrada.</p>
+            `;
+            break;
+        case 'cash':
+            paymentDetailsDiv.innerHTML = `
+                <p>Você optou por pagar em dinheiro vivo.</p>
+                <p>Prepare o valor de <strong>R$ <span id="cashAmount">${totalPrice.toFixed(2)}</span></strong> para o entregador.</p>
+                <p>Tenha troco em mãos, se possível.</p>
+            `;
+            break;
+    }
+}
+
+// Chame esta função na inicialização do modal de checkout, por exemplo,
+// após a função que abre o modal.
+document.addEventListener('DOMContentLoaded', () => {
+    // ... seu código existente ...
+    
+    // Adicionar um ouvinte para os botões de rádio de pagamento
+    const paymentOptions = document.querySelectorAll('input[name="paymentMethod"]');
+    paymentOptions.forEach(option => {
+        option.addEventListener('change', (e) => {
+            renderPaymentDetails(e.target.value);
+        });
+    });
+
+    // Renderizar os detalhes do cartão de crédito por padrão
+    renderPaymentDetails('creditCard');
+});
+
+// Encontre o botão de confirmação de compra e adicione um ouvinte de evento.
+// Substitua o `alert` pela lógica abaixo.
+const confirmPurchaseBtn = document.getElementById('confirmPurchaseBtn');
+confirmPurchaseBtn.addEventListener('click', () => {
+    const selectedMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
+    const cartItems = getCartItems(); // Supondo que você tenha uma função para obter os itens do carrinho
+
+    let paymentData = {};
+    if (selectedMethod === 'creditCard') {
+        paymentData = {
+            cardName: document.getElementById('cardName').value,
+            cardNumber: document.getElementById('cardNumber').value,
+            cardExpiry: document.getElementById('cardExpiry').value,
+            cardCvv: document.getElementById('cardCvv').value,
+        };
+        // Adicione validações aqui, se necessário
+    } else if (selectedMethod === 'cash') {
+        paymentData = {
+            amount: totalPrice, // Use a variável que guarda o total da compra
+        };
+    }
+
+    // Processamento do pagamento (simulado)
+    const purchaseInfo = {
+        orderId: 'ORD-' + Math.random().toString(36).substr(2, 9).toUpperCase(),
+        total: totalPrice,
+        paymentMethod: selectedMethod,
+        date: new Date().toLocaleString('pt-BR'),
+        items: cartItems,
+    };
+
+    // Exibir modal de sucesso
+    showSuccessModal(purchaseInfo);
+
+    // Fechar o modal de checkout
+    document.getElementById('checkoutModal').style.display = 'none';
+
+    // Limpar o carrinho
+    clearCart();
+
+    // Simulação de envio de e-mail/WhatsApp
+    // Em um ambiente real, esta lógica faria uma chamada a um backend
+    // que se comunicaria com serviços de e-mail ou WhatsApp.
+    sendPurchaseConfirmation(purchaseInfo, 'cliente@exemplo.com', 'whatsapp_number');
+});
+
+// Função para exibir o modal de sucesso
+function showSuccessModal(purchaseInfo) {
+    const successModal = document.getElementById('successModal');
+    const purchaseDetailsDiv = document.getElementById('purchaseDetails');
+    const backToStoreBtn = document.getElementById('backToStoreBtn');
+
+    purchaseDetailsDiv.innerHTML = `
+        <p><strong>Pedido:</strong> ${purchaseInfo.orderId}</p>
+        <p><strong>Data:</strong> ${purchaseInfo.date}</p>
+        <p><strong>Total:</strong> R$ ${purchaseInfo.total.toFixed(2)}</p>
+        <p><strong>Forma de Pagamento:</strong> ${purchaseInfo.paymentMethod === 'creditCard' ? 'Cartão de Crédito' :
+                                                purchaseInfo.paymentMethod === 'pix' ? 'Pix' :
+                                                purchaseInfo.paymentMethod === 'boleto' ? 'Boleto' : 'Dinheiro'}</p>
+        <h4>Itens:</h4>
+        <ul>
+            ${purchaseInfo.items.map(item => `
+                <li>${item.name} - ${item.quantity} x R$ ${item.price.toFixed(2)}</li>
+            `).join('')}
+        </ul>
+    `;
+
+    successModal.style.display = 'block';
+
+    backToStoreBtn.addEventListener('click', () => {
+        successModal.style.display = 'none';
+        window.location.href = 'index.html'; // Redireciona para a página principal
+    });
+
+    // Fechar o modal
+    successModal.querySelector('.close').addEventListener('click', () => {
+        successModal.style.display = 'none';
+    });
+}
+
+// Função simulada para enviar a confirmação
+function sendPurchaseConfirmation(purchaseInfo, email, whatsapp) {
+    console.log(`Enviando confirmação de compra para o cliente...`);
+    console.log(`E-mail: ${email}`);
+    console.log(`WhatsApp: ${whatsapp}`);
+    console.log('Detalhes da Compra:', purchaseInfo);
+}
   

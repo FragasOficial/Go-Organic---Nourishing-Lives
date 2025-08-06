@@ -211,7 +211,26 @@
 
             <div id="paymentDetails" class="payment-details">
                 </div>
+    <!-- <div class="checkout-section">
+    <h3>Forma de Pagamento</h3>
+    <div class="payment-options">
+        <label>
+            <input type="radio" name="paymentMethod" value="creditCard" checked> Cartão de Crédito
+        </label>
+        <label>
+            <input type="radio" name="paymentMethod" value="pix"> Pix
+        </label>
+        <label>
+            <input type="radio" name="paymentMethod" value="boleto"> Boleto
+        </label>
+        <label>
+            <input type="radio" name="paymentMethod" value="cash"> Dinheiro
+        </label>
+    </div>
 
+    <div id="paymentDetails" class="payment-details">
+        </div>
+</div> -->
             <button id="confirmPurchaseBtn" class="btn primary-btn">Confirmar Pagamento</button>
         </div>
     </div>
@@ -232,14 +251,27 @@
             </div>
         </div>
     </div>
-    <!-- Adicione este div antes do fechamento do body -->
-    <div class="mobile-bottom-actions">
-        <button id="mobileLoginBtn" class="btn"><i class="fas fa-user"></i> Login</button>
-        <button id="mobileRegisterBtn" class="btn"><i class="fas fa-user-plus"></i> Cadastro</button>
-        <button id="mobileCartBtn" class="btn cart-btn">
-            <i class="fas fa-shopping-cart"></i>
-            <span id="mobileCartCount">0</span>
-        </button>
+        <!-- Adicione este div antes do fechamento do body -->
+        <div class="mobile-bottom-actions">
+            <button id="mobileLoginBtn" class="btn"><i class="fas fa-user"></i> Login</button>
+            <button id="mobileRegisterBtn" class="btn"><i class="fas fa-user-plus"></i> Cadastro</button>
+            <button id="mobileCartBtn" class="btn cart-btn">
+                <i class="fas fa-shopping-cart"></i>
+                <span id="mobileCartCount">0</span>
+            </button>
+        </div>
+        <div id="successModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div class="success-message">
+                <h2>Obrigado por sua compra!</h2>
+                <p>Seu pedido foi realizado com sucesso.</p>
+                <div id="purchaseDetails">
+                    </div>
+                <p>Um resumo da sua compra foi enviado para seu e-mail ou WhatsApp.</p>
+                <button id="backToStoreBtn" class="btn primary-btn">Voltar para a loja</button>
+            </div>
+        </div>
     </div>
     <script src="script.js"></script>
 </body>
