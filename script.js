@@ -523,6 +523,8 @@ const elements = {
     mobileRegisterBtn: document.getElementById('mobileRegisterBtn'),
     mobileCartBtn: document.getElementById('mobileCartBtn'),
     mobileCartCount: document.getElementById('mobileCartCount'),
+    switchToRegister: document.getElementById('switchToRegister'),
+    switchToLogin: document.getElementById('switchToLogin'),
     cartBtnTop: null,
     cartCountTop: null
 };
@@ -568,6 +570,148 @@ function checkMobileView() {
         document.querySelector('.mobile-bottom-actions').style.display = 'none';
     }
 }
+
+// Funções para manipulação de modais
+function showModal(modal) {
+    if (modal) {
+        modal.style.display = 'block';
+    }
+}
+
+function hideModal(modal) {
+    if (modal) {
+        modal.style.display = 'none';
+    }
+}
+
+// Adiciona event listeners aos botões do menu móvel
+if (elements.mobileLoginBtn) {
+    elements.mobileLoginBtn.addEventListener('click', () => showModal(elements.loginModal));
+}
+if (elements.mobileRegisterBtn) {
+    elements.mobileRegisterBtn.addEventListener('click', () => showModal(elements.registerModal));
+}
+
+// Event Listeners para alternar entre os modais de login e cadastro
+if (elements.switchToRegister) {
+    elements.switchToRegister.addEventListener('click', (e) => {
+        e.preventDefault();
+        hideModal(elements.loginModal);
+        showModal(elements.registerModal);
+    });
+}
+
+if (elements.switchToLogin) {
+    elements.switchToLogin.addEventListener('click', (e) => {
+        e.preventDefault();
+        hideModal(elements.registerModal);
+        showModal(elements.loginModal);
+    });
+}
+
+// =================================================================
+// Lógica de Autenticação com a API (CORRIGIDA)
+// =================================================================
+
+// Função principal para lidar com a submissão do formulário de login
+async function handleLogin(event) {
+    event.preventDefault(); // Impede o envio padrão do formulário
+
+    const email = document.getElementById('loginEmail').value;
+    const password = document.getElementById('loginPassword').value;
+
+    try {
+        const response = await fetch('/api/auth/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ email, password }),
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            // Login bem-sucedido
+            alert('Login realizado com sucesso!');
+            
+            // Armazenar o token JWT no localStorage para futuras requisições
+            localStorage.setItem('token', data.token);
+
+            // Redirecionar o usuário para o painel correto
+            redirectToDashboard(data.userType);
+
+        } else {
+            // Login falhou
+            alert(data.message || 'Email ou senha inválidos.');
+        }
+
+    } catch (error) {
+        console.error('Erro no login:', error);
+        alert('Erro no servidor. Tente novamente mais tarde.');
+    }
+}
+
+// Função para lidar com o cadastro
+async function handleRegister(event) {
+    event.preventDefault(); // Impede o envio padrão do formulário
+
+    const name = document.getElementById('registerName').value;
+    const email = document.getElementById('registerEmail').value;
+    const password = document.getElementById('registerPassword').value;
+    const user_type = document.getElementById('userType').value;
+
+    try {
+        const response = await fetch('/api/auth/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ name, email, password, user_type }),
+        });
+
+        if (response.ok) {
+            alert('Usuário cadastrado com sucesso!');
+            window.location.href = 'index.html'; // Redireciona para a página inicial ou de login
+        } else {
+            const errorData = await response.text();
+            alert(errorData || 'Erro ao cadastrar usuário.');
+        }
+
+    } catch (error) {
+        console.error('Erro no cadastro:', error);
+        alert('Erro no servidor. Tente novamente mais tarde.');
+    }
+}
+
+// Função para redirecionar com base no tipo de usuário
+function redirectToDashboard(userType) {
+    switch (userType) {
+        case 'client':
+            window.location.href = 'painel-cliente.html';
+            break;
+        case 'seller':
+            window.location.href = 'painel-vendedor.html';
+            break;
+        case 'admin':
+            window.location.href = 'painel-admin.html';
+            break;
+        default:
+            console.warn('Tipo de usuário desconhecido:', userType);
+            window.location.href = 'index.html';
+            break;
+    }
+}
+
+// Adicionar event listeners aos formulários de login e cadastro
+document.addEventListener('DOMContentLoaded', () => {
+    if (elements.loginForm) {
+        elements.loginForm.addEventListener('submit', handleLogin);
+    }
+    if (elements.registerForm) {
+        elements.registerForm.addEventListener('submit', handleRegister);
+    }
+});
 
 function showFilters() {
     if (!isMobileView) return;
@@ -1763,4 +1907,189 @@ function sendPurchaseConfirmation(purchaseInfo, email, whatsapp) {
     console.log(`WhatsApp: ${whatsapp}`);
     console.log('Detalhes da Compra:', purchaseInfo);
 }
-  
+ 
+// Exemplo de como usar a API para carregar produtos// script.js
+
+// Adiciona event listeners aos formulários de login e cadastro.
+// Use 'DOMContentLoaded' para garantir que o DOM esteja carregado.
+document.addEventListener('DOMContentLoaded', () => {
+    const loginForm = document.getElementById('loginForm');
+    if (loginForm) {
+        loginForm.addEventListener('submit', handleLogin);
+    }
+
+    const registerForm = document.getElementById('registerForm');
+    if (registerForm) {
+        registerForm.addEventListener('submit', handleRegister);
+    }
+});
+
+
+// Função para lidar com o login
+async function handleLogin(event) {
+    event.preventDefault(); // Impede o envio padrão do formulário
+
+    const email = document.getElementById('loginEmail').value;
+    const password = document.getElementById('loginPassword').value;
+
+    try {
+        const response = await fetch('/api/auth/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ email, password }),
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            // Login bem-sucedido
+            alert('Login realizado com sucesso!');
+            
+            // Armazenar o token JWT no localStorage para futuras requisições
+            localStorage.setItem('token', data.token);
+
+            // Redirecionar o usuário para o painel correto com base no userType
+            redirectToDashboard(data.userType);
+
+        } else {
+            // Login falhou
+            alert(data || 'Email ou senha inválidos.');
+        }
+
+    } catch (error) {
+        console.error('Erro no login:', error);
+        alert('Erro no servidor. Tente novamente mais tarde.');
+    }
+}
+
+// Função para lidar com o cadastro
+async function handleRegister(event) {
+    event.preventDefault(); // Impede o envio padrão do formulário
+
+    const name = document.getElementById('registerName').value;
+    const email = document.getElementById('registerEmail').value;
+    const password = document.getElementById('registerPassword').value;
+    const user_type = document.getElementById('userType').value;
+
+    try {
+        const response = await fetch('/api/auth/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ name, email, password, user_type }),
+        });
+
+        if (response.ok) {
+             const data = await response.text();
+            alert(data); // Exibe a mensagem de sucesso
+            // Após o cadastro, redireciona para a página de login
+            window.location.href = 'index.html';
+
+        } else {
+             const data = await response.text();
+            alert(data || 'Erro ao cadastrar usuário.');
+        }
+
+    } catch (error) {
+        console.error('Erro no cadastro:', error);
+        alert('Erro no servidor. Tente novamente mais tarde.');
+    }
+}
+
+// Função para redirecionar com base no tipo de usuário
+function redirectToDashboard(userType) {
+    switch (userType) {
+        case 'client':
+            window.location.href = 'painel-cliente.html';
+            break;
+        case 'seller':
+            window.location.href = 'painel-vendedor.html';
+            break;
+        case 'admin':
+            window.location.href = 'painel-admin.html';
+            break;
+        default:
+            window.location.href = 'index.html';
+            break;
+    }
+}
+
+// script.js
+
+// Adicione event listeners para os formulários de login e cadastro.
+document.addEventListener('DOMContentLoaded', () => {
+    // Certifique-se de que os elementos existem antes de adicionar o listener
+    const loginForm = document.getElementById('loginForm');
+    if (loginForm) {
+        loginForm.addEventListener('submit', handleLogin);
+    }
+});
+
+// A função 'setupLoginForm' do seu código anterior não faz uma chamada para o backend.
+// Substituímos por esta nova lógica de `handleLogin`.
+
+async function handleLogin(event) {
+    event.preventDefault(); // Impede o envio padrão do formulário
+
+    // Obter os valores do formulário de login
+    const email = document.getElementById('loginEmail').value;
+    const password = document.getElementById('loginPassword').value;
+
+    try {
+        const response = await fetch('/api/auth/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ email, password }),
+        });
+
+        // Verificar se a resposta foi bem-sucedida
+        if (response.ok) {
+            const data = await response.json();
+            alert('Login realizado com sucesso!');
+            
+            // Armazenar o token JWT no localStorage para futuras requisições
+            localStorage.setItem('token', data.token);
+
+            // Redirecionar o usuário com base no tipo de usuário retornado pelo backend
+            redirectToDashboard(data.userType);
+
+        } else {
+            const errorData = await response.json();
+            alert(errorData.message || 'Email ou senha inválidos.');
+        }
+
+    } catch (error) {
+        console.error('Erro no login:', error);
+        alert('Erro no servidor. Tente novamente mais tarde.');
+    }
+}
+
+// Função para redirecionar com base no tipo de usuário
+function redirectToDashboard(userType) {
+    switch (userType) {
+        case 'client':
+            window.location.href = 'painel-cliente.html';
+            break;
+        case 'seller':
+            window.location.href = 'painel-vendedor.html';
+            break;
+        case 'admin':
+            window.location.href = 'painel-admin.html';
+            break;
+        default:
+            console.warn('Tipo de usuário desconhecido:', userType);
+            window.location.href = 'index.html';
+            break;
+    }
+}
+
+// =================================================================
+// Mantive o restante do seu código `script.js` aqui, como as funções
+// para carregar produtos, modals, etc.
+// Certifique-se de que o seu `index.html` tem os IDs corretos.
+// =================================================================
