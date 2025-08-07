@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Painel do Vendedor - Go Organic</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
   <header class="header">
@@ -18,18 +19,82 @@
     <section>
       <h2>Meus Produtos</h2>
       <div id="listaProdutos">
-        <!-- Produtos cadastrados -->
-      </div>
+        </div>
       <button class="btn" onclick="cadastrarProduto()">Cadastrar Novo Produto</button>
     </section>
 
     <section>
       <h2>Pedidos Recebidos</h2>
       <div id="pedidosRecebidos">
-        <!-- Lista de pedidos recebidos -->
-      </div>
+        </div>
     </section>
   </main>
-<script src="script.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Função para carregar a lista de produtos do vendedor
+      function carregarProdutosVendedor() {
+        const produtosDiv = document.getElementById('listaProdutos');
+        produtosDiv.innerHTML = 'Carregando produtos...';
+
+        // Simulação de carregamento
+        setTimeout(() => {
+          const produtos = [
+            { id: 'P01', nome: 'Maçã Orgânica', preco: 5.99, estoque: 50 },
+            { id: 'P02', nome: 'Alface Orgânica', preco: 3.50, estoque: 20 },
+          ];
+          produtosDiv.innerHTML = '';
+          produtos.forEach(produto => {
+            const produtoElement = document.createElement('div');
+            produtoElement.className = 'produto-item';
+            produtoElement.innerHTML = `
+              <p><strong>${produto.nome}</strong></p>
+              <p>Preço: R$${produto.preco.toFixed(2)}</p>
+              <p>Estoque: ${produto.estoque} unidades</p>
+            `;
+            produtosDiv.appendChild(produtoElement);
+          });
+        }, 1000);
+      }
+
+      // Função para carregar os pedidos recebidos
+      function carregarPedidosRecebidos() {
+        const pedidosDiv = document.getElementById('pedidosRecebidos');
+        pedidosDiv.innerHTML = 'Carregando pedidos...';
+
+        // Simulação de carregamento
+        setTimeout(() => {
+          const pedidos = [
+            { id: '301', cliente: 'João Silva', total: 75.00, status: 'Novo' },
+            { id: '302', cliente: 'Maria Souza', total: 45.20, status: 'Em preparo' },
+          ];
+          pedidosDiv.innerHTML = '';
+          pedidos.forEach(pedido => {
+            const pedidoElement = document.createElement('div');
+            pedidoElement.className = 'pedido-item';
+            pedidoElement.innerHTML = `
+              <p><strong>Pedido #${pedido.id}</strong></p>
+              <p>Cliente: ${pedido.cliente}</p>
+              <p>Total: R$${pedido.total.toFixed(2)}</p>
+              <p>Status: ${pedido.status}</p>
+            `;
+            pedidosDiv.appendChild(pedidoElement);
+          });
+        }, 1000);
+      }
+      
+      // Chamada para carregar produtos e pedidos
+      carregarProdutosVendedor();
+      carregarPedidosRecebidos();
+    });
+
+    // Função global chamada pelo botão de cadastro
+    function cadastrarProduto() {
+      const nome = prompt("Digite o nome do novo produto:");
+      if (nome) {
+        alert(`Produto "${nome}" cadastrado com sucesso!`);
+      }
+    }
+  </script>
 </body>
-</html>
+</html> 

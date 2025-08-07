@@ -1,49 +1,46 @@
-// src/server.js
-require('dotenv').config();
+// ==== AJUSTES NO server.js PARA UNIFICAR FRONT + BACKEND ====
 const express = require('express');
 const mssql = require('mssql');
+const path = require('path');
 const authRoutes = require('./routes/authRoutes');
 const productRoutes = require('./routes/productRoutes');
+require('dotenv').config();
 
 const app = express();
 const port = process.env.PORT || 3000;
 
-app.use(express.json());
-
-const config = {
+// Config MSSQL
+const sqlConfig = {
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
     server: process.env.DB_SERVER,
     database: process.env.DB_DATABASE,
     options: {
-        encrypt: false, // Use true para conexão segura (Azure SQL Database)
-        trustServerCertificate: true // Use true para certificados auto-assinados
+        encrypt: process.env.DB_ENCRYPT === 'true',
+        trustServerCertificate: process.env.DB_TRUST_CERTIFICATE === 'true'
     }
 };
 
-// Adicione esta linha para depuração
-console.log('Tentando conectar com a seguinte configuração:', config.user, config.server, config.database);
+// Middlewares
+app.use(express.json());
 
-mssql.connect(config, (err) => {
-    if (err) {
-        console.error('Erro ao conectar ao banco de dados:', err);
-    } else {
-        console.log('Conectado com sucesso ao banco de dados SSMS!');
-    }
-});
+// Servir arquivos estaticamente
+app.use(express.static(path.join(__dirname, 'public')));
 
-mssql.connect(config, (err) => {
-    if (err) {
-        console.error('Erro ao conectar ao banco de dados:', err);
-    } else {
-        console.log('Conectado com sucesso ao banco de dados SSMS!');
-    }
-});
-
-// Rotas da API
+// Rotas API
 app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
 
-app.listen(port, () => {
-    console.log(`Servidor rodando em http://localhost:${port}`);
+// SPA: redireciona tudo pro index.html
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
+
+// Conectar banco
+mssql.connect(sqlConfig)
+    .then(pool => {
+        console.log('Conectado ao SQL Server.');
+        app.locals.db = pool;
+        app.listen(port, () => console.log(`Servidor http://localhost:${port}`));
+    })
+    .catch(err => console.error('Erro ao conectar DB:', err));

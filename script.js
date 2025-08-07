@@ -621,7 +621,7 @@ async function handleLogin(event) {
     const password = document.getElementById('loginPassword').value;
 
     try {
-        const response = await fetch('/api/auth/login', {
+        const response = await fetch('http://localhost:3000/api/auth/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -652,6 +652,108 @@ async function handleLogin(event) {
     }
 }
 
+// Correções principais para evitar erros em DOM e requisições
+
+// Validação antes de adicionar event listeners
+const addSafeListener = (selector, event, handler) => {
+  const el = document.querySelector(selector);
+  if (el) el.addEventListener(event, handler);
+};
+
+// Exemplo de uso seguro
+addSafeListener('#checkoutBtn', 'click', () => {
+  const cartModal = document.getElementById('cartModal');
+  const checkoutModal = document.getElementById('checkoutModal');
+  if (cartModal && checkoutModal) {
+    cartModal.style.display = 'none';
+    checkoutModal.style.display = 'block';
+    updateCheckoutSummary();
+  }
+});
+
+addSafeListener('#confirmPurchaseBtn', 'click', () => {
+  const selectedMethod = document.querySelector('input[name="paymentMethod"]:checked');
+  if (selectedMethod) {
+    alert(`Compra confirmada com sucesso! Forma de pagamento: ${selectedMethod.value}`);
+    cart = [];
+    updateCartModal();
+    const checkoutModal = document.getElementById('checkoutModal');
+    if (checkoutModal) checkoutModal.style.display = 'none';
+  }
+});
+
+// Correção para tratar resposta vazia ou em texto no login
+async function handleLogin(event) {
+  event.preventDefault();
+  const email = document.getElementById('loginEmail').value;
+  const password = document.getElementById('loginPassword').value;
+
+  try {
+    const response = await fetch('/api/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password })
+    });
+
+    const contentType = response.headers.get('content-type');
+    const isJson = contentType && contentType.includes('application/json');
+    const data = isJson ? await response.json() : await response.text();
+
+    if (!response.ok) {
+      const message = isJson ? data.message : data;
+      throw new Error(message || 'Erro no login');
+    }
+
+    alert('Login realizado com sucesso!');
+    localStorage.setItem('token', data.token);
+    redirectToDashboard(data.userType);
+
+  } catch (err) {
+    alert(err.message);
+    console.error('Erro no login:', err);
+  }
+}
+
+// Correção para tratar resposta vazia ou em texto no cadastro
+async function handleRegister(event) {
+  event.preventDefault();
+  const name = document.getElementById('registerName').value;
+  const email = document.getElementById('registerEmail').value;
+  const password = document.getElementById('registerPassword').value;
+  const user_type = document.querySelector('input[name="userType"]:checked').value;
+
+  try {
+    const response = await fetch('/api/auth/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, email, password, user_type })
+    });
+
+    const contentType = response.headers.get('content-type');
+    const isJson = contentType && contentType.includes('application/json');
+    const data = isJson ? await response.json() : await response.text();
+
+    if (!response.ok) {
+      const message = isJson ? data.message : data;
+      throw new Error(message || 'Erro ao cadastrar.');
+    }
+
+    alert(data.message || 'Cadastro realizado com sucesso!');
+    window.location.href = 'index.html';
+
+  } catch (err) {
+    alert(err.message);
+    console.error('Erro no cadastro:', err);
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const loginForm = document.getElementById('loginForm');
+  const registerForm = document.getElementById('registerForm');
+  if (loginForm) loginForm.addEventListener('submit', handleLogin);
+  if (registerForm) registerForm.addEventListener('submit', handleRegister);
+});
+
 // Função para lidar com o cadastro
 async function handleRegister(event) {
     event.preventDefault(); // Impede o envio padrão do formulário
@@ -659,7 +761,8 @@ async function handleRegister(event) {
     const name = document.getElementById('registerName').value;
     const email = document.getElementById('registerEmail').value;
     const password = document.getElementById('registerPassword').value;
-    const user_type = document.getElementById('userType').value;
+    const user_type = document.querySelector('input[name="userType"]:checked').value;
+
 
     try {
         const response = await fetch('/api/auth/register', {
@@ -844,10 +947,153 @@ function updateCities() {
     }
 
     // Chame a função de setup ao carregar a página
-    document.addEventListener('DOMContentLoaded', () => {
-        setupCartListeners();
-        // Outras inicializações de funções...
+    // script.js - Conteúdo completo e corrigido
+// script.js - Versão completa e corrigida
+document.addEventListener('DOMContentLoaded', () => {
+    // Comentário: Seleção de elementos do DOM
+    const loginForm = document.getElementById('loginForm');
+    const registerForm = document.getElementById('registerForm');
+    const loginModal = document.getElementById('loginModal');
+    const registerModal = document.getElementById('registerModal');
+    const switchToRegisterBtn = document.getElementById('switchToRegister');
+    const switchToLoginBtn = document.getElementById('switchToLogin');
+    const chatModal = document.getElementById('chatModal');
+    const mobileLoginBtn = document.getElementById('mobileLoginBtn');
+    const closeChatBtn = document.getElementById('closeChatBtn');
+    const closeLoginModalBtn = document.querySelector('#loginModal .close');
+    const closeRegisterModalBtn = document.querySelector('#registerModal .close');
+    const chatBtn = document.getElementById('chatBtn');
+    const sendMessageBtn = document.getElementById('sendMessageBtn');
+    const chatMessageInput = document.getElementById('chatMessageInput');
+    const chatMessages = document.getElementById('chatMessages');
+
+    // Funções de utilidade para Modals
+    function openModal(modal) {
+        if (modal) modal.style.display = 'block';
+    }
+
+    function closeModal(modal) {
+        if (modal) modal.style.display = 'none';
+    }
+
+    // Event Listeners para Modals
+    if (mobileLoginBtn) {
+        mobileLoginBtn.addEventListener('click', () => openModal(loginModal));
+    }
+    if (switchToRegisterBtn) {
+        switchToRegisterBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            closeModal(loginModal);
+            openModal(registerModal);
+        });
+    }
+    if (switchToLoginBtn) {
+        switchToLoginBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            closeModal(registerModal);
+            openModal(loginModal);
+        });
+    }
+    if (closeLoginModalBtn) {
+        closeLoginModalBtn.addEventListener('click', () => closeModal(loginModal));
+    }
+    if (closeRegisterModalBtn) {
+        closeRegisterModalBtn.addEventListener('click', () => closeModal(registerModal));
+    }
+    if (chatBtn) {
+        chatBtn.addEventListener('click', () => openModal(chatModal));
+    }
+    if (closeChatBtn) {
+        closeChatBtn.addEventListener('click', () => closeModal(chatModal));
+    }
+    window.addEventListener('click', (event) => {
+        if (event.target == loginModal) closeModal(loginModal);
+        if (event.target == registerModal) closeModal(registerModal);
+        if (event.target == chatModal) closeModal(chatModal);
     });
+
+    // Funções de Autenticação - Corrigidas para usar `fetch`
+    if (loginForm) {
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+
+            try {
+                const response = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.message || 'Erro desconhecido ao tentar fazer login.');
+                }
+
+                const data = await response.json();
+                alert(`Login realizado com sucesso! Bem-vindo, ${data.user.name}.`);
+                closeModal(loginModal);
+                loginForm.reset();
+                if (data.user.role === 'client') {
+                    window.location.href = 'painel-cliente.html';
+                } else if (data.user.role === 'vendedor') {
+                    window.location.href = 'painel-vendedor.html';
+                } else if (data.user.role === 'admin') {
+                    window.location.href = 'painel-admin.html';
+                }
+            } catch (error) {
+                alert(`Erro no login: ${error.message}`);
+                console.error('Erro no login:', error);
+            }
+        });
+    }
+
+    if (registerForm) {
+        registerForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const name = document.getElementById('registerName').value;
+            const email = document.getElementById('registerEmail').value;
+            const password = document.getElementById('registerPassword').value;
+            const userType = document.querySelector('input[name="userTypeRegister"]:checked').value;
+            const address = document.getElementById('registerAddress').value;
+            const city = document.getElementById('registerCity').value;
+            const state = document.getElementById('registerState').value;
+            const zip = document.getElementById('registerZip').value;
+
+            try {
+                const response = await fetch('/api/auth/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, email, password, userType, address, city, state, zip })
+                });
+
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.message || 'Erro desconhecido ao tentar registrar.');
+                }
+
+                const data = await response.json();
+                alert(`Cadastro realizado com sucesso! Bem-vindo, ${data.user.name}.`);
+                closeModal(registerModal);
+                registerForm.reset();
+            } catch (error) {
+                alert(`Erro no cadastro: ${error.message}`);
+                console.error('Erro no cadastro:', error);
+            }
+        });
+    }
+
+    if (sendMessageBtn) {
+        sendMessageBtn.addEventListener('click', () => {
+            const message = chatMessageInput.value;
+            if (message.trim() !== '') {
+                // ... lógica de envio de mensagem ...
+                chatMessageInput.value = '';
+            }
+        });
+    }
+});
 
 function filterProducts() {
     const searchTerm = elements.searchInput.value.toLowerCase();

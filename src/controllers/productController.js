@@ -44,3 +44,20 @@ exports.getProducts = async (req, res) => {
         res.status(500).send('Erro no servidor.');
     }
 };
+
+// productController.js
+exports.addProduct = (req, res) => {
+  res.status(201).json({ message: 'Produto adicionado (placeholder).' });
+};
+
+exports.getProductById = (req, res) => {
+  res.json({ id: req.params.id, name: 'Produto exemplo' });
+};
+
+exports.updateProduct = (req, res) => {
+  res.json({ message: `Produto ${req.params.id} atualizado.` });
+};
+
+exports.deleteProduct = (req, res) => {
+  res.json({ message: `Produto ${req.params.id} deletado.` });
+};

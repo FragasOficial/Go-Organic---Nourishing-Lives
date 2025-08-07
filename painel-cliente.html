@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Painel do Cliente - Go Organic</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
   <header class="header">
@@ -18,8 +19,7 @@
     <section>
       <h2>Meus Pedidos</h2>
       <div id="pedidosCliente">
-        <!-- Lista de pedidos vai aqui -->
-      </div>
+        </div>
     </section>
 
     <section>
@@ -37,12 +37,49 @@
         <button type="submit" class="btn">Salvar alterações</button>
       </form>
     </section>
-
-    <section>
-      <h2>Atendimento</h2>
-      <button class="btn" onclick="abrirChat()">Abrir Chat com Suporte</button>
-    </section>
   </main>
-  <script src="script.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Função para carregar os pedidos do cliente
+      function carregarPedidosCliente() {
+        const pedidosDiv = document.getElementById('pedidosCliente');
+        pedidosDiv.innerHTML = 'Carregando pedidos...';
+
+        // Simulação de carregamento de dados
+        setTimeout(() => {
+          const pedidos = [
+            { id: '123', data: '20/10/2023', total: 125.50, status: 'Enviado' },
+            { id: '124', data: '15/10/2023', total: 89.90, status: 'Entregue' },
+          ];
+          pedidosDiv.innerHTML = '';
+          pedidos.forEach(pedido => {
+            const pedidoElement = document.createElement('div');
+            pedidoElement.className = 'pedido-item';
+            pedidoElement.innerHTML = `
+              <p><strong>Pedido #${pedido.id}</strong></p>
+              <p>Data: ${pedido.data}</p>
+              <p>Total: R$${pedido.total.toFixed(2)}</p>
+              <p>Status: ${pedido.status}</p>
+            `;
+            pedidosDiv.appendChild(pedidoElement);
+          });
+        }, 1000);
+      }
+
+      // Evento de submissão do formulário de perfil
+      const formPerfilCliente = document.getElementById('formPerfilCliente');
+      formPerfilCliente.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const nome = document.getElementById('clienteNome').value;
+        const email = document.getElementById('clienteEmail').value;
+        const telefone = document.getElementById('clienteTelefone').value;
+        alert(`Dados do perfil atualizados!\nNome: ${nome}\nEmail: ${email}\nTelefone: ${telefone}`);
+      });
+      
+      // Chamada da função para carregar os pedidos ao carregar a página
+      carregarPedidosCliente();
+    });
+  </script>
 </body>
 </html>
