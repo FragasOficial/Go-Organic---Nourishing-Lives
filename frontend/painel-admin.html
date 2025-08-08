@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Painel do Administrador - Go Organic</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+</head>
+<body>
+  <header class="header">
+    <div class="container">
+      <h1>Painel do Administrador</h1>
+      <a href="index.html" class="btn">Voltar para Loja</a>
+    </div>
+  </header>
+
+  <main class="main container">
+    <section>
+      <h2>Gerenciar Usuários</h2>
+      <div id="gerenciarUsuarios">
+        </div>
+    </section>
+  </main>
+  <!-- Adicione isso dentro da seção principal -->
+<section class="dashboard">
+  <h2>Dashboard</h2>
+  <div class="stats-grid">
+    <div class="stat-card">
+      <h3>Total de Usuários</h3>
+      <p id="totalUsers">0</p>
+    </div>
+    <div class="stat-card">
+      <h3>Clientes</h3>
+      <p id="totalClients">0</p>
+    </div>
+    <div class="stat-card">
+      <h3>Vendedores</h3>
+      <p id="totalSellers">0</p>
+    </div>
+    <div class="stat-card">
+      <h3>Produtos</h3>
+      <p id="totalProducts">0</p>
+    </div>
+    <div class="stat-card">
+      <h3>Pedidos</h3>
+      <p id="totalOrders">0</p>
+    </div>
+    <div class="stat-card">
+      <h3>Vendas (R$)</h3>
+      <p id="totalSales">0</p>
+    </div>
+  </div>
+  
+  <div class="charts">
+    <div class="chart-container">
+      <canvas id="usersChart"></canvas>
+    </div>
+    <div class="chart-container">
+      <canvas id="salesChart"></canvas>
+    </div>
+  </div>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', async () => {
+  // Carrega estatísticas
+  async function loadStats() {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch('http://localhost:3000/api/admin/stats', {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      
+      const data = await response.json();
+      
+      if (response.ok) {
+        document.getElementById('totalUsers').textContent = data.totalUsers;
+        document.getElementById('totalClients').textContent = data.totalClients;
+        document.getElementById('totalSellers').textContent = data.totalSellers;
+        document.getElementById('totalProducts').textContent = data.totalProducts;
+        document.getElementById('totalOrders').textContent = data.totalOrders;
+        document.getElementById('totalSales').textContent = data.totalSales.toFixed(2);
+        
+        // Cria gráficos
+        createCharts(data);
+      } else {
+        alert(data.message || 'Erro ao carregar estatísticas');
+      }
+    } catch (error) {
+      console.error('Erro:', error);
+      alert('Erro ao conectar com o servidor');
+    }
+  }
+  
+  // Cria gráficos com Chart.js
+  function createCharts(data) {
+    // Gráfico de usuários por tipo
+    const usersCtx = document.getElementById('usersChart').getContext('2d');
+    new Chart(usersCtx, {
+      type: 'doughnut',
+      data: {
+        labels: ['Clientes', 'Vendedores', 'Administradores'],
+        datasets: [{
+          data: [data.totalClients, data.totalSellers, data.totalAdmins],
+          backgroundColor: [
+            '#4CAF50',
+            '#2196F3',
+            '#FF9800'
+          ]
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          title: {
+            display: true,
+            text: 'Distribuição de Usuários'
+          }
+        }
+      }
+    });
+    
+    // Gráfico de vendas por mês
+    const salesCtx = document.getElementById('salesChart').getContext('2d');
+    new Chart(salesCtx, {
+      type: 'bar',
+      data: {
+        labels: data.salesByMonth.map(item => item.month),
+        datasets: [{
+          label: 'Vendas (R$)',
+          data: data.salesByMonth.map(item => item.total),
+          backgroundColor: '#4CAF50'
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          title: {
+            display: true,
+            text: 'Vendas Mensais'
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
+  }
+  
+  // Carrega as estatísticas ao abrir a página
+  loadStats();
+  
+  // Atualiza a cada 5 minutos
+  setInterval(loadStats, 300000);
+});
+</script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Função para carregar a lista de usuários
+      function carregarUsuarios() {
+        const usuariosDiv = document.getElementById('gerenciarUsuarios');
+        usuariosDiv.innerHTML = 'Carregando usuários...';
+
+        // Simulação de carregamento
+        setTimeout(() => {
+          const usuarios = [
+            { nome: 'Cliente Exemplo', tipo: 'Cliente', status: 'Ativo' },
+            { nome: 'Vendedor Exemplo', tipo: 'Vendedor', status: 'Ativo' },
+            { nome: 'Admin Exemplo', tipo: 'Admin', status: 'Ativo' },
+          ];
+          usuariosDiv.innerHTML = '';
+          usuarios.forEach(usuario => {
+            const usuarioElement = document.createElement('div');
+            usuarioElement.className = 'usuario-item';
+            usuarioElement.innerHTML = `
+              <p><strong>Nome: ${usuario.nome}</strong></p>
+              <p>Tipo: ${usuario.tipo}</p>
+              <p>Status: ${usuario.status}</p>
+            `;
+            usuariosDiv.appendChild(usuarioElement);
+          });
+        }, 1000);
+      }
+      
+      // Chamada da função
+      carregarUsuarios();
+    });
+  </script>
+</body>
+</html>
