@@ -490,6 +490,8 @@ let headerExpanded = true;
 
 
 // Elementos do DOM
+const getElement = (id) => document.getElementById(id) || console.error(`Elemento não encontrado: ${id}`);
+
 // Substitua a seleção de elementos por esta versão mais segura
 const elements = {
     productsGrid: document.getElementById('productsGrid'),
@@ -681,6 +683,35 @@ addSafeListener('#confirmPurchaseBtn', 'click', () => {
     if (checkoutModal) checkoutModal.style.display = 'none';
   }
 });
+
+// Unified auth handler
+async function handleAuth(formData, isLogin) {
+  const endpoint = isLogin ? '/api/auth/login' : '/api/auth/register';
+  
+  try {
+    const response = await fetch(`http://localhost:3000${endpoint}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(formData)
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message || 'Authentication failed');
+    }
+
+    const data = await response.json();
+    localStorage.setItem('token', data.token);
+    localStorage.setItem('userData', JSON.stringify(data.user));
+    
+    redirectToDashboard(data.user.user_type);
+    return true;
+  } catch (error) {
+    console.error('Auth error:', error);
+    showNotification(error.message, 'error');
+    return false;
+  }
+}
 
 // Correção para tratar resposta vazia ou em texto no login
 async function handleLogin(event) {
