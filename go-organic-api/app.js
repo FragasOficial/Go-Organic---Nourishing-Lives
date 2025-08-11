@@ -13,7 +13,7 @@ app.get("/", (req, res) => {
   res.json({ message: "API GoOrganic - By Francisco Costa" });
 });
 
-// Importar rotas de autenticação
+// Importar rotas de autenticação, passando o objeto 'app'
 require("./routes/auth.routes")(app);
 
 module.exports = app;

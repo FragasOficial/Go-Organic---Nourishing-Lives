@@ -3,33 +3,68 @@ function setupLoginForm() {
     const loginForm = document.getElementById('loginForm');
     const switchToRegister = document.getElementById('switchToRegister');
     
-    // Alternar para o modal de cadastro
-    switchToRegister.addEventListener('click', (e) => {
-        e.preventDefault();
-        elements.loginModal.style.display = 'none';
-        elements.registerModal.style.display = 'block';
-    });
-    
-    // Submissão do formulário de login
-    loginForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        
-        const userType = document.querySelector('input[name="userTypeLogin"]:checked').value;
-        const email = document.getElementById('loginEmail').value;
-        const password = document.getElementById('loginPassword').value;
-        
-        // Aqui você pode adicionar a lógica de autenticação diferenciada
-        if (userType === 'client') {
-            alert(`Login realizado como Cliente\nEmail: ${email}`);
-        } else {
-            alert(`Login realizado como Vendedor\nEmail: ${email}`);
-        }
-        
-        // Fechar o modal e resetar o formulário
-        elements.loginModal.style.display = 'none';
-        loginForm.reset();
-    });
+    if (switchToRegister) {
+        switchToRegister.addEventListener('click', (e) => {
+            e.preventDefault();
+            elements.loginModal.style.display = 'none';
+            elements.registerModal.style.display = 'block';
+        });
+    }
+
+    if (loginForm) {
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const userType = document.querySelector('input[name="userTypeLogin"]:checked').value;
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            try {
+                // A rota foi corrigida para 'signin'
+                const response = await fetch('http://localhost:3000/api/auth/signin', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email, password, userType })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Sucesso!',
+                        text: 'Login realizado com sucesso!'
+                    });
+                    // Lógica para armazenar token, redirecionar, etc.
+                    elements.loginModal.style.display = 'none';
+                } else {
+                    const errorMessage = data.message || "Erro desconhecido ao tentar fazer login.";
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Erro no Login!',
+                        text: errorMessage
+                    });
+                }
+            } catch (error) {
+                console.error('Erro no login:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Erro no Login!',
+                    text: 'Erro desconhecido ao tentar fazer login.'
+                });
+            }
+            
+            loginForm.reset();
+        });
+    } else {
+        console.error("Elemento 'loginForm' não encontrado.");
+    }
 }
+
+// Chame a função para configurar o formulário de login quando o DOM estiver pronto
+document.addEventListener('DOMContentLoaded', setupLoginForm);
 
 // Estados e cidades disponíveis
 const brazilianStates = [
@@ -540,7 +575,7 @@ function fecharCheckoutModal() {
 
 const closeCheckoutModal = document.getElementById('closeCheckoutModal');
 if (closeCheckoutModal) {
-  closeCheckoutModal.addEventListener('click', fecharCheckoutModal);
+  if (closeCheckoutModal) closeCheckoutModal.addEventListener('click', fecharCheckoutModal);
 }
 
 
@@ -549,11 +584,11 @@ function setupRegionModal() {
     const modal = document.getElementById('regionConfirmModal');
     const closeBtn = modal.querySelector('.close');
     
-    closeBtn.addEventListener('click', () => {
+    if (closeBtn) closeBtn.addEventListener('click', () => {
         modal.style.display = 'none';
     });
     
-    window.addEventListener('click', (e) => {
+    if (window) window.addEventListener('click', (e) => {
         if (e.target === modal) {
             modal.style.display = 'none';
         }
@@ -588,15 +623,15 @@ function hideModal(modal) {
 
 // Adiciona event listeners aos botões do menu móvel
 if (elements.mobileLoginBtn) {
-    elements.mobileLoginBtn.addEventListener('click', () => showModal(elements.loginModal));
+    if (mobileLoginBtn) elements.mobileLoginBtn.addEventListener('click', () => showModal(elements.loginModal));
 }
 if (elements.mobileRegisterBtn) {
-    elements.mobileRegisterBtn.addEventListener('click', () => showModal(elements.registerModal));
+    if (mobileRegisterBtn) elements.mobileRegisterBtn.addEventListener('click', () => showModal(elements.registerModal));
 }
 
 // Event Listeners para alternar entre os modais de login e cadastro
 if (elements.switchToRegister) {
-    elements.switchToRegister.addEventListener('click', (e) => {
+    if (switchToRegister) elements.switchToRegister.addEventListener('click', (e) => {
         e.preventDefault();
         hideModal(elements.loginModal);
         showModal(elements.registerModal);
@@ -604,7 +639,7 @@ if (elements.switchToRegister) {
 }
 
 if (elements.switchToLogin) {
-    elements.switchToLogin.addEventListener('click', (e) => {
+    if (switchToLogin) elements.switchToLogin.addEventListener('click', (e) => {
         e.preventDefault();
         hideModal(elements.registerModal);
         showModal(elements.loginModal);
@@ -631,7 +666,14 @@ async function handleLogin(event) {
             body: JSON.stringify({ email, password }),
         });
 
-        const data = await response.json();
+        const data = (async () => {
+        const contentType = response.headers.get('content-type');
+        if (contentType && contentType.includes('application/json')) {
+            return await response.json();
+        } else {
+            return await response.text();
+        }
+    })();
 
         if (response.ok) {
             // Login bem-sucedido
@@ -659,7 +701,7 @@ async function handleLogin(event) {
 // Validação antes de adicionar event listeners
 const addSafeListener = (selector, event, handler) => {
   const el = document.querySelector(selector);
-  if (el) el.addEventListener(event, handler);
+  if (el) if (el) el.addEventListener(event, handler);
 };
 
 // Exemplo de uso seguro
@@ -696,11 +738,25 @@ async function handleAuth(formData, isLogin) {
     });
 
     if (!response.ok) {
-      const error = await response.json();
+      const error = (async () => {
+        const contentType = response.headers.get('content-type');
+        if (contentType && contentType.includes('application/json')) {
+            return await response.json();
+        } else {
+            return await response.text();
+        }
+    })();
       throw new Error(error.message || 'Authentication failed');
     }
 
-    const data = await response.json();
+    const data = (async () => {
+        const contentType = response.headers.get('content-type');
+        if (contentType && contentType.includes('application/json')) {
+            return await response.json();
+        } else {
+            return await response.text();
+        }
+    })();
     localStorage.setItem('token', data.token);
     localStorage.setItem('userData', JSON.stringify(data.user));
     
@@ -720,7 +776,7 @@ async function handleLogin(event) {
   const password = document.getElementById('loginPassword').value;
 
   try {
-    const response = await fetch('/api/auth/login', {
+    const response = await fetch('http://localhost:3000/api/auth/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password })
@@ -728,7 +784,14 @@ async function handleLogin(event) {
 
     const contentType = response.headers.get('content-type');
     const isJson = contentType && contentType.includes('application/json');
-    const data = isJson ? await response.json() : await response.text();
+    const data = isJson ? (async () => {
+        const contentType = response.headers.get('content-type');
+        if (contentType && contentType.includes('application/json')) {
+            return await response.json();
+        } else {
+            return await response.text();
+        }
+    })() : await response.text();
 
     if (!response.ok) {
       const message = isJson ? data.message : data;
@@ -776,7 +839,14 @@ async function handleRegister(event) {
             body: JSON.stringify(formData),
         });
 
-        const data = await response.json();
+        const data = (async () => {
+        const contentType = response.headers.get('content-type');
+        if (contentType && contentType.includes('application/json')) {
+            return await response.json();
+        } else {
+            return await response.text();
+        }
+    })();
 
         if (response.ok) {
             alert('Cadastro realizado com sucesso! Faça login para continuar.');
@@ -791,11 +861,11 @@ async function handleRegister(event) {
     }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+if (document) document.addEventListener('DOMContentLoaded', () => {
   const loginForm = document.getElementById('loginForm');
   const registerForm = document.getElementById('registerForm');
-  if (loginForm) loginForm.addEventListener('submit', handleLogin);
-  if (registerForm) registerForm.addEventListener('submit', handleRegister);
+  if (loginForm) if (loginForm) loginForm.addEventListener('submit', handleLogin);
+  if (registerForm) if (registerForm) registerForm.addEventListener('submit', handleRegister);
 });
 
 // Função para lidar com o cadastro
@@ -820,12 +890,12 @@ function redirectToDashboard(userType) {
 }
 
 // Adicionar event listeners aos formulários de login e cadastro
-document.addEventListener('DOMContentLoaded', () => {
+if (document) document.addEventListener('DOMContentLoaded', () => {
     if (elements.loginForm) {
-        elements.loginForm.addEventListener('submit', handleLogin);
+        if (loginForm) elements.loginForm.addEventListener('submit', handleLogin);
     }
     if (elements.registerForm) {
-        elements.registerForm.addEventListener('submit', handleRegister);
+        if (registerForm) elements.registerForm.addEventListener('submit', handleRegister);
     }
 });
 
@@ -886,7 +956,7 @@ function updateCities() {
     // Adicione os event listeners para os botões de quantidade e remoção dentro de uma função
     function setupCartListeners() {
         const cartItemsContainer = document.getElementById('cartItems');
-        cartItemsContainer.addEventListener('click', (e) => {
+        if (cartItemsContainer) cartItemsContainer.addEventListener('click', (e) => {
             if (e.target.classList.contains('decrease') || e.target.closest('.decrease')) {
                 const productId = e.target.dataset.productId || e.target.closest('.decrease').dataset.productId;
                 updateQuantity(productId, -1);
@@ -964,7 +1034,7 @@ function updateCities() {
     // Chame a função de setup ao carregar a página
     // script.js - Conteúdo completo e corrigido
 // script.js - Versão completa e corrigida
-document.addEventListener('DOMContentLoaded', () => {
+if (document) document.addEventListener('DOMContentLoaded', () => {
     // Comentário: Seleção de elementos do DOM
     const loginForm = document.getElementById('loginForm');
     const registerForm = document.getElementById('registerForm');
@@ -993,35 +1063,35 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Event Listeners para Modals
     if (mobileLoginBtn) {
-        mobileLoginBtn.addEventListener('click', () => openModal(loginModal));
+        if (mobileLoginBtn) mobileLoginBtn.addEventListener('click', () => openModal(loginModal));
     }
     if (switchToRegisterBtn) {
-        switchToRegisterBtn.addEventListener('click', (e) => {
+        if (switchToRegisterBtn) switchToRegisterBtn.addEventListener('click', (e) => {
             e.preventDefault();
             closeModal(loginModal);
             openModal(registerModal);
         });
     }
     if (switchToLoginBtn) {
-        switchToLoginBtn.addEventListener('click', (e) => {
+        if (switchToLoginBtn) switchToLoginBtn.addEventListener('click', (e) => {
             e.preventDefault();
             closeModal(registerModal);
             openModal(loginModal);
         });
     }
     if (closeLoginModalBtn) {
-        closeLoginModalBtn.addEventListener('click', () => closeModal(loginModal));
+        if (closeLoginModalBtn) closeLoginModalBtn.addEventListener('click', () => closeModal(loginModal));
     }
     if (closeRegisterModalBtn) {
-        closeRegisterModalBtn.addEventListener('click', () => closeModal(registerModal));
+        if (closeRegisterModalBtn) closeRegisterModalBtn.addEventListener('click', () => closeModal(registerModal));
     }
     if (chatBtn) {
-        chatBtn.addEventListener('click', () => openModal(chatModal));
+        if (chatBtn) chatBtn.addEventListener('click', () => openModal(chatModal));
     }
     if (closeChatBtn) {
-        closeChatBtn.addEventListener('click', () => closeModal(chatModal));
+        if (closeChatBtn) closeChatBtn.addEventListener('click', () => closeModal(chatModal));
     }
-    window.addEventListener('click', (event) => {
+    if (window) window.addEventListener('click', (event) => {
         if (event.target == loginModal) closeModal(loginModal);
         if (event.target == registerModal) closeModal(registerModal);
         if (event.target == chatModal) closeModal(chatModal);
@@ -1029,24 +1099,38 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Funções de Autenticação - Corrigidas para usar `fetch`
     if (loginForm) {
-        loginForm.addEventListener('submit', async (e) => {
+        if (loginForm) loginForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             const email = document.getElementById('loginEmail').value;
             const password = document.getElementById('loginPassword').value;
 
             try {
-                const response = await fetch('/api/auth/login', {
+                const response = await fetch('http://localhost:3000/api/auth/login', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ email, password })
                 });
 
                 if (!response.ok) {
-                    const error = await response.json();
+                    const error = (async () => {
+        const contentType = response.headers.get('content-type');
+        if (contentType && contentType.includes('application/json')) {
+            return await response.json();
+        } else {
+            return await response.text();
+        }
+    })();
                     throw new Error(error.message || 'Erro desconhecido ao tentar fazer login.');
                 }
 
-                const data = await response.json();
+                const data = (async () => {
+        const contentType = response.headers.get('content-type');
+        if (contentType && contentType.includes('application/json')) {
+            return await response.json();
+        } else {
+            return await response.text();
+        }
+    })();
                 alert(`Login realizado com sucesso! Bem-vindo, ${data.user.name}.`);
                 closeModal(loginModal);
                 loginForm.reset();
@@ -1065,7 +1149,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (registerForm) {
-        registerForm.addEventListener('submit', async (e) => {
+        if (registerForm) registerForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             const name = document.getElementById('registerName').value;
             const email = document.getElementById('registerEmail').value;
@@ -1077,18 +1161,32 @@ document.addEventListener('DOMContentLoaded', () => {
             const zip = document.getElementById('registerZip').value;
 
             try {
-                const response = await fetch('/api/auth/register', {
+                const response = await fetch('http://localhost:3000/api/auth/register', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ name, email, password, userType, address, city, state, zip })
                 });
 
                 if (!response.ok) {
-                    const error = await response.json();
+                    const error = (async () => {
+        const contentType = response.headers.get('content-type');
+        if (contentType && contentType.includes('application/json')) {
+            return await response.json();
+        } else {
+            return await response.text();
+        }
+    })();
                     throw new Error(error.message || 'Erro desconhecido ao tentar registrar.');
                 }
 
-                const data = await response.json();
+                const data = (async () => {
+        const contentType = response.headers.get('content-type');
+        if (contentType && contentType.includes('application/json')) {
+            return await response.json();
+        } else {
+            return await response.text();
+        }
+    })();
                 alert(`Cadastro realizado com sucesso! Bem-vindo, ${data.user.name}.`);
                 closeModal(registerModal);
                 registerForm.reset();
@@ -1100,7 +1198,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (sendMessageBtn) {
-        sendMessageBtn.addEventListener('click', () => {
+        if (sendMessageBtn) sendMessageBtn.addEventListener('click', () => {
             const message = chatMessageInput.value;
             if (message.trim() !== '') {
                 // ... lógica de envio de mensagem ...
@@ -1231,16 +1329,16 @@ function renderProducts(productsToRender) {
 function addProductEvents() {
     // Eventos de quantidade
     document.querySelectorAll('.decrease-btn').forEach(btn => {
-        btn.addEventListener('click', decreaseQuantity);
+        if (btn) btn.addEventListener('click', decreaseQuantity);
     });
     
     document.querySelectorAll('.increase-btn').forEach(btn => {
-        btn.addEventListener('click', increaseQuantity);
+        if (btn) btn.addEventListener('click', increaseQuantity);
     });
     
     // Eventos de carrinho
      document.querySelectorAll('.add-to-cart').forEach(btn => {
-        btn.addEventListener('click', function(e) {
+        if (btn) btn.addEventListener('click', function(e) {
             e.preventDefault();
             const productId = parseInt(e.target.getAttribute('data-id'));
             const product = products.find(p => p.id === productId);
@@ -1252,16 +1350,16 @@ function addProductEvents() {
         
     // Eventos de contato
     document.querySelectorAll('.whatsapp-btn').forEach(btn => {
-        btn.addEventListener('click', openWhatsApp);
+        if (btn) btn.addEventListener('click', openWhatsApp);
     });
     
     document.querySelectorAll('.chat-btn').forEach(btn => {
-        btn.addEventListener('click', openChat);
+        if (btn) btn.addEventListener('click', openChat);
     });
     
     // Eventos de informações nutricionais
     document.querySelectorAll('.toggle-nutrition').forEach(link => {
-        link.addEventListener('click', function(e) {
+        if (link) link.addEventListener('click', function(e) {
             e.preventDefault();
             const productId = this.getAttribute('data-id');
             const nutritionInfo = document.getElementById(`nutrition-${productId}`);
@@ -1344,7 +1442,7 @@ function renderCart() {
     
     // Eventos de remoção
     document.querySelectorAll('.cart-item-remove').forEach(btn => {
-        btn.addEventListener('click', removeFromCart);
+        if (btn) btn.addEventListener('click', removeFromCart);
     });
 }
 
@@ -1576,7 +1674,7 @@ function showRegionConfirmModal(product, productId) {
     const newConfirmBtn = document.getElementById('confirmSameRegion');
     const newSearchBtn = document.getElementById('searchOtherRegion');
     
-    newConfirmBtn.addEventListener('click', () => {
+    if (newConfirmBtn) newConfirmBtn.addEventListener('click', () => {
         // Define a região do produto como filtro atual
         selectedState = product.state;
         selectedCity = product.city;
@@ -1589,7 +1687,7 @@ function showRegionConfirmModal(product, productId) {
         addToCartConfirmed(productId);
     });
     
-    newSearchBtn.addEventListener('click', () => {
+    if (newSearchBtn) newSearchBtn.addEventListener('click', () => {
         // Define o nome do produto como termo de pesquisa
         elements.searchInput.value = product.name;
         elements.searchInput.focus();
@@ -1616,7 +1714,7 @@ function showRegionConfirmModal(product, productId) {
 }
 
 // Add event listeners for the search flow
-elements.searchInput.addEventListener('input', function() {
+if (searchInput) elements.searchInput.addEventListener('input', function() {
     if (this.value.length > 0) {
         // Show state filter when typing in search
         document.querySelector('.filters').style.display = 'flex';
@@ -1629,7 +1727,7 @@ elements.searchInput.addEventListener('input', function() {
     filterProducts();
 });
 
-elements.stateFilter.addEventListener('change', function() {
+if (stateFilter) elements.stateFilter.addEventListener('change', function() {
     selectedState = this.value;
     if (selectedState) {
         // Show city filter when state is selected
@@ -1642,7 +1740,7 @@ elements.stateFilter.addEventListener('change', function() {
     filterProducts();
 });
 
-elements.cityFilter.addEventListener('change', function() {
+if (cityFilter) elements.cityFilter.addEventListener('change', function() {
     selectedCity = this.value;
     filterProducts();
     if (isMobileView && this.value) showUserActions();
@@ -1677,19 +1775,19 @@ function setupAuthForms() {
         registerStateSelect.appendChild(option);
     });
     // Mostrar/ocultar campos de vendedor
-    elements.clientType.addEventListener('change', function() {
+    if (clientType) elements.clientType.addEventListener('change', function() {
         if(this.checked) {
             elements.sellerFields.style.display = 'none';
         }
     });
 
-    elements.sellerType.addEventListener('change', function() {
+    if (sellerType) elements.sellerType.addEventListener('change', function() {
         if(this.checked) {
             elements.sellerFields.style.display = 'block';
         }
     });
 
-    elements.loginForm.addEventListener('submit', (e) => {
+    if (loginForm) elements.loginForm.addEventListener('submit', (e) => {
         e.preventDefault();
         const email = document.getElementById('loginEmail').value;
         const password = document.getElementById('loginPassword').value;
@@ -1699,7 +1797,7 @@ function setupAuthForms() {
         elements.loginForm.reset();
     });
 
-    elements.registerForm.addEventListener('submit', (e) => {
+    if (registerForm) elements.registerForm.addEventListener('submit', (e) => {
         e.preventDefault();
         
         const userType = document.querySelector('input[name="userType"]:checked').value;
@@ -1754,42 +1852,42 @@ function setupAuthForms() {
 // Configuração de Event Listeners
 function setupEventListeners() {
     // Pesquisa e filtros
-    elements.searchInput.addEventListener('input', function() {
+    if (searchInput) elements.searchInput.addEventListener('input', function() {
         filterProducts();
         if (isMobileView && this.value.length > 0) {
             document.querySelector('.filters').classList.add('active');
         }
     });
     
-    elements.searchButton.addEventListener('click', filterProducts);
-    elements.stateFilter.addEventListener('change', function() {
+    if (searchButton) elements.searchButton.addEventListener('click', filterProducts);
+    if (stateFilter) elements.stateFilter.addEventListener('change', function() {
         selectedState = this.value;
         updateCities();
         filterProducts();
     });
     
-    elements.cityFilter.addEventListener('change', function() {
+    if (cityFilter) elements.cityFilter.addEventListener('change', function() {
         selectedCity = this.value;
         filterProducts();
         if (isMobileView && this.value) showUserActions();
     });
     
     // Modais
-    elements.loginBtn.addEventListener('click', () => {
+    if (loginBtn) elements.loginBtn.addEventListener('click', () => {
         elements.loginModal.style.display = 'block';
     });
 
-    elements.registerBtn.addEventListener('click', () => {
+    if (registerBtn) elements.registerBtn.addEventListener('click', () => {
         elements.registerModal.style.display = 'block';
     });
 
-    elements.cartBtn.addEventListener('click', () => {
+    if (cartBtn) elements.cartBtn.addEventListener('click', () => {
         renderCart();
         elements.cartModal.style.display = 'block';
     });
 
     elements.closeButtons.forEach(button => {
-        button.addEventListener('click', () => {
+        if (button) button.addEventListener('click', () => {
             elements.loginModal.style.display = 'none';
             elements.registerModal.style.display = 'none';
             elements.cartModal.style.display = 'none';
@@ -1797,7 +1895,7 @@ function setupEventListeners() {
         });
     });
 
-    window.addEventListener('click', (e) => {
+    if (window) window.addEventListener('click', (e) => {
         if (e.target === elements.loginModal) {
             elements.loginModal.style.display = 'none';
         }
@@ -1813,18 +1911,18 @@ function setupEventListeners() {
     });
     
     // Chat
-    elements.sendMessageBtn.addEventListener('click', sendMessage);
-    elements.chatMessageInput.addEventListener('keypress', (e) => {
+    if (sendMessageBtn) elements.sendMessageBtn.addEventListener('click', sendMessage);
+    if (chatMessageInput) elements.chatMessageInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') {
             sendMessage();
         }
     });
     
     // Checkout
-    elements.checkoutBtn.addEventListener('click', checkout);
+    if (checkoutBtn) elements.checkoutBtn.addEventListener('click', checkout);
     
     // Redimensionamento
-    window.addEventListener('resize', function() {
+    if (window) window.addEventListener('resize', function() {
         checkMobileView();
         if (!isMobileView) {
             document.querySelector('.filters')?.classList.remove('active');
@@ -1865,7 +1963,7 @@ function init() {
             
             // Adiciona event listener apenas se o elemento existir
             if (elements.cartBtnTop) {
-                elements.cartBtnTop.addEventListener('click', () => {
+                if (cartBtnTop) elements.cartBtnTop.addEventListener('click', () => {
                     renderCart();
                     if (elements.cartModal) {
                         elements.cartModal.style.display = 'block';
@@ -1876,7 +1974,7 @@ function init() {
         
         // Configura os botões móveis apenas se existirem
         if (elements.mobileLoginBtn) {
-            elements.mobileLoginBtn.addEventListener('click', () => {
+            if (mobileLoginBtn) elements.mobileLoginBtn.addEventListener('click', () => {
                 if (elements.loginModal) {
                     elements.loginModal.style.display = 'block';
                 }
@@ -1884,7 +1982,7 @@ function init() {
         }
         
         if (elements.mobileRegisterBtn) {
-            elements.mobileRegisterBtn.addEventListener('click', () => {
+            if (mobileRegisterBtn) elements.mobileRegisterBtn.addEventListener('click', () => {
                 if (elements.registerModal) {
                     elements.registerModal.style.display = 'block';
                 }
@@ -1892,7 +1990,7 @@ function init() {
         }
         
         if (elements.mobileCartBtn) {
-            elements.mobileCartBtn.addEventListener('click', () => {
+            if (mobileCartBtn) elements.mobileCartBtn.addEventListener('click', () => {
                 renderCart();
                 if (elements.cartModal) {
                     elements.cartModal.style.display = 'block';
@@ -1926,10 +2024,10 @@ function init() {
     
     // Adiciona o event listener de scroll com a opção passive
     // Dentro da função init(), adicione:
-    window.addEventListener('scroll', handleScroll);
+    if (window) window.addEventListener('scroll', handleScroll);
 }
 
-document.addEventListener('DOMContentLoaded', init);
+if (document) document.addEventListener('DOMContentLoaded', init);
 
 function debounce(func, wait = 10) {
   let timeout;
@@ -1938,9 +2036,9 @@ function debounce(func, wait = 10) {
     timeout = setTimeout(func, wait);
   };
 }
-window.addEventListener('scroll', debounce(handleScroll));
+if (window) window.addEventListener('scroll', debounce(handleScroll));
 
-document.addEventListener('DOMContentLoaded', () => {
+if (document) document.addEventListener('DOMContentLoaded', () => {
     const nodes = document.body.childNodes;
     nodes.forEach(node => {
         if (node.nodeType === 8) { // Tipo 8 = Comentário
@@ -1955,7 +2053,7 @@ function setupScrollBehavior() {
     const searchContainer = document.querySelector('.search-container');
     const logo = document.querySelector('.logo');
     
-    window.addEventListener('scroll', function() {
+    if (window) window.addEventListener('scroll', function() {
         if (window.innerWidth <= 768) { // Apenas para mobile
             const currentScroll = window.pageYOffset;
             
@@ -2000,11 +2098,18 @@ function setupScrollBehavior() {
     function abrirChat() {
       alert('Abrindo chat com suporte...');
     }
-
-    document.getElementById('formPerfilCliente').addEventListener('submit', function(e) {
+    document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
       e.preventDefault();
       alert('Perfil atualizado com sucesso!');
     });
+      const loginForm = document.getElementById('loginForm');
+  if (loginForm) {
+    loginForm.addEventListener('submit', handleLogin);
+  } else {
+    console.error("Elemento 'loginForm' não encontrado.");
+  }
+});
 
     //Painel do vendedor
     function cadastrarProduto() {
@@ -2066,13 +2171,13 @@ function renderPaymentDetails(method) {
 
 // Chame esta função na inicialização do modal de checkout, por exemplo,
 // após a função que abre o modal.
-document.addEventListener('DOMContentLoaded', () => {
+if (document) document.addEventListener('DOMContentLoaded', () => {
     // ... seu código existente ...
     
     // Adicionar um ouvinte para os botões de rádio de pagamento
     const paymentOptions = document.querySelectorAll('input[name="paymentMethod"]');
     paymentOptions.forEach(option => {
-        option.addEventListener('change', (e) => {
+        if (option) option.addEventListener('change', (e) => {
             renderPaymentDetails(e.target.value);
         });
     });
@@ -2084,7 +2189,7 @@ document.addEventListener('DOMContentLoaded', () => {
 // Encontre o botão de confirmação de compra e adicione um ouvinte de evento.
 // Substitua o `alert` pela lógica abaixo.
 const confirmPurchaseBtn = document.getElementById('confirmPurchaseBtn');
-confirmPurchaseBtn.addEventListener('click', () => {
+if (confirmPurchaseBtn) confirmPurchaseBtn.addEventListener('click', () => {
     const selectedMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
     const cartItems = getCartItems(); // Supondo que você tenha uma função para obter os itens do carrinho
 
@@ -2150,7 +2255,7 @@ function showSuccessModal(purchaseInfo) {
 
     successModal.style.display = 'block';
 
-    backToStoreBtn.addEventListener('click', () => {
+    if (backToStoreBtn) backToStoreBtn.addEventListener('click', () => {
         successModal.style.display = 'none';
         window.location.href = 'index.html'; // Redireciona para a página principal
     });
@@ -2173,15 +2278,16 @@ function sendPurchaseConfirmation(purchaseInfo, email, whatsapp) {
 
 // Adiciona event listeners aos formulários de login e cadastro.
 // Use 'DOMContentLoaded' para garantir que o DOM esteja carregado.
-document.addEventListener('DOMContentLoaded', () => {
+if (document) document.addEventListener('DOMContentLoaded', () => {
     const loginForm = document.getElementById('loginForm');
-    if (loginForm) {
-        loginForm.addEventListener('submit', handleLogin);
-    }
-
+        if (loginForm) {
+            loginForm.addEventListener('submit', handleLogin);
+        } else {
+            console.error("Elemento 'loginForm' não encontrado.");
+        }
     const registerForm = document.getElementById('registerForm');
     if (registerForm) {
-        registerForm.addEventListener('submit', handleRegister);
+        if (registerForm) registerForm.addEventListener('submit', handleRegister);
     }
 });
 
@@ -2204,7 +2310,14 @@ async function handleLogin(event) {
       body: JSON.stringify({ email, password })
     });
 
-    const data = await response.json();
+    const data = (async () => {
+        const contentType = response.headers.get('content-type');
+        if (contentType && contentType.includes('application/json')) {
+            return await response.json();
+        } else {
+            return await response.text();
+        }
+    })();
 
     if (response.ok) {
       // Armazena o token JWT
@@ -2251,12 +2364,15 @@ function redirectToDashboard(userType) {
 // script.js
 
 // Adicione event listeners para os formulários de login e cadastro.
-document.addEventListener('DOMContentLoaded', () => {
+if (document) document.addEventListener('DOMContentLoaded', () => {
     // Certifique-se de que os elementos existem antes de adicionar o listener
     const loginForm = document.getElementById('loginForm');
-    if (loginForm) {
+
+        if (loginForm) {
         loginForm.addEventListener('submit', handleLogin);
-    }
+        } else {
+        console.error("Elemento com ID 'loginForm' não encontrado.");
+        }
 });
 
 // Função para verificar autenticação
@@ -2286,7 +2402,7 @@ function logout() {
 }
 
 // Adicionar ao DOMContentLoaded
-document.addEventListener('DOMContentLoaded', () => {
+if (document) document.addEventListener('DOMContentLoaded', () => {
     // Verifica autenticação e atualiza UI
     checkAuth().then(isAuthenticated => {
         if (isAuthenticated) {
@@ -2322,7 +2438,14 @@ async function registerUser(userData) {
       body: JSON.stringify(userData)
     });
     
-    const data = await response.json();
+    const data = (async () => {
+        const contentType = response.headers.get('content-type');
+        if (contentType && contentType.includes('application/json')) {
+            return await response.json();
+        } else {
+            return await response.text();
+        }
+    })();
     return data;
   } catch (error) {
     console.error('Erro:', error);
@@ -2334,46 +2457,45 @@ async function registerUser(userData) {
 
 async function handleLogin(event) {
     event.preventDefault();
-    
+
     const email = document.getElementById('loginEmail').value;
     const password = document.getElementById('loginPassword').value;
-    
+
     try {
-        const response = await fetch('http://localhost:3000/api/auth/login', {
+        // A rota foi alterada de '/api/auth/login' para '/api/auth/signin'
+        const response = await fetch('http://localhost:3000/api/auth/signin', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
+                'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ email, password }),
+            body: JSON.stringify({ email, password })
         });
 
         const data = await response.json();
 
         if (response.ok) {
-            // Armazena token e informações do usuário
-            localStorage.setItem('token', data.token);
-            localStorage.setItem('userData', JSON.stringify(data.user));
-            
-            // Redireciona com base no tipo de usuário
-            switch(data.user.user_type) {
-                case 'client':
-                    window.location.href = 'painel-cliente.html';
-                    break;
-                case 'seller':
-                    window.location.href = 'painel-vendedor.html';
-                    break;
-                case 'admin':
-                    window.location.href = 'painel-admin.html';
-                    break;
-                default:
-                    window.location.href = 'index.html';
-            }
+            Swal.fire({
+                icon: 'success',
+                title: 'Sucesso!',
+                text: 'Login realizado com sucesso!'
+            });
+            // Armazenar o token, redirecionar, etc.
         } else {
-            throw new Error(data.message || 'Erro no login');
+            // Se houver um erro, exiba a mensagem do servidor se disponível
+            const errorMessage = data.message || "Erro desconhecido ao tentar fazer login.";
+            Swal.fire({
+                icon: 'error',
+                title: 'Erro no Login!',
+                text: errorMessage
+            });
         }
     } catch (error) {
         console.error('Erro no login:', error);
-        alert(error.message || 'Erro ao conectar com o servidor');
+        Swal.fire({
+            icon: 'error',
+            title: 'Erro no Login!',
+            text: 'Erro desconhecido ao tentar fazer login.'
+        });
     }
 }
 

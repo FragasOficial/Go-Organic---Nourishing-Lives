@@ -3,10 +3,11 @@ const bcrypt = require('bcryptjs');
 const config = require('../config/auth.config');
 const User = require('../models/user.model');
 
+// Cadastro
 exports.signup = async (req, res) => {
   try {
     const { name, email, password, user_type, state, city, phone, business_name, cnpj, description } = req.body;
-    
+
     // Verificar se o email já existe
     const existingUser = await User.findByEmail(email);
     if (existingUser) {
@@ -33,10 +34,11 @@ exports.signup = async (req, res) => {
   }
 };
 
+// Login
 exports.signin = async (req, res) => {
   try {
     const user = await User.findByEmail(req.body.email);
-    
+
     if (!user) {
       return res.status(404).send({ message: "Usuário não encontrado." });
     }

@@ -1,3 +1,3 @@
 module.exports = {
-  secret: "sua-chave-secreta-jwt"
+  secret: "eb2c85b65f02785bf6f8cb1d7967c279e83a3876967512ad34b7450892572848cb1c579d54ca6faab15e7dac281255b4dc6c39f35a7d095f445ec2e10fce15f4"
 };
