@@ -35,12 +35,10 @@
                 <div class="filters">
                    <select id="stateFilter">
                         <option value="">Todos os estados</option>
-                        <!-- Estados serão preenchidos via JavaScript -->
-                    </select>
+                        </select>
                     <select id="cityFilter">
                         <option value="">Todas as cidades</option>
-                        <!-- Cidades serão preenchidas via JavaScript -->
-                    </select>
+                        </select>
                 </div>
             </div>
             
@@ -54,207 +52,106 @@
             </div>
         </div>
     </header>
-
     <main class="main">
         <div class="container">
             <div class="products-grid" id="productsGrid">
-                <!-- Produtos serão carregados aqui via JavaScript -->
-            </div>
+                </div>
         </div>
     </main>
 
-   <!-- Modal de Login -->
     <div id="loginModal" class="modal">
         <div class="modal-content">
-            <span class="close">&times;</span>
+            <span class="close" id="closeLoginModal">&times;</span>
             <h2>Login</h2>
             <form id="loginForm">
                 <div class="form-group">
-                    <label for="userTypeLogin">Tipo de Acesso</label>
-                    <div class="user-type-selector">
-                        <input type="radio" id="clientTypeLogin" name="userTypeLogin" value="client" checked>
-                        <label for="clientTypeLogin">Cliente</label>
-                        <input type="radio" id="sellerTypeLogin" name="userTypeLogin" value="seller">
-                        <label for="sellerTypeLogin">Vendedor</label>
+                    <label for="loginUserType">Entrar como:</label>
+                    <div class="radio-group">
+                        <input type="radio" id="loginUserTypeClient" name="user_typeLogin" value="cliente" checked>
+                        <label for="loginUserTypeClient">Cliente</label>
+                        <input type="radio" id="loginUserTypeSeller" name="user_typeLogin" value="vendedor">
+                        <label for="loginUserTypeSeller">Vendedor</label>
+                        <input type="radio" id="loginUserTypeAdmin" name="user_typeLogin" value="admin">
+                        <label for="loginUserTypeAdmin">Admin</label>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="loginEmail">Email</label>
-                    <input type="email" id="loginEmail" required>
+                    <label for="loginEmail">E-mail</label>
+                    <input type="email" id="loginEmail" name="email" required>
                 </div>
                 <div class="form-group">
                     <label for="loginPassword">Senha</label>
-                    <input type="password" id="loginPassword" required>
+                    <input type="password" id="loginPassword" name="password" required>
                 </div>
                 <button type="submit" class="btn">Entrar</button>
-                <p class="login-switch">Não tem uma conta? <a href="#" id="switchToRegister">Cadastre-se</a></p>
+                <a href="#" id="switchToRegister" class="switch-link">Não tem conta? Cadastre-se</a>
             </form>
         </div>
     </div>
 
-    <!-- Modal de Cadastro -->
     <div id="registerModal" class="modal">
         <div class="modal-content">
-            <span class="close">&times;</span>
+            <span class="close" id="closeRegisterModal">&times;</span>
             <h2>Cadastro</h2>
             <form id="registerForm">
                 <div class="form-group">
-                    <label for="userType">Tipo de Cadastro</label>
-                    <div class="user-type-selector">
-                        <input type="radio" id="clientType" name="userType" value="client" checked>
-                        <label for="clientType">Cliente</label>
-                        <input type="radio" id="sellerType" name="userType" value="seller">
-                        <label for="sellerType">Vendedor</label>
+                    <label for="userTypeRegister">Quero me cadastrar como:</label>
+                    <div class="radio-group">
+                        <input type="radio" id="registerUserTypeClient" name="user_typeRegister" value="cliente" checked>
+                        <label for="registerUserTypeClient">Cliente</label>
+                        <input type="radio" id="registerUserTypeSeller" name="user_typeRegister" value="vendedor">
+                        <label for="registerUserTypeSeller">Vendedor</label>
                     </div>
                 </div>
-                
                 <div class="form-group">
                     <label for="registerName">Nome Completo</label>
-                    <input type="text" id="registerName" required>
+                    <input type="text" id="registerName" name="name" required>
                 </div>
-                
                 <div class="form-group">
-                    <label for="registerEmail">Email</label>
-                    <input type="email" id="registerEmail" required>
+                    <label for="registerEmail">E-mail</label>
+                    <input type="email" id="registerEmail" name="email" required>
                 </div>
-                
                 <div class="form-group">
                     <label for="registerPassword">Senha</label>
-                    <input type="password" id="registerPassword" required>
+                    <input type="password" id="registerPassword" name="password" required>
                 </div>
-                
                 <div class="form-group">
-                    <label for="registerState">Estado</label>
-                    <select id="registerState" required>
-                        <option value="">Selecione</option>
-                        <!-- <option value="SP">São Paulo</option>
-                        <option value="RJ">Rio de Janeiro</option>
-                        <option value="MG">Minas Gerais</option>
-                        <option value="RS">Rio Grande do Sul</option>
-                        <option value="PR">Paraná</option> -->
-                    </select>
+                    <label for="registerPhone">Telefone (opcional)</label>
+                    <input type="tel" id="registerPhone" name="phone">
                 </div>
-                
-                <div class="form-group">
-                    <label for="registerCity">Cidade</label>
-                    <input type="text" id="registerCity" required>
-                </div>
-                
-                <!-- Campos específicos para vendedores -->
-                <div id="sellerFields" class="seller-fields" style="display: none;">
-                    <div class="form-group">
-                        <label for="sellerBusinessName">Nome da Empresa/Marca</label>
-                        <input type="text" id="sellerBusinessName">
-                    </div>
-                    <div class="form-group">
-                        <label for="sellerCNPJ">CNPJ (opcional)</label>
-                        <input type="text" id="sellerCNPJ" placeholder="00.000.000/0000-00">
-                    </div>
-                    <div class="form-group">
-                        <label for="sellerDescription">Descrição do Negócio</label>
-                        <textarea id="sellerDescription" rows="3"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="sellerPhone">Telefone para Contato</label>
-                        <input type="text" id="sellerPhone" name="sellerPhone" placeholder="(00) 00000-0000" required>
-                    </div>
-                </div>
-                
                 <button type="submit" class="btn">Cadastrar</button>
+                <a href="#" id="switchToLogin" class="switch-link">Já tem conta? Faça login</a>
             </form>
         </div>
     </div>
-    <!-- Modal do Carrinho -->
+
+    <div id="productModal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="closeProductModal">&times;</span>
+            <div id="productDetail">
+                </div>
+        </div>
+    </div>
+
     <div id="cartModal" class="modal">
-        <div class="modal-content cart-modal-content">
+        <div class="modal-content">
             <span class="close" id="closeCartModal">&times;</span>
-            <h3>Seu Carrinho</h3>
-            <div id="cartItems" class="cart-items">
+            <h2>Seu Carrinho</h2>
+            <div id="cartItems">
                 </div>
             <div class="cart-total">
                 <p>Total: <span id="cartTotal">R$ 0,00</span></p>
-                <button id="checkoutBtn" class="btn">Finalizar Compra</button>
             </div>
+            <button id="checkoutBtn" class="btn">Finalizar Compra</button>
         </div>
     </div>
-    <div id="checkoutModal" class="modal">
-        <div class="modal-content checkout-modal-content">
-            <span class="close" id="closeCheckoutModal">&times;</span>
-            <h3>Finalizar Compra</h3>
-            <div class="checkout-summary">
-                <h4>Resumo do Pedido</h4>
-                <div id="checkoutSummaryItems" class="checkout-summary-items">
-                    </div>
-                <p class="checkout-summary-total">Total: <span id="checkoutSummaryTotal">R$ 0,00</span></p>
-            </div>
-
-            <div class="payment-methods">
-                <h4>Formas de Pagamento</h4>
-                <div class="payment-options">
-                    <label class="payment-option">
-                        <input type="radio" name="paymentMethod" value="pix" checked>
-                        <i class="fas fa-qrcode"></i> PIX
-                    </label>
-                    <label class="payment-option">
-                        <input type="radio" name="paymentMethod" value="creditCard">
-                        <i class="fas fa-credit-card"></i> Cartão de Crédito
-                    </label>
-                    <label class="payment-option">
-                        <input type="radio" name="paymentMethod" value="debitCard">
-                        <i class="fas fa-credit-card"></i> Cartão de Débito
-                    </label>
-                    <label class="payment-option">
-                        <input type="radio" name="paymentMethod" value="cash">
-                        <i class="fas fa-money-bill-wave"></i> Dinheiro
-                    </label>
-                </div>
-            </div>
-
-            <div id="paymentDetails" class="payment-details">
-                </div>
-              <button id="confirmPurchaseBtn" class="btn primary-btn">Confirmar Pagamento</button>
+    
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 Go Organic. Todos os direitos reservados.</p>
         </div>
-    </div>
-    <!-- Modal do Chat -->
-    <div id="chatModal" class="modal">
-        <div class="modal-content chat-modal-content">
-            <span class="close">&times;</span>
-            <div class="chat-header">
-                <h3 id="chatSellerName"></h3>
-                <p id="chatProductInfo"></p>
-            </div>
-            <div class="chat-messages" id="chatMessages">
-                <!-- Mensagens serão exibidas aqui -->
-            </div>
-            <div class="chat-input">
-                <input type="text" id="chatMessageInput" placeholder="Digite sua mensagem..." autocomplete="off">
-                <button id="sendMessageBtn"><i class="fas fa-paper-plane"></i></button>
-            </div>
-        </div>
-    </div>
-        <!-- Adicione este div antes do fechamento do body -->
-        <div class="mobile-bottom-actions">
-            <button id="mobileLoginBtn" class="btn"><i class="fas fa-user"></i> Login</button>
-            <button id="mobileRegisterBtn" class="btn"><i class="fas fa-user-plus"></i> Cadastro</button>
-            <button id="mobileCartBtn" class="btn cart-btn">
-                <i class="fas fa-shopping-cart"></i>
-                <span id="mobileCartCount">0</span>
-            </button>
-        </div>
-        <div id="successModal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <div class="success-message">
-                <h2>Obrigado por sua compra!</h2>
-                <p>Seu pedido foi realizado com sucesso.</p>
-                <div id="purchaseDetails">
-                    </div>
-                <p>Um resumo da sua compra foi enviado para seu e-mail ou WhatsApp.</p>
-                <button id="backToStoreBtn" class="btn primary-btn">Voltar para a loja</button>
-            </div>
-        </div>
-    </div>
+    </footer>
+    <script src="script.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="script.js"></script>   
 </body>
 </html>

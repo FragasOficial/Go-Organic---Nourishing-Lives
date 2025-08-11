@@ -4,7 +4,11 @@ const bodyParser = require("body-parser");
 
 const app = express();
 
-app.use(cors());
+// app.js
+app.use(cors({
+  origin: 'http://localhost:3000', // Altere para sua porta frontend
+  credentials: true
+}));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 

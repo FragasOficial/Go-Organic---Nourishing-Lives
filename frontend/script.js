@@ -1,4 +1,92 @@
 // Adicione esta função no início do arquivo (junto com outras funções de utilidade)
+// Adicione esta função no início do arquivo (junto com outras funções de utilidade)
+function handleSuccessfulLogin(user_type) {
+    Swal.fire({
+        icon: 'success',
+        title: 'Sucesso!',
+        text: 'Login realizado com sucesso!'
+    });
+    
+    // Armazena o tipo de usuário no localStorage para simular a sessão
+    localStorage.setItem('userRole', user_type);
+    
+    // Redireciona para o painel correto com base no tipo de usuário
+    if (user_type === 'cliente') {
+        window.location.href = 'painel-cliente.html';
+    } else if (user_type === 'vendedor') {
+        window.location.href = 'painel-vendedor.html';
+    } else if (user_type === 'admin') {
+        window.location.href = 'painel-admin.html';
+    }
+}
+
+// Nova função para configurar o formulário de cadastro
+function setupRegisterForm() {
+    const registerForm = document.getElementById('registerForm');
+    const switchToLogin = document.getElementById('switchToLogin');
+    
+    if (switchToLogin) {
+        switchToLogin.addEventListener('click', (e) => {
+            e.preventDefault();
+            elements.registerModal.style.display = 'none';
+            elements.loginModal.style.display = 'block';
+        });
+    }
+
+    if (registerForm) {
+        registerForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const user_type = document.querySelector('input[name="user_typeRegister"]:checked').value;
+            const name = document.getElementById('registerName').value;
+            const email = document.getElementById('registerEmail').value;
+            const password = document.getElementById('registerPassword').value;
+            const phone = document.getElementById('registerPhone').value;
+
+            try {
+                const response = await fetch('http://localhost:3000/api/auth/signup', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ name, email, password, phone, user_type })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Sucesso!',
+                        text: 'Cadastro realizado com sucesso!'
+                    });
+                    elements.registerModal.style.display = 'none';
+                    // Redireciona para a página de login após o cadastro
+                    elements.loginModal.style.display = 'block';
+                } else {
+                    const errorMessage = data.message || "Erro desconhecido ao tentar fazer cadastro.";
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Erro no Cadastro!',
+                        text: errorMessage
+                    });
+                }
+            } catch (error) {
+                console.error('Erro no cadastro:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Erro no Cadastro!',
+                    text: 'Erro desconhecido ao tentar fazer cadastro.'
+                });
+            }
+            
+            registerForm.reset();
+        });
+    } else {
+        console.error("Elemento 'registerForm' não encontrado.");
+    }
+}
+
 function setupLoginForm() {
     const loginForm = document.getElementById('loginForm');
     const switchToRegister = document.getElementById('switchToRegister');
@@ -15,30 +103,24 @@ function setupLoginForm() {
         loginForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             
-            const userType = document.querySelector('input[name="userTypeLogin"]:checked').value;
+            const user_type = document.querySelector('input[name="user_typeLogin"]:checked').value;
             const email = document.getElementById('loginEmail').value;
             const password = document.getElementById('loginPassword').value;
             
             try {
-                // A rota foi corrigida para 'signin'
+                // Inclui o user_type na requisição para a API
                 const response = await fetch('http://localhost:3000/api/auth/signin', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ email, password, userType })
+                    body: JSON.stringify({ email, password, user_type })
                 });
 
                 const data = await response.json();
 
                 if (response.ok) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Sucesso!',
-                        text: 'Login realizado com sucesso!'
-                    });
-                    // Lógica para armazenar token, redirecionar, etc.
-                    elements.loginModal.style.display = 'none';
+                    handleSuccessfulLogin(user_type);
                 } else {
                     const errorMessage = data.message || "Erro desconhecido ao tentar fazer login.";
                     Swal.fire({
@@ -62,6 +144,68 @@ function setupLoginForm() {
         console.error("Elemento 'loginForm' não encontrado.");
     }
 }
+
+
+// Chame a função para configurar o formulário de login quando o DOM estiver pronto
+document.addEventListener('DOMContentLoaded', () => {
+    // Configura os modais e botões de login/cadastro
+    const loginBtn = document.getElementById('loginBtn');
+    const registerBtn = document.getElementById('registerBtn');
+    
+    const elements = {
+        loginModal: document.getElementById('loginModal'),
+        registerModal: document.getElementById('registerModal'),
+        closeLoginModal: document.getElementById('closeLoginModal'),
+        closeRegisterModal: document.getElementById('closeRegisterModal'),
+    };
+    
+    if(loginBtn) {
+        loginBtn.addEventListener('click', () => {
+            elements.loginModal.style.display = 'block';
+        });
+    }
+    
+    if(registerBtn) {
+        registerBtn.addEventListener('click', () => {
+            elements.registerModal.style.display = 'block';
+        });
+    }
+
+    // Fechar modais
+    elements.closeLoginModal.addEventListener('click', () => {
+        elements.loginModal.style.display = 'none';
+    });
+    elements.closeRegisterModal.addEventListener('click', () => {
+        elements.registerModal.style.display = 'none';
+    });
+    window.addEventListener('click', (event) => {
+        if (event.target == elements.loginModal) {
+            elements.loginModal.style.display = 'none';
+        }
+        if (event.target == elements.registerModal) {
+            elements.registerModal.style.display = 'none';
+        }
+    });
+
+    setupLoginForm();
+    setupRegisterForm();
+    populateStateFilter();
+    populateCityFilter(stateFilter.value);
+    displayProducts();
+
+    stateFilter.addEventListener('change', (e) => {
+        populateCityFilter(e.target.value);
+        displayProducts();
+    });
+
+    cityFilter.addEventListener('change', () => {
+        displayProducts();
+    });
+
+    searchInput.addEventListener('input', () => {
+        displayProducts();
+    });
+});
 
 // Chame a função para configurar o formulário de login quando o DOM estiver pronto
 document.addEventListener('DOMContentLoaded', setupLoginForm);
@@ -658,7 +802,7 @@ async function handleLogin(event) {
     const password = document.getElementById('loginPassword').value;
 
     try {
-        const response = await fetch('http://localhost:3000/api/auth/login', {
+        const response = await fetch('http://localhost:3000/api/auth/signin', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -683,7 +827,7 @@ async function handleLogin(event) {
             localStorage.setItem('token', data.token);
 
             // Redirecionar o usuário para o painel correto
-            redirectToDashboard(data.userType);
+            redirectToDashboard(data.user_type);
 
         } else {
             // Login falhou
@@ -776,7 +920,7 @@ async function handleLogin(event) {
   const password = document.getElementById('loginPassword').value;
 
   try {
-    const response = await fetch('http://localhost:3000/api/auth/login', {
+    const response = await fetch('http://localhost:3000/api/auth/signin', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password })
@@ -800,7 +944,7 @@ async function handleLogin(event) {
 
     alert('Login realizado com sucesso!');
     localStorage.setItem('token', data.token);
-    redirectToDashboard(data.userType);
+    redirectToDashboard(data.user_type);
 
   } catch (err) {
     alert(err.message);
@@ -817,7 +961,7 @@ async function handleRegister(event) {
         name: document.getElementById('registerName').value,
         email: document.getElementById('registerEmail').value,
         password: document.getElementById('registerPassword').value,
-        user_type: document.querySelector('input[name="userType"]:checked').value,
+        user_type: document.querySelector('input[name="user_type"]:checked').value,
         state: document.getElementById('registerState').value,
         city: document.getElementById('registerCity').value
     };
@@ -831,7 +975,7 @@ async function handleRegister(event) {
     }
 
     try {
-        const response = await fetch('http://localhost:3000/api/auth/register', {
+        const response = await fetch('http://localhost:3000/api/auth/signup', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -856,7 +1000,6 @@ async function handleRegister(event) {
             throw new Error(data.message || 'Erro no cadastro');
         }
     } catch (error) {
-        console.error('Erro no cadastro:', error);
         alert(error.message || 'Erro ao conectar com o servidor');
     }
 }
@@ -871,8 +1014,8 @@ if (document) document.addEventListener('DOMContentLoaded', () => {
 // Função para lidar com o cadastro
 
 // Função para redirecionar com base no tipo de usuário
-function redirectToDashboard(userType) {
-    switch (userType) {
+function redirectToDashboard(user_type) {
+    switch (user_type) {
         case 'client':
             window.location.href = 'painel-cliente.html';
             break;
@@ -883,7 +1026,7 @@ function redirectToDashboard(userType) {
             window.location.href = 'painel-admin.html';
             break;
         default:
-            console.warn('Tipo de usuário desconhecido:', userType);
+            console.warn('Tipo de usuário desconhecido:', user_type);
             window.location.href = 'index.html';
             break;
     }
@@ -1105,7 +1248,7 @@ if (document) document.addEventListener('DOMContentLoaded', () => {
             const password = document.getElementById('loginPassword').value;
 
             try {
-                const response = await fetch('http://localhost:3000/api/auth/login', {
+                const response = await fetch('http://localhost:3000/api/auth/signin', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ email, password })
@@ -1154,17 +1297,15 @@ if (document) document.addEventListener('DOMContentLoaded', () => {
             const name = document.getElementById('registerName').value;
             const email = document.getElementById('registerEmail').value;
             const password = document.getElementById('registerPassword').value;
-            const userType = document.querySelector('input[name="userTypeRegister"]:checked').value;
-            const address = document.getElementById('registerAddress').value;
+            const address = document.getElementById('registerAddress');
             const city = document.getElementById('registerCity').value;
             const state = document.getElementById('registerState').value;
-            const zip = document.getElementById('registerZip').value;
 
             try {
-                const response = await fetch('http://localhost:3000/api/auth/register', {
+                const response = await fetch('http://localhost:3000/api/auth/signup', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ name, email, password, userType, address, city, state, zip })
+                    body: JSON.stringify({ name, email, password, user_type, address, city, state})
                 });
 
                 if (!response.ok) {
@@ -1192,7 +1333,6 @@ if (document) document.addEventListener('DOMContentLoaded', () => {
                 registerForm.reset();
             } catch (error) {
                 alert(`Erro no cadastro: ${error.message}`);
-                console.error('Erro no cadastro:', error);
             }
         });
     }
@@ -1800,7 +1940,7 @@ function setupAuthForms() {
     if (registerForm) elements.registerForm.addEventListener('submit', (e) => {
         e.preventDefault();
         
-        const userType = document.querySelector('input[name="userType"]:checked').value;
+        const user_type = document.querySelector('input[name="user_type"]:checked').value;
         const name = document.getElementById('registerName').value;
         const email = document.getElementById('registerEmail').value;
         const password = document.getElementById('registerPassword').value;
@@ -1808,7 +1948,7 @@ function setupAuthForms() {
         const city = document.getElementById('registerCity').value;
         
         let userData = {
-            userType,
+            user_type,
             name,
             email,
             password,
@@ -1816,7 +1956,7 @@ function setupAuthForms() {
             city
         };
         
-        if(userType === 'seller') {
+        if(user_type === 'seller') {
             userData.businessName = document.getElementById('sellerBusinessName').value;
             userData.cnpj = document.getElementById('sellerCNPJ').value;
             userData.description = document.getElementById('sellerDescription').value;
@@ -1839,7 +1979,7 @@ function setupAuthForms() {
             }
         }
         
-        alert(`Cadastro de ${userType === 'client' ? 'Cliente' : 'Vendedor'} realizado com sucesso!\nNome: ${name}\nEmail: ${email}`);
+        alert(`Cadastro de ${user_type === 'client' ? 'Cliente' : 'Vendedor'} realizado com sucesso!\nNome: ${name}\nEmail: ${email}`);
         elements.registerModal.style.display = 'none';
         elements.registerForm.reset();
         elements.sellerFields.style.display = 'none';
@@ -2083,13 +2223,13 @@ function setupScrollBehavior() {
 }
 
     // Simula login baseado em localStorage
-    const userType = localStorage.getItem("userType");
+    const user_type = localStorage.getItem("user_type");
 
-    if (userType === "cliente") {
+    if (user_type === "cliente") {
       document.getElementById("clientePainelLink").style.display = "inline-block";
-    } else if (userType === "vendedor") {
+    } else if (user_type === "vendedor") {
       document.getElementById("vendedorPainelLink").style.display = "inline-block";
-    } else if (userType === "admin") {
+    } else if (user_type === "admin") {
       document.getElementById("adminPainelLink").style.display = "inline-block";
     }
 
@@ -2299,7 +2439,7 @@ async function handleLogin(event) {
   
   const email = document.getElementById('loginEmail').value;
   const password = document.getElementById('loginPassword').value;
-  const userType = document.querySelector('input[name="userTypeLogin"]:checked').value;
+  const user_type = document.querySelector('input[name="user_typeLogin"]:checked').value;
 
   try {
     const response = await fetch('http://localhost:3000/api/auth/signin', {
@@ -2322,7 +2462,7 @@ async function handleLogin(event) {
     if (response.ok) {
       // Armazena o token JWT
       localStorage.setItem('token', data.accessToken);
-      localStorage.setItem('userType', data.user_type);
+      localStorage.setItem('user_type', data.user_type);
       
       // Redireciona para o painel correto
       if (data.user_type === 'client') {
@@ -2344,8 +2484,8 @@ async function handleLogin(event) {
 // Função para lidar com o cadastro
 
 // Função para redirecionar com base no tipo de usuário
-function redirectToDashboard(userType) {
-    switch (userType) {
+function redirectToDashboard(user_type) {
+    switch (user_type) {
         case 'client':
             window.location.href = 'painel-cliente.html';
             break;
@@ -2411,7 +2551,7 @@ if (document) document.addEventListener('DOMContentLoaded', () => {
         }
     });
     
-    function updateAuthUI(userType) {
+    function updateAuthUI(user_type) {
         // Esconde botões de login/cadastro
         document.querySelectorAll('.auth-button').forEach(btn => {
             btn.style.display = 'none';
@@ -2422,7 +2562,7 @@ if (document) document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('logoutBtn').style.display = 'block';
         
         // Atualiza links do painel baseado no tipo de usuário
-        document.getElementById(`${userType}PanelLink`).style.display = 'block';
+        document.getElementById(`${user_type}PanelLink`).style.display = 'block';
     }
 });
 
@@ -2500,8 +2640,8 @@ async function handleLogin(event) {
 }
 
 // Função para redirecionar com base no tipo de usuário
-function redirectToDashboard(userType) {
-    switch (userType) {
+function redirectToDashboard(user_type) {
+    switch (user_type) {
         case 'client':
             window.location.href = 'painel-cliente.html';
             break;
@@ -2512,7 +2652,7 @@ function redirectToDashboard(userType) {
             window.location.href = 'painel-admin.html';
             break;
         default:
-            console.warn('Tipo de usuário desconhecido:', userType);
+            console.warn('Tipo de usuário desconhecido:', user_type);
             window.location.href = 'index.html';
             break;
     }

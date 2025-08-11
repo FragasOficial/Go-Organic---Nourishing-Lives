@@ -23,63 +23,17 @@
     </section>
 
     <section>
-      <h2>Meu Perfil</h2>
-      <form id="formPerfilCliente">
-        <label>Nome:</label>
-        <input type="text" id="clienteNome" value="Cliente Exemplo">
-
-        <label>Email:</label>
-        <input type="email" id="clienteEmail" value="cliente@exemplo.com">
-
-        <label>Telefone:</label>
-        <input type="tel" id="clienteTelefone" value="(99) 99999-9999">
-
-        <button type="submit" class="btn">Salvar alterações</button>
-      </form>
+      <h2>Minhas Informações</h2>
+      <div id="informacoesCliente">
+        </div>
     </section>
   </main>
 
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      // Função para carregar os pedidos do cliente
-      function carregarPedidosCliente() {
-        const pedidosDiv = document.getElementById('pedidosCliente');
-        pedidosDiv.innerHTML = 'Carregando pedidos...';
-
-        // Simulação de carregamento de dados
-        setTimeout(() => {
-          const pedidos = [
-            { id: '123', data: '20/10/2023', total: 125.50, status: 'Enviado' },
-            { id: '124', data: '15/10/2023', total: 89.90, status: 'Entregue' },
-          ];
-          pedidosDiv.innerHTML = '';
-          pedidos.forEach(pedido => {
-            const pedidoElement = document.createElement('div');
-            pedidoElement.className = 'pedido-item';
-            pedidoElement.innerHTML = `
-              <p><strong>Pedido #${pedido.id}</strong></p>
-              <p>Data: ${pedido.data}</p>
-              <p>Total: R$${pedido.total.toFixed(2)}</p>
-              <p>Status: ${pedido.status}</p>
-            `;
-            pedidosDiv.appendChild(pedidoElement);
-          });
-        }, 1000);
-      }
-
-      // Evento de submissão do formulário de perfil
-      const formPerfilCliente = document.getElementById('formPerfilCliente');
-      formPerfilCliente.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const nome = document.getElementById('clienteNome').value;
-        const email = document.getElementById('clienteEmail').value;
-        const telefone = document.getElementById('clienteTelefone').value;
-        alert(`Dados do perfil atualizados!\nNome: ${nome}\nEmail: ${email}\nTelefone: ${telefone}`);
-      });
-      
-      // Chamada da função para carregar os pedidos ao carregar a página
-      carregarPedidosCliente();
-    });
-  </script>
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; 2024 Go Organic. Todos os direitos reservados.</p>
+    </div>
+  </footer>
+  <script src="script.js"></script>
 </body>
 </html>

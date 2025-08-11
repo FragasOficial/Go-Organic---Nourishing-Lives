@@ -15,10 +15,6 @@ app.get("/", (req, res) => {
     res.json({ message: "API GoOrganic - By Francisco Costa" });
 });
 
-// Importa e configura as rotas de autenticação
-// A linha abaixo chama a função exportada de auth.routes.js, passando 'app' como argumento.
-require('./routes/auth.routes')(app);
-
 // Inicia o servidor
 app.listen(PORT, () => {
     console.log(`Servidor rodando na porta ${PORT}`);

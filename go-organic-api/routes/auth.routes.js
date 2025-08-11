@@ -19,5 +19,7 @@ module.exports = function(app) {
     controller.signup
   );
 
-  app.post("/api/auth/signin", controller.signin);
+  // auth.routes.js
+  app.post("/api/auth/signin", cors(), controller.signin); // ✅ Adicione cors()
+  app.post("/api/auth/signup", cors(), controller.signup);
 };

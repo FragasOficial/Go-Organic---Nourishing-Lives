@@ -38,6 +38,10 @@ exports.signup = async (req, res) => {
 exports.signin = async (req, res) => {
   try {
     const user = await User.findByEmail(req.body.email);
+    // auth.controller.js (signin)
+    if (!user) {
+      return res.status(401).send({ message: "Usuário não encontrado" });
+    }
 
     if (!user) {
       return res.status(404).send({ message: "Usuário não encontrado." });
@@ -66,3 +70,8 @@ exports.signin = async (req, res) => {
     res.status(500).send({ message: err.message });
   }
 };
+
+// auth.controller.js
+console.log('Consultando usuário:', email);
+const user = await User.findOne({ where: { email } });
+console.log('Resultado:', user ? 'encontrado' : 'não encontrado');
