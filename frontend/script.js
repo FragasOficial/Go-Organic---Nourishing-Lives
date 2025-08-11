@@ -2523,3 +2523,33 @@ function redirectToDashboard(userType) {
 // para carregar produtos, modals, etc.
 // Certifique-se de que o seu `index.html` tem os IDs corretos.
 // =================================================================
+
+// Lógica para alternar entre os formulários de registro
+const showClientBtn = document.getElementById('showClientRegister');
+const showSellerBtn = document.getElementById('showSellerRegister');
+const formClientRegister = document.getElementById('formClientRegister');
+const formSellerRegister = document.getElementById('formSellerRegister');
+
+if (showClientBtn && showSellerBtn) {
+    showClientBtn.addEventListener('click', () => {
+        showClientBtn.classList.add('active');
+        showSellerBtn.classList.remove('active');
+        formClientRegister.style.display = 'block';
+        formSellerRegister.style.display = 'none';
+
+        // Ativa o formulário de cliente e desativa o de vendedor
+        formClientRegister.querySelectorAll('input').forEach(input => input.disabled = false);
+        formSellerRegister.querySelectorAll('input').forEach(input => input.disabled = true);
+    });
+
+    showSellerBtn.addEventListener('click', () => {
+        showSellerBtn.classList.add('active');
+        showClientBtn.classList.remove('active');
+        formSellerRegister.style.display = 'block';
+        formClientRegister.style.display = 'none';
+
+        // Ativa o formulário de vendedor e desativa o de cliente
+        formSellerRegister.querySelectorAll('input').forEach(input => input.disabled = false);
+        formClientRegister.querySelectorAll('input').forEach(input => input.disabled = true);
+    });
+}
