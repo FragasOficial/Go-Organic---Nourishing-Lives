@@ -1,23 +1,25 @@
 const express = require("express");
 const cors = require("cors");
-const bodyParser = require("body-parser");
 
 const app = express();
 
-// app.js
-app.use(cors({
-  origin: 'http://localhost:3000', // Altere para sua porta frontend
-  credentials: true
-}));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+var corsOptions = {
+  origin: "http://localhost:8081"
+};
 
-// Rotas
-app.get("/", (req, res) => {
-  res.json({ message: "API GoOrganic - By Francisco Costa" });
-});
+app.use(cors(corsOptions));
 
-// Importar rotas de autenticação, passando o objeto 'app'
-require("./routes/auth.routes")(app);
+// parse requests of content-type - application/json
+app.use(express.json());
 
+// parse requests of content-type - application/x-www-form-urlencoded
+app.use(express.urlencoded({ extended: true }));
+
+// Rotas de autenticação
+require('./routes/auth.routes')(app);
+
+// Adicionar as rotas de produtos da mesma forma
+require('./routes/product.routes')(app);
+
+// Exportar a aplicação para ser usada pelo server.js
 module.exports = app;

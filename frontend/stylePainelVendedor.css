@@ -1,13 +1,4 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Painel do Vendedor - Go Organic</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <style>
-        /* Estilos base do arquivo CSS fornecido */
+ /* Estilos base do arquivo CSS fornecido */
         :root {
             --primary-color: #2e7d32;
             --primary-light: #60ad5e;
@@ -239,7 +230,7 @@
             margin-bottom: 10px;
             font-size: 14px;
             display: -webkit-box;
-            -webkit-line-clamp: 2;
+            -webkit-line-clamp: 1;
             -webkit-box-orient: vertical;
             overflow: hidden;
         }
@@ -356,123 +347,5 @@
             text-align: center;
             padding: 10px;
         }
-    </style>
-</head>
-<body>
-    <header>
-        <div class="container">
-            <nav class="nav-desktop">
-                <ul>
-                    <li><a href="index.html">Início</a></li>
-                    <li><a href="produtos.html">Produtos</a></li>
-                    <li><a href="#contato">Contato</a></li>
-                </ul>
-            </nav>
-            <div class="user-info">
-                <span id="userName">Bem-vindo, Vendedor!</span>
-                <button id="logoutBtn" onclick="logout()">Sair</button>
-            </div>
-        </div>
-    </header>
 
-    <main class="main-content">
-        <div class="container-painel-vendedor">
-            <h2 class="section-title">Cadastrar Novo Produto</h2>
-            <form id="productForm" class="product-form" onsubmit="cadastrarProduto(event)">
-                <div class="form-group">
-                    <label for="productName" class="form-label">Nome do Produto:</label>
-                    <input type="text" id="productName" name="name" class="form-input" required>
-                </div>
-                <div class="form-group">
-                    <label for="productDescription" class="form-label">Descrição:</label>
-                    <textarea id="productDescription" name="description" class="form-textarea" required></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="productPrice" class="form-label">Preço:</label>
-                    <input type="number" id="productPrice" name="price" step="0.01" class="form-input" required>
-                </div>
-                <div class="form-group">
-                    <label for="productImage" class="form-label">URL da Imagem:</label>
-                    <input type="text" id="productImage" name="image" class="form-input" required>
-                </div>
-                <button type="submit" class="submit-btn">
-                    <i class="fas fa-plus-circle"></i> Cadastrar Produto
-                </button>
-            </form>
 
-            <hr class="divider">
-
-            <h2 class="section-title">Meus Produtos</h2>
-            <div id="myProducts" class="my-products-container">
-                <!-- Produtos serão inseridos aqui dinamicamente -->
-                <div class="product-item">
-                    <div class="product-image-container">
-                        <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&q=80&w=500" 
-                             alt="Maçãs Orgânicas" class="product-image">
-                    </div>
-                    <div class="product-details">
-                        <h3 class="product-name">Maçãs Orgânicas</h3>
-                        <p class="product-description">Maçãs cultivadas sem agrotóxicos, colhidas no ponto ideal de maturação. Perfeitas para consumo direto ou preparo de sobremesas saudáveis.</p>
-                        <p class="product-price">R$ 8,90/kg</p>
-                        <div class="product-actions">
-                            <button class="action-btn edit-btn">
-                                <i class="fas fa-edit"></i> Editar
-                            </button>
-                            <button class="action-btn delete-btn">
-                                <i class="fas fa-trash-alt"></i> Excluir
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="product-item">
-                    <div class="product-image-container">
-                        <img src="https://images.unsplash.com/photo-1518843875459-f738682238a6?auto=format&fit=crop&q=80&w=500" 
-                             alt="Tomates Cereja" class="product-image">
-                    </div>
-                    <div class="product-details">
-                        <h3 class="product-name">Tomates Cereja Orgânicos</h3>
-                        <p class="product-description">Tomates cereja cultivados organicamente, sabor intenso e adocicado. Ideal para saladas, aperitivos e decoração de pratos.</p>
-                        <p class="product-price">R$ 12,50/caixa</p>
-                        <div class="product-actions">
-                            <button class="action-btn edit-btn">
-                                <i class="fas fa-edit"></i> Editar
-                            </button>
-                            <button class="action-btn delete-btn">
-                                <i class="fas fa-trash-alt"></i> Excluir
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="product-item">
-                    <div class="product-image-container">
-                        <img src="https://images.unsplash.com/photo-1576045057995-568f588f82fb?auto=format&fit=crop&q=80&w=500" 
-                             alt="Alface Crespa" class="product-image">
-                    </div>
-                    <div class="product-details">
-                        <h3 class="product-name">Alface Crespa Orgânica</h3>
-                        <p class="product-description">Alface crespa fresca, cultivada sem pesticidas. Folhas crocantes e sabor suave, perfeitas para saladas e sanduíches saudáveis.</p>
-                        <p class="product-price">R$ 4,50/unidade</p>
-                        <div class="product-actions">
-                            <button class="action-btn edit-btn">
-                                <i class="fas fa-edit"></i> Editar
-                            </button>
-                            <button class="action-btn delete-btn">
-                                <i class="fas fa-trash-alt"></i> Excluir
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </main>
-
-    <footer class="footer">
-        <div class="footer-container">
-            <p>&copy; 2024 Go Organic. Todos os direitos reservados.</p>
-        </div>
-    </footer>
-
-</body>
-</html>

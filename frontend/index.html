@@ -1,157 +1,182 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Go Organic - Marketplace de Produtos Orgânicos</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css"></head>
-</head>
-    <div id="regionConfirmModal" class="modal region-confirm-modal" style="display: none;">
-    <div class="modal-content">
-        <span class="close">&times;</span>
-        <h3>Confirme sua região</h3>
-        <p id="regionConfirmText"></p>
-        <div class="region-confirm-buttons">
-            <button id="confirmSameRegion" class="btn">Usar esta região</button>
-            <button id="searchOtherRegion" class="btn">Procurar na minha região</button>
-        </div>
-    </div>
-</div>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Go Organic - Marketplace de Produtos Orgânicos</title>
+<link href="style.css" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet"/>
+<link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet"/></head>
 <body>
-    <header class="header">
-        <div class="container">
-            <div class="logo" id="displayLogo">
-                <h1>Go Organic</h1>
-                <p class="slogan">By Francisco Costa – Bringing Harmony to Your Health</p>
-            </div>
-            
-            <div class="search-container">
-                <div class="search-box">
-                    <input type="text" id="searchInput" placeholder="Pesquisar produtos...">
-                    <button id="searchButton"><i class="fas fa-search"></i></button>
-                </div>
-                <div class="filters">
-                   <select id="stateFilter">
-                        <option value="">Todos os estados</option>
-                        </select>
-                    <select id="cityFilter">
-                        <option value="">Todas as cidades</option>
-                        </select>
-                </div>
-            </div>
-            
-            <div class="user-actions">
-                <button id="loginBtn" class="btn"><i class="fas fa-user"></i> Login</button>
-                <button id="registerBtn" class="btn"><i class="fas fa-user-plus"></i> Cadastro</button>
-                <button id="cartBtn" class="btn cart-btn">
-                    <i class="fas fa-shopping-cart"></i>
-                    <span id="cartCount">0</span>
-                </button>
-            </div>
-        </div>
-    </header>
-    <main class="main">
-        <div class="container">
-            <div class="products-grid" id="productsGrid">
-                </div>
-        </div>
-    </main>
-
-    <div id="loginModal" class="modal">
-        <div class="modal-content">
-            <span class="close" id="closeLoginModal">&times;</span>
-            <h2>Login</h2>
-            <form id="loginForm">
-                <div class="form-group">
-                    <label for="loginUserType">Entrar como:</label>
-                    <div class="radio-group">
-                        <input type="radio" id="loginUserTypeClient" name="user_typeLogin" value="cliente" checked>
-                        <label for="loginUserTypeClient">Cliente</label>
-                        <input type="radio" id="loginUserTypeSeller" name="user_typeLogin" value="vendedor">
-                        <label for="loginUserTypeSeller">Vendedor</label>
-                        <input type="radio" id="loginUserTypeAdmin" name="user_typeLogin" value="admin">
-                        <label for="loginUserTypeAdmin">Admin</label>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="loginEmail">E-mail</label>
-                    <input type="email" id="loginEmail" name="email" required>
-                </div>
-                <div class="form-group">
-                    <label for="loginPassword">Senha</label>
-                    <input type="password" id="loginPassword" name="password" required>
-                </div>
-                <button type="submit" class="btn">Entrar</button>
-                <a href="#" id="switchToRegister" class="switch-link">Não tem conta? Cadastre-se</a>
-            </form>
-        </div>
-    </div>
-
-    <div id="registerModal" class="modal">
-        <div class="modal-content">
-            <span class="close" id="closeRegisterModal">&times;</span>
-            <h2>Cadastro</h2>
-            <form id="registerForm">
-                <div class="form-group">
-                    <label for="userTypeRegister">Quero me cadastrar como:</label>
-                    <div class="radio-group">
-                        <input type="radio" id="registerUserTypeClient" name="user_typeRegister" value="cliente" checked>
-                        <label for="registerUserTypeClient">Cliente</label>
-                        <input type="radio" id="registerUserTypeSeller" name="user_typeRegister" value="vendedor">
-                        <label for="registerUserTypeSeller">Vendedor</label>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="registerName">Nome Completo</label>
-                    <input type="text" id="registerName" name="name" required>
-                </div>
-                <div class="form-group">
-                    <label for="registerEmail">E-mail</label>
-                    <input type="email" id="registerEmail" name="email" required>
-                </div>
-                <div class="form-group">
-                    <label for="registerPassword">Senha</label>
-                    <input type="password" id="registerPassword" name="password" required>
-                </div>
-                <div class="form-group">
-                    <label for="registerPhone">Telefone (opcional)</label>
-                    <input type="tel" id="registerPhone" name="phone">
-                </div>
-                <button type="submit" class="btn">Cadastrar</button>
-                <a href="#" id="switchToLogin" class="switch-link">Já tem conta? Faça login</a>
-            </form>
-        </div>
-    </div>
-
-    <div id="productModal" class="modal">
-        <div class="modal-content">
-            <span class="close" id="closeProductModal">&times;</span>
-            <div id="productDetail">
-                </div>
-        </div>
-    </div>
-
-    <div id="cartModal" class="modal">
-        <div class="modal-content">
-            <span class="close" id="closeCartModal">&times;</span>
-            <h2>Seu Carrinho</h2>
-            <div id="cartItems">
-                </div>
-            <div class="cart-total">
-                <p>Total: <span id="cartTotal">R$ 0,00</span></p>
-            </div>
-            <button id="checkoutBtn" class="btn">Finalizar Compra</button>
-        </div>
-    </div>
-    
-    <footer class="footer">
-        <div class="container">
-            <p>&copy; 2024 Go Organic. Todos os direitos reservados.</p>
-        </div>
-    </footer>
-    <script src="script.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<div class="modal region-confirm-modal" id="regionConfirmModal" style="display: none;">
+<div class="modal-content">
+<span class="close">×</span>
+<h3>Confirme sua região</h3>
+<p id="regionConfirmText"></p>
+<div class="region-confirm-buttons">
+<button class="btn" id="confirmSameRegion">Usar esta região</button>
+<button class="btn" id="searchOtherRegion">Procurar na minha região</button>
+</div>
+</div>
+</div>
+<header class="header">
+<div class="container">
+<div class="logo" id="displayLogo">
+<h1>Go Organic</h1>
+<p class="slogan">By Francisco Costa – Bringing Harmony to Your Health</p>
+</div>
+<div class="search-container">
+<div class="search-box">
+<input id="searchInput" placeholder="Pesquisar produtos..." type="text"/>
+<button id="searchButton"><i class="fas fa-search"></i></button>
+</div>
+<div class="filters">
+<select id="stateFilter">
+<option value="">Todos os estados</option>
+</select>
+<select id="cityFilter">
+<option value="">Todas as cidades</option>
+</select>
+</div>
+</div>
+<div class="user-actions">
+<button class="btn" id="loginBtn"><i class="fas fa-user"></i> Login</button>
+<button class="btn" id="registerBtn"><i class="fas fa-user-plus"></i> Cadastro</button>
+<button class="btn cart-btn" id="cartBtn">
+<i class="fas fa-shopping-cart"></i>
+<span id="cartCount">0</span>
+</button>
+</div>
+</div>
+</header>
+<main class="main">
+<div class="container">
+<div class="products-grid" id="productsGrid">
+</div>
+</div>
+</main>
+<div class="modal" id="loginModal">
+<div class="modal-content">
+<span class="close" id="closeLoginModal">×</span>
+<h2>Login</h2>
+<form id="loginForm">
+<div class="form-group">
+<label for="loginUserType">Entrar como:</label>
+<div class="radio-group">
+<input checked="" id="loginUserTypeClient" name="user_typeLogin" type="radio" value="cliente"/>
+<label for="loginUserTypeClient">Cliente</label>
+<input id="loginUserTypeSeller" name="user_typeLogin" type="radio" value="vendedor"/>
+<label for="loginUserTypeSeller">Vendedor</label>
+<input id="loginUserTypeAdmin" name="user_typeLogin" type="radio" value="admin"/>
+<label for="loginUserTypeAdmin">Admin</label>
+</div>
+</div>
+<div class="form-group">
+<label for="loginEmail">E-mail</label>
+<input id="loginEmail" name="email" required="" type="email"/>
+</div>
+<div class="form-group">
+<label for="loginPassword">Senha</label>
+<input id="loginPassword" name="password" required="" type="password"/>
+</div>
+<div class="modal-footer">
+<button class="btn btn-primary" type="submit">Entrar</button>
+<p>Não tem uma conta? <a href="#" id="switchToRegister">Cadastre-se</a></p>
+</div>
+</form>
+</div>
+</div>
+<div class="modal" id="registerModal">
+<div class="modal-content">
+<span class="close" id="closeRegisterModal">×</span>
+<h2>Cadastro</h2>
+<form id="registerForm">
+<div class="form-group">
+<label for="registerUserType">Cadastrar como:</label>
+<div class="radio-group">
+<input checked="" id="registerUserTypeClient" name="user_typeRegister" type="radio" value="cliente"/>
+<label for="registerUserTypeClient">Cliente</label>
+<input id="registerUserTypeSeller" name="user_typeRegister" type="radio" value="vendedor"/>
+<label for="registerUserTypeSeller">Vendedor</label>
+<input id="registerUserTypeAdmin" name="user_typeRegister" type="radio" value="admin"/>
+<label for="registerUserTypeAdmin">Admin</label>
+</div>
+</div>
+<div class="form-group" id="sellerFields">
+<label for="registerName">Nome</label>
+<input id="registerName" name="name" required="" type="text"/>
+<label for="registerPhone">Telefone</label>
+<input id="registerPhone" name="phone" required="" type="text"/>
+</div>
+<div class="form-group">
+<label for="registerEmail">E-mail</label>
+<input id="registerEmail" name="email" required="" type="email"/>
+</div>
+<div class="form-group">
+<label for="registerPassword">Senha</label>
+<input id="registerPassword" name="password" required="" type="password"/>
+</div>
+<div class="modal-footer">
+<button class="btn btn-primary" type="submit">Cadastrar</button>
+<p>Já tem uma conta? <a href="#" id="switchToLogin">Entrar</a></p>
+</div>
+</form>
+</div>
+</div>
+<div class="modal" id="cartModal">
+<div class="modal-content">
+<span class="close" id="closeCartModal">×</span>
+<h2>Carrinho</h2>
+<div id="cartItems">
+</div>
+<div class="cart-summary">
+<p>Total: R$<span id="cartTotal">0.00</span></p>
+<button class="btn btn-primary" id="checkoutBtn">Finalizar Compra</button>
+</div>
+</div>
+</div>
+<div class="modal checkout-modal" id="checkoutModal">
+<div class="modal-content">
+<span class="close" id="closeCheckoutModal">×</span>
+<h2>Finalizar Compra</h2>
+<div class="checkout-summary" id="checkoutSummary">
+<h3>Resumo do Pedido</h3>
+</div>
+<div class="payment-options">
+<h3>Forma de Pagamento</h3>
+<div class="payment-method">
+<input id="pix" name="paymentMethod" type="radio" value="Pix"/>
+<label for="pix">Pix</label>
+</div>
+<div class="payment-method">
+<input id="card" name="paymentMethod" type="radio" value="Cartão de Crédito"/>
+<label for="card">Cartão de Crédito</label>
+</div>
+</div>
+<button class="btn btn-primary" id="confirmPurchaseBtn">Confirmar Compra</button>
+</div>
+</div>
+<div class="modal chat-modal" id="chatModal">
+<div class="modal-content">
+<span class="close" id="closeChatModal">×</span>
+<div class="chat-header">
+<h3 id="chatSellerName"></h3>
+<p id="chatProductInfo"></p>
+</div>
+<div class="chat-messages" id="chatMessages">
+</div>
+<div class="chat-input">
+<input id="chatMessageInput" placeholder="Digite sua mensagem..." type="text"/>
+<button id="sendMessageBtn"><i class="fas fa-paper-plane"></i></button>
+</div>
+</div>
+</div>
+<div class="mobile-bottom-actions">
+<button id="mobileLoginBtn"><i class="fas fa-user"></i> Login</button>
+<button id="mobileRegisterBtn"><i class="fas fa-user-plus"></i> Cadastro</button>
+<button class="cart-btn" id="mobileCartBtn"><i class="fas fa-shopping-cart"></i><span id="mobileCartCount">0</span></button>
+</div>
+<script src="script.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
 </body>
 </html>

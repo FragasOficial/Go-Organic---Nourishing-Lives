@@ -1,27 +1,19 @@
-const express = require('express');
-const cors = require('cors');
-const bodyParser = require('body-parser');
-
-const app = express();
+const app = require('./app');
+const sql = require('mssql');
+const config = require('./config/db.config');
 const PORT = process.env.PORT || 3000;
 
-// Configurações do Express e Middlewares
-app.use(cors());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+// Função para testar a conexão com o banco de dados
+const testDbConnection = async () => {
+    try {
+        await sql.connect(config);
+        console.log('Conexão com o banco de dados SQL Server estabelecida com sucesso!');
+    } catch (err) {
+        console.error('Erro ao conectar-se ao banco de dados:', err);
+    }
+};
 
-// Rota padrão
-app.get("/", (req, res) => {
-    res.json({ message: "API GoOrganic - By Francisco Costa" });
-});
-
-// Inicia o servidor
 app.listen(PORT, () => {
-    console.log(`Servidor rodando na porta ${PORT}`);
-});
-
-// Middleware para tratamento de erros (opcional, mas recomendado)
-app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).json({ error: 'Internal Server Error' });
+    console.log(`Server is running on port ${PORT}.`);
+    testDbConnection(); // Executa o teste de conexão
 });
