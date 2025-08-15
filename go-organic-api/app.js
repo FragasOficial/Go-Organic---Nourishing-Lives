@@ -3,8 +3,11 @@ const cors = require("cors");
 
 const app = express();
 
+// Configuração do CORS para permitir requisições de qualquer origem
+// Esta é uma boa prática para ambiente de desenvolvimento.
+// Você pode substituir por `origin: "http://127.0.0.1:5501"` se quiser ser mais específico.
 var corsOptions = {
-  origin: "http://localhost:8081"
+  origin: "*"
 };
 
 app.use(cors(corsOptions));

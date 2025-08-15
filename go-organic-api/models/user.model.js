@@ -2,7 +2,6 @@ const sql = require('mssql');
 const config = require('../config/db.config');
 
 const User = {
-    // Encontrar um usuário pelo email
     findByEmail: async (email) => {
         try {
             const pool = await sql.connect(config);
@@ -16,13 +15,23 @@ const User = {
         }
     },
 
-    // Criar um novo usuário
+    findById: async (id) => {
+        try {
+            const pool = await sql.connect(config);
+            const result = await pool.request()
+                .input('id', sql.Int, id)
+                .query('SELECT * FROM Users WHERE id = @id');
+            return result.recordset[0];
+        } catch (err) {
+            console.error('Erro em findById:', err.message);
+            throw err;
+        }
+    },
+
     create: async (userData) => {
         try {
             const pool = await sql.connect(config);
             const { name, email, password, user_type, state, city, phone, business_name, cnpj, description } = userData;
-            
-            console.log('Dados para o banco de dados:', userData); // Adicionado para depuração
 
             const request = pool.request();
             request.input('name', sql.NVarChar, name);
@@ -42,7 +51,7 @@ const User = {
             );
             return result.rowsAffected[0];
         } catch (err) {
-            console.error('Erro ao criar usuário:', err.message); // Adicionado para depuração
+            console.error('Erro ao criar usuário:', err.message);
             throw err;
         }
     }

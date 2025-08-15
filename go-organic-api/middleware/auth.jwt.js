@@ -1,9 +1,11 @@
-const jwt = require('jsonwebtoken');
-const config = require('../config/auth.config');
+const jwt = require("jsonwebtoken");
+const config = require("../config/auth.config");
+const User = require("../models/user.model");
 
+// Middleware para verificar o token de autenticação
 const verifyToken = (req, res, next) => {
-  const token = req.headers['x-access-token'];
-  
+  let token = req.headers["x-access-token"];
+
   if (!token) {
     return res.status(403).send({ message: "Token não fornecido!" });
   }
@@ -17,4 +19,30 @@ const verifyToken = (req, res, next) => {
   });
 };
 
-module.exports = { verifyToken };
+// Middleware para verificar se o usuário é um vendedor
+const isVendedor = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.userId);
+    
+    if (!user) {
+        return res.status(404).send({ message: "Usuário não encontrado." });
+    }
+    
+    if (user.user_type === 'vendedor') {
+      next();
+      return;
+    }
+    
+    res.status(403).send({ message: "Requer papel de Vendedor!" });
+  } catch (err) {
+    console.error("Erro no middleware isVendedor:", err);
+    res.status(500).send({ message: err.message || "Erro interno do servidor." });
+  }
+};
+
+const authJwt = {
+  verifyToken,
+  isVendedor
+};
+
+module.exports = authJwt;

@@ -7,7 +7,7 @@ const User = require('../models/user.model');
 exports.signup = async (req, res) => {
     try {
         const { name, email, password, user_type, state, city, phone, business_name, cnpj, description } = req.body;
-        console.log('Dados recebidos para cadastro:', req.body); // Adicionado para depuração
+        console.log('Dados recebidos para cadastro:', req.body);
 
         // Criar usuário
         const userId = await User.create({
@@ -25,7 +25,7 @@ exports.signup = async (req, res) => {
 
         res.send({ message: "Usuário registrado com sucesso!", userId });
     } catch (err) {
-        console.error('Erro no signup:', err.message); // Adicionado para depuração
+        console.error('Erro no signup:', err.message);
         res.status(500).send({ message: err.message });
     }
 };
@@ -56,10 +56,9 @@ exports.signin = async (req, res) => {
             name: user.name,
             email: user.email,
             user_type: user.user_type,
-            accessToken: token
+            token: token
         });
     } catch (err) {
-        console.error('Erro no signin:', err.message); // Adicionado para depuração
         res.status(500).send({ message: err.message });
     }
 };

@@ -244,6 +244,10 @@
             overflow: hidden;
         }
 
+        .favicon{
+            width: 5rem;
+        }
+
         .product-price {
             font-size: 18px;
             font-weight: 700;
@@ -361,6 +365,7 @@
 <body>
     <header>
         <div class="container">
+            <img src="./src/favicon.png" class="favicon" alt="logo-go-organic">
             <nav class="nav-desktop">
                 <ul>
                     <li><a href="index.html">Início</a></li>
@@ -378,24 +383,61 @@
     <main class="main-content">
         <div class="container-painel-vendedor">
             <h2 class="section-title">Cadastrar Novo Produto</h2>
-            <form id="productForm" class="product-form" onsubmit="cadastrarProduto(event)">
-                <div class="form-group">
-                    <label for="productName" class="form-label">Nome do Produto:</label>
-                    <input type="text" id="productName" name="name" class="form-input" required>
-                </div>
-                <div class="form-group">
-                    <label for="productDescription" class="form-label">Descrição:</label>
-                    <textarea id="productDescription" name="description" class="form-textarea" required></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="productPrice" class="form-label">Preço:</label>
-                    <input type="number" id="productPrice" name="price" step="0.01" class="form-input" required>
-                </div>
-                <div class="form-group">
-                    <label for="productImage" class="form-label">URL da Imagem:</label>
-                    <input type="text" id="productImage" name="image" class="form-input" required>
-                </div>
-                <button type="submit" class="submit-btn">
+    <form id="productForm" class="product-form">
+        <div class="form-group">
+            <label for="productName" class="form-label">Nome do Produto:</label>
+            <input type="text" id="productName" name="name" class="form-input" required>
+        </div>
+        <div class="form-group">
+            <label for="productDescription" class="form-label">Descrição:</label>
+            <textarea id="productDescription" name="description" class="form-textarea" required></textarea>
+        </div>
+        <div class="form-group">
+            <label for="productPrice" class="form-label">Preço:</label>
+            <input type="number" id="productPrice" name="price" step="0.01" class="form-input" required>
+        </div>
+        <div class="form-group">
+            <label for="productImage" class="form-label">URL da Imagem:</label>
+            <input type="text" id="productImage" name="image" class="form-input" required>
+        </div>
+
+        <div class="form-group">
+            <label for="productState" class="form-label">Estado (UF):</label>
+            <input type="text" id="productState" name="state" class="form-input" maxlength="2" placeholder="Ex: SP" required>
+        </div>
+        <div class="form-group">
+            <label for="productCity" class="form-label">Cidade:</label>
+            <input type="text" id="productCity" name="city" class="form-input" placeholder="Ex: São Paulo" required>
+        </div>
+        <div class="form-group">
+            <label for="productCategory" class="form-label">Categoria:</label>
+            <select id="productCategory" name="category_id" class="form-input" required>
+                <option value="" disabled selected>Selecione uma categoria</option>
+                <option value="1">Frutas</option>
+                <option value="2">Verduras</option>
+                <option value="3">Legumes</option>
+                <option value="4">Laticínios e Ovos</option>
+                <option value="5">Grãos e Cereais</option>
+                <option value="6">Pães e Bolos</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="productQuantity" class="form-label">Quantidade Disponível:</label>
+            <input type="number" id="productQuantity" name="available_quantity" class="form-input" min="0" placeholder="Ex: 100" required>
+        </div>
+        <div class="form-group">
+            <label for="productUnit" class="form-label">Unidade de Medida:</label>
+            <select id="productUnit" name="unit_of_measure" class="form-input" required>
+                <option value="" disabled selected>Selecione a unidade</option>
+                <option value="unidade">Unidade</option>
+                <option value="kg">Kg</option>
+                <option value="g">Grama</option>
+                <option value="litro">Litro</option>
+                <option value="ml">Ml</option>
+                <option value="bandeja">Bandeja</option>
+            </select>
+        </div>
+            <button type="submit" class="submit-btn">
                     <i class="fas fa-plus-circle"></i> Cadastrar Produto
                 </button>
             </form>
@@ -473,6 +515,6 @@
             <p>&copy; 2024 Go Organic. Todos os direitos reservados.</p>
         </div>
     </footer>
-
+    <script src="script.js"></script>
 </body>
 </html>
