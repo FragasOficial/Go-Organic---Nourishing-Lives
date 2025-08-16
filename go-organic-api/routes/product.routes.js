@@ -1,6 +1,5 @@
-// routes/product.routes.js
 const controller = require("../controllers/product.controller");
-const authJwt = require("../middleware/auth.jwt"); // Caminho de importação corrigido
+const authJwt = require("../middleware/auth.jwt");
 
 module.exports = function(app) {
     app.use(function(req, res, next) {
@@ -11,10 +10,12 @@ module.exports = function(app) {
         next();
     });
 
-    // Rota para criar um produto, protegida pelo middleware de autenticação e verificação de vendedor
     app.post(
         "/api/products",
-        [authJwt.verifyToken, authJwt.isVendedor], // Uso correto do objeto authJwt
+        [authJwt.verifyToken, authJwt.isVendedor],
         controller.createProduct
     );
+    
+    // Rota para buscar todos os produtos (pública)
+    app.get("/api/products", controller.findAllProducts);
 };

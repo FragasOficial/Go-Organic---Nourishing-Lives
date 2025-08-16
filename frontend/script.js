@@ -25,17 +25,58 @@ function safeAddListener(idOrElement, event, handler) {
     }
 }
 
-function filterProducts() {
-    console.log("Filtrando produtos...");
+function displayProducts() {
+    const productsGrid = safeGetElement('productsGrid');
+    if (!productsGrid) {
+        console.warn("Elemento 'productsGrid' não encontrado.");
+        return;
+    }
+    
+    async function fetchAndRenderProducts() {
+        try {
+            const response = await fetch('http://localhost:3000/api/products');
+            const products = await safeParseJSON(response);
+
+            if (response.ok) {
+                productsGrid.innerHTML = '';
+                if (products.length === 0) {
+                    productsGrid.innerHTML = '<p>Nenhum produto encontrado.</p>';
+                    return;
+                }
+                
+                products.forEach(product => {
+                    const productCard = document.createElement('div');
+                    productCard.classList.add('product-card');
+                    productCard.innerHTML = `
+                        <img src="${product.image_url || 'https://via.placeholder.com/200'}" alt="${product.name}" class="product-image">
+                        <div class="product-info">
+                            <h3 class="product-name">${product.name}</h3>
+                            <p class="product-description">${product.description}</p>
+                            <div class="product-meta">
+                                <span class="product-price">R$ ${product.price.toFixed(2)}</span>
+                                <span class="product-unit"> / ${product.unit_of_measure}</span>
+                            </div>
+                            <div class="product-actions">
+                                <button class="btn btn-add-to-cart">Adicionar</button>
+                                <button class="btn btn-chat">Chat</button>
+                            </div>
+                        </div>
+                    `;
+                    productsGrid.appendChild(productCard);
+                });
+
+            } else {
+                console.error('Falha ao carregar produtos:', products.message);
+                productsGrid.innerHTML = `<p>Erro ao carregar produtos: ${products.message}</p>`;
+            }
+        } catch (error) {
+            console.error('Erro de rede ao carregar produtos:', error);
+            productsGrid.innerHTML = '<p>Não foi possível se conectar ao servidor para carregar os produtos.</p>';
+        }
+    }
+    fetchAndRenderProducts();
 }
 
-function displayProducts() {
-    if (typeof filterProducts === "function") {
-        filterProducts();
-    } else {
-        console.warn("Função filterProducts não encontrada, exibindo todos produtos.");
-    }
-}
 
 function handleSuccessfulLogin(user_type, token) {
     Swal.fire({
@@ -46,10 +87,16 @@ function handleSuccessfulLogin(user_type, token) {
     localStorage.setItem('userRole', user_type);
     localStorage.setItem('token', token);
 
-    if (user_type === 'cliente') {
-        window.location.href = 'index.html';
+    // Lógica de redirecionamento com base no tipo de usuário
+    if (user_type === 'admin') {
+        window.location.href = 'painel-admin.html';
+    } else if (user_type === 'cliente') {
+        window.location.href = 'painel-cliente.html';
     } else if (user_type === 'vendedor') {
         window.location.href = 'painel-vendedor.html';
+    } else {
+        // Redireciona para a página inicial caso o tipo de usuário não seja reconhecido
+        window.location.href = 'index.html';
     }
 }
 
@@ -74,7 +121,7 @@ function setupRegisterForm(elements) {
                 Swal.fire({
                     icon: 'error',
                     title: 'Erro de Validação!',
-                    text: 'Selecione o tipo de usuário (Cliente ou Vendedor).'
+                    text: 'Selecione o tipo de usuário (Cliente, Vendedor ou Admin).'
                 });
                 return;
             }
@@ -172,7 +219,7 @@ function setupLoginForm(elements) {
                 Swal.fire({
                     icon: 'error',
                     title: 'Erro de Validação!',
-                    text: 'Selecione o tipo de usuário (Cliente ou Vendedor).'
+                    text: 'Selecione o tipo de usuário (Cliente, Vendedor ou Admin).'
                 });
                 return;
             }
@@ -191,7 +238,7 @@ function setupLoginForm(elements) {
 
                 const data = await safeParseJSON(response);
                 if (response.ok) {
-                    handleSuccessfulLogin(user_type, data.token);
+                    handleSuccessfulLogin(data.user_type, data.token);
                 } else {
                     const errorMessage = data.message || "Erro desconhecido ao tentar fazer login.";
                     Swal.fire({
@@ -315,11 +362,9 @@ function setupUIListeners() {
         }
     });
 
-    // Configura os formulários apenas se eles existirem na página
     if (loginModal) setupLoginForm(elements);
     if (registerModal) setupRegisterForm(elements);
     
-    // Filtros de estado e cidade
     const stateFilter = safeGetElement('stateFilter');
     const cityFilter = safeGetElement('cityFilter');
     
@@ -345,7 +390,6 @@ function setupUIListeners() {
         });
     }
 
-    // Inicialização para a página do painel do vendedor
     setupProductForm();
 }
 
@@ -355,13 +399,11 @@ function setupProductForm() {
         productForm.addEventListener('submit', async (event) => {
             event.preventDefault();
 
-            // Obtenha os valores dos campos
             const productName = document.getElementById('productName').value;
             const productDescription = document.getElementById('productDescription').value;
             const productPrice = parseFloat(document.getElementById('productPrice').value);
             const productImage = document.getElementById('productImage').value;
 
-            // Novos campos do formulário
             const productState = document.getElementById('productState').value;
             const productCity = document.getElementById('productCity').value;
             const productCategory = document.getElementById('productCategory').value;
@@ -375,17 +417,16 @@ function setupProductForm() {
                 return;
             }
 
-            // Cria um objeto com todos os dados do produto, alinhando com o back-end
             const productData = {
                 name: productName,
                 description: productDescription,
                 price: productPrice,
                 image: productImage,
-                state: productState, // Novo campo
-                city: productCity, // Novo campo
-                category_id: parseInt(productCategory), // Novo campo
-                available_quantity: productQuantity, // Novo campo
-                unit_of_measure: productUnit // Novo campo
+                state: productState,
+                city: productCity,
+                category_id: parseInt(productCategory),
+                available_quantity: productQuantity,
+                unit_of_measure: productUnit
             };
 
             try {
@@ -403,8 +444,6 @@ function setupProductForm() {
                 if (response.ok) {
                     Swal.fire('Sucesso!', 'Produto cadastrado com sucesso.', 'success');
                     productForm.reset();
-                    // Opcional: Atualizar a lista de produtos no index.html
-                    // window.location.href = 'index.html';
                 } else {
                     Swal.fire('Erro!', `Falha ao cadastrar produto: ${result.message}`, 'error');
                 }

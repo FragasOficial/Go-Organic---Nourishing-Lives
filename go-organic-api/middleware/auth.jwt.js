@@ -36,13 +36,35 @@ const isVendedor = async (req, res, next) => {
     res.status(403).send({ message: "Requer papel de Vendedor!" });
   } catch (err) {
     console.error("Erro no middleware isVendedor:", err);
-    res.status(500).send({ message: err.message || "Erro interno do servidor." });
+    res.status(500).send({ message: err.message });
+  }
+};
+
+// Middleware para verificar se o usuário é um administrador
+const isAdmin = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.userId);
+    
+    if (!user) {
+        return res.status(404).send({ message: "Usuário não encontrado." });
+    }
+    
+    if (user.user_type === 'admin') {
+      next();
+      return;
+    }
+    
+    res.status(403).send({ message: "Requer papel de Administrador!" });
+  } catch (err) {
+    console.error("Erro no middleware isAdmin:", err);
+    res.status(500).send({ message: err.message });
   }
 };
 
 const authJwt = {
   verifyToken,
-  isVendedor
+  isVendedor,
+  isAdmin
 };
 
 module.exports = authJwt;

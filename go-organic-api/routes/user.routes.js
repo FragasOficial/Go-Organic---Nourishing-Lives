@@ -11,7 +11,15 @@ module.exports = function(app) {
     });
 
     app.get("/api/test/all", controller.allAccess);
+    
+    // Rotas de teste
     app.get("/api/test/user", [authJwt.verifyToken], controller.userBoard);
     app.get("/api/test/mod", [authJwt.verifyToken, authJwt.isModerator], controller.moderatorBoard);
     app.get("/api/test/admin", [authJwt.verifyToken, authJwt.isAdmin], controller.adminBoard);
+    
+    // Nova rota para o perfil do cliente
+    app.get("/api/user/profile", [authJwt.verifyToken], controller.getUserProfile);
+    
+    // Nova rota para os pedidos do cliente
+    app.get("/api/user/orders", [authJwt.verifyToken], controller.getUserOrders);
 };
