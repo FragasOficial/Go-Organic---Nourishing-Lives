@@ -1,0 +1,223 @@
+{
+  "info": {
+    "name": "Admin API",
+    "_postman_id": "12345678-abcd-4321-efgh-987654321000",
+    "description": "Coleção de rotas administrativas",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "📊 Stats",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "x-access-token",
+            "value": "{{token}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/admin/stats",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "admin", "stats"]
+        }
+      }
+    },
+    {
+      "name": "👥 Users",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "x-access-token",
+            "value": "{{token}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/admin/users",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "admin", "users"]
+        }
+      }
+    },
+    {
+      "name": "📦 Products - List",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "x-access-token",
+            "value": "{{token}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/admin/products",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "admin", "products"]
+        }
+      }
+    },
+    {
+      "name": "📦 Products - Update",
+      "request": {
+        "method": "PUT",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "x-access-token", "value": "{{token}}" }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/admin/products/1",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "admin", "products", "1"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Produto Teste\",\n  \"description\": \"Atualizado via Postman\",\n  \"price\": 99.90,\n  \"image_url\": \"https://example.com/produto.jpg\",\n  \"available_quantity\": 10\n}"
+        }
+      }
+    },
+    {
+      "name": "📦 Products - Delete",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          { "key": "x-access-token", "value": "{{token}}" }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/admin/products/1",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "admin", "products", "1"]
+        }
+      }
+    },
+    {
+      "name": "🛒 Orders - Update",
+      "request": {
+        "method": "PUT",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "x-access-token", "value": "{{token}}" }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/admin/orders/1",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "admin", "orders", "1"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{ \"status\": \"shipped\" }"
+        }
+      }
+    },
+    {
+      "name": "🛒 Orders - Delete",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          { "key": "x-access-token", "value": "{{token}}" }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/admin/orders/1",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "admin", "orders", "1"]
+        }
+      }
+    },
+    {
+      "name": "👨‍👩‍👧 Clients - List",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "x-access-token", "value": "{{token}}" }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/admin/clients",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "admin", "clients"]
+        }
+      }
+    },
+    {
+      "name": "👨‍👩‍👧 Clients - Orders",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "x-access-token", "value": "{{token}}" }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/admin/clients/1/orders",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "admin", "clients", "1", "orders"]
+        }
+      }
+    },
+    {
+      "name": "👨‍👩‍👧 Clients - Delete",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          { "key": "x-access-token", "value": "{{token}}" }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/admin/clients/1",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "admin", "clients", "1"]
+        }
+      }
+    },
+    {
+      "name": "🏪 Sellers - List",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "x-access-token", "value": "{{token}}" }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/admin/sellers",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "admin", "sellers"]
+        }
+      }
+    },
+    {
+      "name": "🏪 Sellers - Products",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "x-access-token", "value": "{{token}}" }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/admin/sellers/1/products",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "admin", "sellers", "1", "products"]
+        }
+      }
+    },
+    {
+      "name": "🏪 Sellers - Delete",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          { "key": "x-access-token", "value": "{{token}}" }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/admin/sellers/1",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "admin", "sellers", "1"]
+        }
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080"
+    },
+    {
+      "key": "token",
+      "value": ""
+    }
+  ]
+}

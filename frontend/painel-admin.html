@@ -25,6 +25,7 @@
     <main class="main container">
         <h2 class="page-title">Painel do Administrador</h2>
 
+        <!-- Estatísticas -->
         <section class="dashboard-section">
             <h3 class="section-title">Dashboard</h3>
             <div class="stats-grid">
@@ -51,6 +52,7 @@
             </div>
         </section>
 
+        <!-- Usuários (genérico) -->
         <section class="dashboard-section">
             <h3 class="section-title">Gerenciar Usuários</h3>
             <div class="table-container">
@@ -64,18 +66,77 @@
                             <th>Ações</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        </tbody>
+                    <tbody></tbody>
                 </table>
             </div>
         </section>
         
+        <!-- Produtos -->
         <section class="dashboard-section">
             <h3 class="section-title">Gerenciar Produtos</h3>
-            <div id="adminProducts" class="products-grid">
-                </div>
+            <div id="adminProducts" class="products-grid"></div>
+        </section>
+
+        <!-- Clientes -->
+        <section class="dashboard-section">
+            <h3 class="section-title">Gerenciar Clientes</h3>
+            <div class="table-container">
+                <table id="clientTable" class="data-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nome</th>
+                            <th>Email</th>
+                            <th>Pedidos</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Vendedores -->
+        <section class="dashboard-section">
+            <h3 class="section-title">Gerenciar Vendedores</h3>
+            <div class="table-container">
+                <table id="sellerTable" class="data-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nome</th>
+                            <th>Email</th>
+                            <th>Produtos</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
         </section>
     </main>
+
+    <!-- Modal de detalhes do cliente -->
+    <div id="clientDetailsModal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="closeClientModal">&times;</span>
+            <h3>Pedidos do Cliente</h3>
+            <div id="clientOrdersList">
+                <p>Carregando pedidos...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de detalhes do vendedor -->
+    <div id="sellerDetailsModal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="closeSellerModal">&times;</span>
+            <h3>Produtos do Vendedor</h3>
+            <div id="sellerProductsList">
+                <p>Carregando produtos...</p>
+            </div>
+        </div>
+    </div>
 
     <footer class="footer">
         <div class="container">

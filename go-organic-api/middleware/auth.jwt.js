@@ -1,3 +1,5 @@
+// C:\Users\User\Documents\Go-Organic\go-organic-api\middleware\auth.jwt.js
+
 const jwt = require("jsonwebtoken");
 const config = require("../config/auth.config");
 const User = require("../models/user.model");
@@ -61,10 +63,34 @@ const isAdmin = async (req, res, next) => {
   }
 };
 
+// Middleware para verificar se o usuário é um moderador
+const isModerator = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.userId);
+
+    if (!user) {
+        return res.status(404).send({ message: "Usuário não encontrado." });
+    }
+
+    if (user.user_type === 'moderator') { // assuming 'moderator' is the user_type
+      next();
+      return;
+    }
+
+    res.status(403).send({ message: "Requer papel de Moderador!" });
+  } catch (err) {
+    console.error("Erro no middleware isModerator:", err);
+    res.status(500).send({ message: err.message });
+  }
+};
+
+// Criação do objeto que agrupa os middlewares
 const authJwt = {
   verifyToken,
   isVendedor,
-  isAdmin
+  isAdmin,
+  isModerator
 };
 
+// Exportação do objeto authJwt
 module.exports = authJwt;
