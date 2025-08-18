@@ -1,96 +1,86 @@
-// C:\Users\User\Documents\Go-Organic\go-organic-api\middleware\auth.jwt.js
+// middleware/auth.jwt.js
 
 const jwt = require("jsonwebtoken");
 const config = require("../config/auth.config");
 const User = require("../models/user.model");
 
-// Middleware para verificar o token de autenticação
+// Middleware to check authentication token
 const verifyToken = (req, res, next) => {
   let token = req.headers["x-access-token"];
 
   if (!token) {
-    return res.status(403).send({ message: "Token não fornecido!" });
+    return res.status(403).send({ message: "No token provided!" });
   }
 
   jwt.verify(token, config.secret, (err, decoded) => {
     if (err) {
-      return res.status(401).send({ message: "Não autorizado!" });
+      return res.status(401).send({ message: "Unauthorized!" });
     }
     req.userId = decoded.id;
     next();
   });
 };
 
-// Middleware para verificar se o usuário é um vendedor
-const isVendedor = async (req, res, next) => {
+// Middleware to check if user is a seller
+const isSeller = async (req, res, next) => {
   try {
-    const user = await User.findById(req.userId);
-    
+    const user = await User.findByPk(req.userId);
     if (!user) {
-        return res.status(404).send({ message: "Usuário não encontrado." });
+      return res.status(404).send({ message: "User not found." });
     }
-    
-    if (user.user_type === 'vendedor') {
-      next();
-      return;
+
+    if (user.user_type === "seller") {
+      return next();
     }
-    
-    res.status(403).send({ message: "Requer papel de Vendedor!" });
+
+    return res.status(403).send({ message: "Require Seller role!" });
   } catch (err) {
-    console.error("Erro no middleware isVendedor:", err);
+    console.error("Error in isSeller middleware:", err);
     res.status(500).send({ message: err.message });
   }
 };
 
-// Middleware para verificar se o usuário é um administrador
+// Middleware to check if user is an admin
 const isAdmin = async (req, res, next) => {
   try {
-    const user = await User.findById(req.userId);
-    
+    const user = await User.findByPk(req.userId);
     if (!user) {
-        return res.status(404).send({ message: "Usuário não encontrado." });
+      return res.status(404).send({ message: "User not found." });
     }
-    
-    if (user.user_type === 'admin') {
-      next();
-      return;
+
+    if (user.user_type === "admin") {
+      return next();
     }
-    
-    res.status(403).send({ message: "Requer papel de Administrador!" });
+
+    return res.status(403).send({ message: "Require Admin role!" });
   } catch (err) {
-    console.error("Erro no middleware isAdmin:", err);
+    console.error("Error in isAdmin middleware:", err);
     res.status(500).send({ message: err.message });
   }
 };
 
-// Middleware para verificar se o usuário é um moderador
+// Middleware to check if user is a moderator
 const isModerator = async (req, res, next) => {
   try {
-    const user = await User.findById(req.userId);
-
+    const user = await User.findByPk(req.userId);
     if (!user) {
-        return res.status(404).send({ message: "Usuário não encontrado." });
+      return res.status(404).send({ message: "User not found." });
     }
 
-    if (user.user_type === 'moderator') { // assuming 'moderator' is the user_type
-      next();
-      return;
+    if (user.user_type === "moderator") {
+      return next();
     }
 
-    res.status(403).send({ message: "Requer papel de Moderador!" });
+    return res.status(403).send({ message: "Require Moderator role!" });
   } catch (err) {
-    console.error("Erro no middleware isModerator:", err);
+    console.error("Error in isModerator middleware:", err);
     res.status(500).send({ message: err.message });
   }
 };
 
-// Criação do objeto que agrupa os middlewares
-const authJwt = {
+module.exports = {
   verifyToken,
-  isVendedor,
+  isSeller,
   isAdmin,
   isModerator
 };
-
-// Exportação do objeto authJwt
-module.exports = authJwt;

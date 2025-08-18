@@ -1,5 +1,5 @@
 // routes/admin.routes.js
-const { authJwt } = require("../middlewares");
+const authJwt = require("../middleware/auth.jwt"); // ✅ Importação corrigida
 const admin = require("../controllers/admin.controller");
 
 module.exports = function (app) {

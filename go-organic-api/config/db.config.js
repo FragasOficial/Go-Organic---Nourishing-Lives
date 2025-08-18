@@ -1,14 +1,27 @@
+// config/db.config.js
+const { Sequelize } = require('sequelize');
 require('dotenv').config();
 
-const config = {
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    server: process.env.DB_SERVER,
-    database: process.env.DB_DATABASE,
-    options: {
+const sequelize = new Sequelize(
+  process.env.DB_NAME,
+  process.env.DB_USER,
+  process.env.DB_PASSWORD,
+  {
+    host: process.env.DB_HOST,
+    dialect: 'mssql',
+    dialectOptions: {
+      options: {
         encrypt: true,
-        trustServerCertificate: true,
+        enableArithAbort: true
+      }
+    },
+    pool: {
+      max: 5,
+      min: 0,
+      acquire: 30000,
+      idle: 10000
     }
-};
+  }
+);
 
-module.exports = config;
+module.exports = sequelize;

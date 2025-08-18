@@ -22,7 +22,7 @@ exports.adminBoard = (req, res) => {
 // Nova função para buscar o perfil do usuário logado
 exports.getUserProfile = async (req, res) => {
     try {
-        const user = await User.findById(req.userId);
+        const user = await User.findByPk(req.userId);
         if (!user) {
             return res.status(404).send({ message: "Usuário não encontrado." });
         }
@@ -34,15 +34,17 @@ exports.getUserProfile = async (req, res) => {
 };
 
 // Nova função para buscar os pedidos do usuário logado
+const Order = require("../models/order.model");
+
 exports.getUserOrders = async (req, res) => {
-    try {
-        const pool = await sql.connect(config);
-        const result = await pool.request()
-            .input('userId', sql.Int, req.userId)
-            .query('SELECT * FROM Orders WHERE user_id = @userId');
-        res.status(200).send(result.recordset);
-    } catch (err) {
-        console.error("Erro ao buscar pedidos do usuário:", err);
-        res.status(500).send({ message: "Erro ao buscar os pedidos." });
-    }
+  try {
+    const orders = await Order.findAll({
+      where: { user_id: req.userId }
+    });
+
+    res.status(200).send(orders);
+  } catch (err) {
+    console.error("Erro ao buscar pedidos do usuário:", err);
+    res.status(500).send({ message: "Erro ao buscar os pedidos." });
+  }
 };

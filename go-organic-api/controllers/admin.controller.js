@@ -1,7 +1,9 @@
 // controllers/admin.controller.js
-const db = require("../models");
-const sequelize = db.sequelize;
 const { QueryTypes } = require("sequelize");
+const sequelize = require("../config/db.config"); // Importação corrigida
+const User = require("../models/user.model"); // Importação direta dos modelos
+const Product = require("../models/product.model");
+const Order = require("../models/order.model");
 
 /**
  * ADMIN CONTROLLER
@@ -13,14 +15,14 @@ module.exports = {
   // =======================
   async getStats(req, res) {
     try {
-      const [users] = await sequelize.query("SELECT COUNT(*) as total FROM Users", { type: QueryTypes.SELECT });
-      const [products] = await sequelize.query("SELECT COUNT(*) as total FROM Products", { type: QueryTypes.SELECT });
-      const [orders] = await sequelize.query("SELECT COUNT(*) as total FROM Orders", { type: QueryTypes.SELECT });
+      const users = await User.count();
+      const products = await Product.count();
+      const orders = await Order.count();
 
       res.json({
-        totalUsers: users.total,
-        totalProducts: products.total,
-        totalOrders: orders.total
+        totalUsers: users,
+        totalProducts: products,
+        totalOrders: orders
       });
     } catch (err) {
       res.status(500).send({ message: err.message });
@@ -32,7 +34,10 @@ module.exports = {
   // =======================
   async findAllUsers(req, res) {
     try {
-      const users = await sequelize.query("SELECT id, name, email, role FROM Users", { type: QueryTypes.SELECT });
+      const users = await User.findAll({
+        attributes: ['id', 'name', 'email', 'role'],
+        raw: true
+      });
       res.json(users);
     } catch (err) {
       res.status(500).send({ message: err.message });
@@ -44,10 +49,10 @@ module.exports = {
   // =======================
   async findAllProducts(req, res) {
     try {
-      const products = await sequelize.query(
-        "SELECT id, name, description, price, image_url, available_quantity, seller_id FROM Products",
-        { type: QueryTypes.SELECT }
-      );
+      const products = await Product.findAll({
+        attributes: ['id', 'name', 'description', 'price', 'image_url', 'available_quantity', 'seller_id'],
+        raw: true
+      });
       res.json(products);
     } catch (err) {
       res.status(500).send({ message: err.message });
@@ -59,11 +64,9 @@ module.exports = {
       const { id } = req.params;
       const { name, description, price, image_url, available_quantity } = req.body;
 
-      await sequelize.query(
-        `UPDATE Products 
-         SET name = ?, description = ?, price = ?, image_url = ?, available_quantity = ? 
-         WHERE id = ?`,
-        { replacements: [name, description, price, image_url, available_quantity, id] }
+      await Product.update(
+        { name, description, price, image_url, available_quantity },
+        { where: { id } }
       );
 
       res.json({ message: "Produto atualizado com sucesso!" });
@@ -75,7 +78,7 @@ module.exports = {
   async deleteProduct(req, res) {
     try {
       const { id } = req.params;
-      await sequelize.query("DELETE FROM Products WHERE id = ?", { replacements: [id] });
+      await Product.destroy({ where: { id } });
       res.json({ message: "Produto deletado com sucesso!" });
     } catch (err) {
       res.status(500).send({ message: err.message });
@@ -90,9 +93,10 @@ module.exports = {
       const { id } = req.params;
       const { status } = req.body;
 
-      await sequelize.query("UPDATE Orders SET status = ? WHERE id = ?", {
-        replacements: [status, id],
-      });
+      await Order.update(
+        { status },
+        { where: { id } }
+      );
 
       res.json({ message: "Pedido atualizado com sucesso!" });
     } catch (err) {
@@ -103,7 +107,7 @@ module.exports = {
   async deleteOrder(req, res) {
     try {
       const { id } = req.params;
-      await sequelize.query("DELETE FROM Orders WHERE id = ?", { replacements: [id] });
+      await Order.destroy({ where: { id } });
       res.json({ message: "Pedido deletado com sucesso!" });
     } catch (err) {
       res.status(500).send({ message: err.message });
@@ -115,10 +119,11 @@ module.exports = {
   // =======================
   async findAllClients(req, res) {
     try {
-      const clients = await sequelize.query(
-        "SELECT id, name, email FROM Users WHERE role = 'client'",
-        { type: QueryTypes.SELECT }
-      );
+      const clients = await User.findAll({
+        attributes: ['id', 'name', 'email'],
+        where: { role: 'cliente' },
+        raw: true
+      });
       res.json(clients);
     } catch (err) {
       res.status(500).send({ message: err.message });
@@ -144,8 +149,11 @@ module.exports = {
   async deleteClient(req, res) {
     try {
       const { id } = req.params;
-      await sequelize.query("DELETE FROM Users WHERE id = ? AND role = 'client'", {
-        replacements: [id],
+      await User.destroy({ 
+        where: { 
+          id,
+          role: 'cliente' 
+        } 
       });
       res.json({ message: "Cliente deletado com sucesso!" });
     } catch (err) {
@@ -158,10 +166,11 @@ module.exports = {
   // =======================
   async findAllSellers(req, res) {
     try {
-      const sellers = await sequelize.query(
-        "SELECT id, name, email FROM Users WHERE role = 'seller'",
-        { type: QueryTypes.SELECT }
-      );
+      const sellers = await User.findAll({
+        attributes: ['id', 'name', 'email'],
+        where: { role: 'vendedor' },
+        raw: true
+      });
       res.json(sellers);
     } catch (err) {
       res.status(500).send({ message: err.message });
@@ -171,10 +180,11 @@ module.exports = {
   async findSellerProducts(req, res) {
     try {
       const { id } = req.params;
-      const products = await sequelize.query(
-        "SELECT id, name, description, price, image_url, available_quantity FROM Products WHERE seller_id = ?",
-        { replacements: [id], type: QueryTypes.SELECT }
-      );
+      const products = await Product.findAll({
+        attributes: ['id', 'name', 'description', 'price', 'image_url', 'available_quantity'],
+        where: { seller_id: id },
+        raw: true
+      });
       res.json(products);
     } catch (err) {
       res.status(500).send({ message: err.message });
@@ -184,8 +194,11 @@ module.exports = {
   async deleteSeller(req, res) {
     try {
       const { id } = req.params;
-      await sequelize.query("DELETE FROM Users WHERE id = ? AND role = 'seller'", {
-        replacements: [id],
+      await User.destroy({ 
+        where: { 
+          id,
+          role: 'vendedor' 
+        } 
       });
       res.json({ message: "Vendedor deletado com sucesso!" });
     } catch (err) {

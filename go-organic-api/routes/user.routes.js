@@ -1,6 +1,9 @@
 const authJwt = require("../middleware/auth.jwt");
 const controller = require("../controllers/user.controller");
 
+console.log("Controller carregado:", controller);
+
+
 module.exports = function(app) {
     app.use(function(req, res, next) {
         res.header(
