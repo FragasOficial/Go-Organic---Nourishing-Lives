@@ -4,76 +4,76 @@ const jwt = require("jsonwebtoken");
 const config = require("../config/auth.config");
 const User = require("../models/user.model");
 
-// Middleware to check authentication token
+// Middleware para verificar token JWT
 const verifyToken = (req, res, next) => {
   let token = req.headers["x-access-token"];
 
   if (!token) {
-    return res.status(403).send({ message: "No token provided!" });
+    return res.status(403).send({ message: "Token não fornecido!" });
   }
 
   jwt.verify(token, config.secret, (err, decoded) => {
     if (err) {
-      return res.status(401).send({ message: "Unauthorized!" });
+      return res.status(401).send({ message: "Não autorizado!" });
     }
     req.userId = decoded.id;
     next();
   });
 };
 
-// Middleware to check if user is a seller
+// Middleware para verificar se usuário é vendedor
 const isSeller = async (req, res, next) => {
   try {
     const user = await User.findByPk(req.userId);
     if (!user) {
-      return res.status(404).send({ message: "User not found." });
+      return res.status(404).send({ message: "Usuário não encontrado." });
     }
 
-    if (user.user_type === "seller") {
+    if (user.user_type === "seller" || user.user_type === "vendedor") {
       return next();
     }
 
-    return res.status(403).send({ message: "Require Seller role!" });
+    return res.status(403).send({ message: "Acesso negado! Faça login como vendedor." });
   } catch (err) {
-    console.error("Error in isSeller middleware:", err);
+    console.error("Erro no middleware isSeller:", err);
     res.status(500).send({ message: err.message });
   }
 };
 
-// Middleware to check if user is an admin
+// Middleware para verificar se usuário é admin
 const isAdmin = async (req, res, next) => {
   try {
     const user = await User.findByPk(req.userId);
     if (!user) {
-      return res.status(404).send({ message: "User not found." });
+      return res.status(404).send({ message: "Usuário não encontrado." });
     }
 
-    if (user.user_type === "admin") {
+    if (user.user_type === "admin" || user.user_type === "administrador") {
       return next();
     }
 
-    return res.status(403).send({ message: "Require Admin role!" });
+    return res.status(403).send({ message: "Acesso negado! Requer perfil de administrador." });
   } catch (err) {
-    console.error("Error in isAdmin middleware:", err);
+    console.error("Erro no middleware isAdmin:", err);
     res.status(500).send({ message: err.message });
   }
 };
 
-// Middleware to check if user is a moderator
+// Middleware para verificar se usuário é moderador
 const isModerator = async (req, res, next) => {
   try {
     const user = await User.findByPk(req.userId);
     if (!user) {
-      return res.status(404).send({ message: "User not found." });
+      return res.status(404).send({ message: "Usuário não encontrado." });
     }
 
-    if (user.user_type === "moderator") {
+    if (user.user_type === "moderator" || user.user_type === "moderador") {
       return next();
     }
 
-    return res.status(403).send({ message: "Require Moderator role!" });
+    return res.status(403).send({ message: "Acesso negado! Requer perfil de moderador." });
   } catch (err) {
-    console.error("Error in isModerator middleware:", err);
+    console.error("Erro no middleware isModerator:", err);
     res.status(500).send({ message: err.message });
   }
 };

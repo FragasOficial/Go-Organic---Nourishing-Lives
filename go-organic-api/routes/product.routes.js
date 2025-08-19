@@ -10,7 +10,7 @@ module.exports = function(app) {
     next();
   });
 
-  // Criar produto (apenas usuário autenticado com papel "seller")
+  // Criar produto (apenas vendedor autenticado)
   app.post(
     "/api/products",
     [authJwt.verifyToken, authJwt.isSeller],
@@ -19,4 +19,21 @@ module.exports = function(app) {
 
   // Buscar todos os produtos (público)
   app.get("/api/products", controller.findAllProducts);
+
+  // Buscar produtos de um vendedor específico (público)
+  app.get("/api/products/seller/:sellerId", controller.findBySeller);
+
+  // Atualizar produto (apenas o próprio vendedor dono do produto)
+  app.put(
+    "/api/products/:id",
+    [authJwt.verifyToken, authJwt.isSeller],
+    controller.updateProduct
+  );
+
+  // Excluir produto (apenas o próprio vendedor dono do produto)
+  app.delete(
+    "/api/products/:id",
+    [authJwt.verifyToken, authJwt.isSeller],
+    controller.deleteProduct
+  );
 };

@@ -980,6 +980,178 @@ body {
 }
 
 
+:root {
+    --primary-color: #2e7d32;
+    --primary-light: #60ad5e;
+    --primary-dark: #005005;
+    --secondary-color: #f5f5f5;
+    --text-color: #333;
+    --light-text: #fff;
+    --border-color: #ddd;
+    --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    --z-header: 100;
+    --z-modal-backdrop: 9999;
+    --z-modal-content: 10000;
+}
+
+/* Reset & base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #f9f9f9;
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+/* Containers */
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+/* Header */
+.header {
+    background-color: var(--primary-color);
+    color: var(--light-text);
+    padding: 15px 0;
+    box-shadow: var(--shadow);
+    position: sticky;
+    top: 0;
+    z-index: var(--z-header);
+}
+
+.header h1 {
+    text-align: center;
+    font-size: 1.8rem;
+    font-weight: bold;
+}
+
+/* Sections */
+.section-title {
+    margin: 30px 0 15px;
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: var(--primary-dark);
+    border-bottom: 2px solid var(--primary-light);
+    padding-bottom: 5px;
+}
+
+/* Cards */
+.card {
+    background: #fff;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    padding: 15px;
+    margin: 10px 0;
+    transition: transform 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+}
+
+/* Buttons */
+.btn {
+    display: inline-block;
+    padding: 10px 15px;
+    margin: 5px 0;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    transition: background 0.3s ease;
+    text-align: center;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    color: var(--light-text);
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-dark);
+}
+
+.btn-danger {
+    background-color: #d32f2f;
+    color: #fff;
+}
+
+.btn-danger:hover {
+    background-color: #9a0007;
+}
+
+/* Tables */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+.table th,
+.table td {
+    border: 1px solid var(--border-color);
+    padding: 10px;
+    text-align: left;
+}
+
+.table th {
+    background-color: var(--primary-light);
+    color: var(--light-text);
+}
+
+/* Flex layouts */
+.flex {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.flex-between {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Panels */
+.admin-section {
+    background: #fff8e1;
+    padding: 15px;
+    border-radius: 8px;
+}
+
+.cliente-section {
+    background: #e8f5e9;
+    padding: 15px;
+    border-radius: 8px;
+}
+
+.vendedor-section {
+    background: #e3f2fd;
+    padding: 15px;
+    border-radius: 8px;
+}
+
+/* Footer */
+.footer {
+    background: var(--primary-dark);
+    color: var(--light-text);
+    text-align: center;
+    padding: 10px 0;
+    margin-top: 30px;
+    box-shadow: var(--shadow);
+}
+
+
+
 
 /* Ajustes para responsividade */
 @media (max-width: 480px) {

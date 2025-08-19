@@ -7,13 +7,13 @@ const sequelize = new Sequelize(
   process.env.DB_PASSWORD,
   {
     host: process.env.DB_HOST || 'localhost',
-    port: process.env.DB_PORT || 14330,   // <-- adiciona aqui
     dialect: 'mssql',
     dialectOptions: {
       options: {
-        encrypt: true,         // se não for Azure, pode deixar false
+        encrypt: false,         // como é local, podemos deixar false
         enableArithAbort: true,
-        trustServerCertificate: true  // <-- importante se for local
+        trustServerCertificate: true, // importante se for local
+        instanceName: 'SQLEXPRESS'   // conecta na instância correta
       }
     },
     pool: {

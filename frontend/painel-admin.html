@@ -1,150 +1,47 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Painel do Administrador - Go Organic</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Painel do Administrador</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+  <header>
+    <h1>📊 Painel do Administrador</h1>
+    <button id="logoutBtn">Sair</button>
+  </header>
 
-    <header class="header">
-        <div class="container">
-            <div class="logo">
-                <h1>Go Organic</h1>
-            </div>
-            <nav class="nav">
-                <a href="index.html" class="btn btn-primary">Ir para Loja</a>
-                <a href="#" class="btn btn-primary" id="logoutBtn">Sair</a>
-            </nav>
-        </div>
-    </header>
+  <main>
+    <!-- Gerenciamento de Usuários -->
+    <section>
+      <h2>👤 Gerenciar Usuários</h2>
+      <div id="usersList" class="list-container">
+        <!-- Usuários aparecerão aqui -->
+      </div>
+    </section>
 
-    <main class="main container">
-        <h2 class="page-title">Painel do Administrador</h2>
+    <!-- Gerenciamento de Produtos -->
+    <section>
+      <h2>📦 Gerenciar Produtos</h2>
+      <div id="productsList" class="list-container">
+        <!-- Produtos aparecerão aqui -->
+      </div>
+    </section>
 
-        <!-- Estatísticas -->
-        <section class="dashboard-section">
-            <h3 class="section-title">Dashboard</h3>
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <i class="fas fa-users icon"></i>
-                    <h4>Total de Usuários</h4>
-                    <p id="totalUsers">---</p>
-                </div>
-                <div class="stat-card">
-                    <i class="fas fa-store-alt icon"></i>
-                    <h4>Vendedores</h4>
-                    <p id="totalSellers">---</p>
-                </div>
-                <div class="stat-card">
-                    <i class="fas fa-seedling icon"></i>
-                    <h4>Produtos Cadastrados</h4>
-                    <p id="totalProducts">---</p>
-                </div>
-                <div class="stat-card">
-                    <i class="fas fa-truck-loading icon"></i>
-                    <h4>Pedidos Finalizados</h4>
-                    <p id="totalOrders">---</p>
-                </div>
-            </div>
-        </section>
+    <!-- Gerenciamento de Pedidos -->
+    <section>
+      <h2>🛒 Gerenciar Pedidos</h2>
+      <div id="ordersList" class="list-container">
+        <!-- Pedidos aparecerão aqui -->
+      </div>
+    </section>
+  </main>
 
-        <!-- Usuários (genérico) -->
-        <section class="dashboard-section">
-            <h3 class="section-title">Gerenciar Usuários</h3>
-            <div class="table-container">
-                <table id="userTable" class="data-table">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Nome</th>
-                            <th>Email</th>
-                            <th>Tipo</th>
-                            <th>Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
-            </div>
-        </section>
-        
-        <!-- Produtos -->
-        <section class="dashboard-section">
-            <h3 class="section-title">Gerenciar Produtos</h3>
-            <div id="adminProducts" class="products-grid"></div>
-        </section>
-
-        <!-- Clientes -->
-        <section class="dashboard-section">
-            <h3 class="section-title">Gerenciar Clientes</h3>
-            <div class="table-container">
-                <table id="clientTable" class="data-table">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Nome</th>
-                            <th>Email</th>
-                            <th>Pedidos</th>
-                            <th>Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
-            </div>
-        </section>
-
-        <!-- Vendedores -->
-        <section class="dashboard-section">
-            <h3 class="section-title">Gerenciar Vendedores</h3>
-            <div class="table-container">
-                <table id="sellerTable" class="data-table">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Nome</th>
-                            <th>Email</th>
-                            <th>Produtos</th>
-                            <th>Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
-            </div>
-        </section>
-    </main>
-
-    <!-- Modal de detalhes do cliente -->
-    <div id="clientDetailsModal" class="modal">
-        <div class="modal-content">
-            <span class="close" id="closeClientModal">&times;</span>
-            <h3>Pedidos do Cliente</h3>
-            <div id="clientOrdersList">
-                <p>Carregando pedidos...</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal de detalhes do vendedor -->
-    <div id="sellerDetailsModal" class="modal">
-        <div class="modal-content">
-            <span class="close" id="closeSellerModal">&times;</span>
-            <h3>Produtos do Vendedor</h3>
-            <div id="sellerProductsList">
-                <p>Carregando produtos...</p>
-            </div>
-        </div>
-    </div>
-
-    <footer class="footer">
-        <div class="container">
-            <p>&copy; 2024 Go Organic. Todos os direitos reservados.</p>
-        </div>
-    </footer>
-
-    <script src="script.js"></script>
-    <script src="painel-admin.js"></script>
+  <footer>
+    <p>Marketplace Go-Organic © 2025</p>
+  </footer>
+  <script src="script.js"></script>
+  <script src="painel-admin.js"></script>
 </body>
 </html>

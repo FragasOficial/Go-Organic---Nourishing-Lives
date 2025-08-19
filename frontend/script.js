@@ -9,7 +9,7 @@ function safeGetElement(id) {
 }
 
 function setupUIListeners() {
-    // Modal handlers
+    // Abrir modais
     safeGetElement('loginBtn')?.addEventListener('click', () => {
         safeGetElement('loginModal').style.display = 'block';
     });
@@ -30,7 +30,7 @@ function setupUIListeners() {
         safeGetElement('loginModal').style.display = 'block';
     });
 
-    // Close modals
+    // Fechar modais
     document.querySelectorAll('.modal .close').forEach(btn => {
         btn.addEventListener('click', () => {
             btn.closest('.modal').style.display = 'none';
@@ -43,7 +43,7 @@ function setupUIListeners() {
         }
     });
 
-    // Mobile buttons
+    // Botões mobile
     safeGetElement('mobileLoginBtn')?.addEventListener('click', () => {
         safeGetElement('loginModal').style.display = 'block';
     });
@@ -77,6 +77,7 @@ async function displayProducts() {
             grid.appendChild(card);
         });
     } catch (error) {
+        console.error("Erro ao carregar produtos:", error);
         grid.innerHTML = '<p>Erro ao carregar produtos</p>';
     }
 }

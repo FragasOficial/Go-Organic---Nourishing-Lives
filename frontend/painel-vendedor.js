@@ -1,162 +1,170 @@
+// // painel-vendedor.js
+// document.addEventListener("DOMContentLoaded", async () => {
+//   const token = localStorage.getItem("token");
+//   if (!token) {
+//     alert("Acesso negado! Faça login como vendedor.");
+//     window.location.href = "index.html";
+//     return;
+//   }
+
+//   // Buscar produtos do vendedor
+//   async function carregarProdutos() {
+//     try {
+//       const res = await fetch("/api/products/seller/me", {
+//         headers: { "Authorization": `Bearer ${token}` }
+//       });
+//       const produtos = await res.json();
+//       const tabela = document.getElementById("tabela-produtos");
+//       tabela.innerHTML = "";
+
+//       produtos.forEach(prod => {
+//         const row = document.createElement("tr");
+//         row.innerHTML = `
+//           <td>${prod.id}</td>
+//           <td>${prod.name}</td>
+//           <td>R$ ${prod.price}</td>
+//           <td>
+//             <button onclick="editarProduto(${prod.id})">Editar</button>
+//             <button onclick="removerProduto(${prod.id})">Excluir</button>
+//           </td>
+//         `;
+//         tabela.appendChild(row);
+//       });
+//     } catch (err) {
+//       console.error("Erro ao carregar produtos:", err);
+//     }
+//   }
+
+//   // Adicionar produto
+//   document.getElementById("form-produto").addEventListener("submit", async (e) => {
+//     e.preventDefault();
+//     const name = document.getElementById("produto-nome").value;
+//     const price = document.getElementById("produto-preco").value;
+
+//     try {
+//       await fetch("/api/products", {
+//         method: "POST",
+//         headers: {
+//           "Content-Type": "application/json",
+//           "Authorization": `Bearer ${token}`
+//         },
+//         body: JSON.stringify({ name, price })
+//       });
+//       alert("Produto adicionado!");
+//       carregarProdutos();
+//     } catch (err) {
+//       console.error("Erro ao adicionar produto:", err);
+//     }
+//   });
+
+//   window.removerProduto = async (id) => {
+//     if (!confirm("Deseja excluir este produto?")) return;
+//     try {
+//       await fetch(`/api/products/${id}`, {
+//         method: "DELETE",
+//         headers: { "Authorization": `Bearer ${token}` }
+//       });
+//       carregarProdutos();
+//     } catch (err) {
+//       console.error("Erro ao remover produto:", err);
+//     }
+//   };
+
+//   carregarProdutos();
+// });
 // painel-vendedor.js
-document.addEventListener('DOMContentLoaded', () => {
-    const safeGetElement = (id) => document.getElementById(id) || null;
-    
-    // Logout
-    safeGetElement('logoutBtn')?.addEventListener('click', (e) => {
-        e.preventDefault();
-        localStorage.clear();
-        window.location.href = 'index.html';
-    });
+document.addEventListener("DOMContentLoaded", async () => {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    alert("Acesso negado! Faça login como vendedor.");
+    window.location.href = "index.html";
+    return;
+  }
 
-    // Verificar tipo de usuário
-    if (localStorage.getItem('user_type') !== 'vendedor') {
-        Swal.fire({
-            icon: 'error',
-            title: 'Acesso Negado',
-            text: 'Você não tem permissão para acessar este painel.',
-            showConfirmButton: false,
-            timer: 2000
-        }).then(() => {
-            window.location.href = 'index.html';
-        });
-        return;
+  // Função para decodificar token JWT
+  function parseJwt(token) {
+    try {
+      const base64Url = token.split('.')[1];
+      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+      const jsonPayload = decodeURIComponent(atob(base64).split('').map(c =>
+        '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
+      ).join(''));
+      return JSON.parse(jsonPayload);
+    } catch (e) {
+      return null;
     }
+  }
 
-    // Carregar nome do usuário
-    const userNameElement = safeGetElement('userName');
-    const userName = localStorage.getItem('user_name');
-    if (userNameElement && userName) {
-        userNameElement.textContent = userName;
+  // Verificar se o usuário é vendedor
+  const decoded = parseJwt(token);
+  if (!decoded || decoded.role !== "seller") {
+    alert("Acesso negado! Esta área é exclusiva para vendedores.");
+    window.location.href = "index.html";
+    return;
+  }
+
+  // Buscar produtos do vendedor
+  async function carregarProdutos() {
+    try {
+      const res = await fetch("/api/products/seller/me", {
+        headers: { "Authorization": `Bearer ${token}` }
+      });
+      const produtos = await res.json();
+      const tabela = document.getElementById("tabela-produtos");
+      tabela.innerHTML = "";
+
+      produtos.forEach(prod => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${prod.id}</td>
+          <td>${prod.name}</td>
+          <td>R$ ${prod.price}</td>
+          <td>
+            <button onclick="editarProduto(${prod.id})">Editar</button>
+            <button onclick="removerProduto(${prod.id})">Excluir</button>
+          </td>
+        `;
+        tabela.appendChild(row);
+      });
+    } catch (err) {
+      console.error("Erro ao carregar produtos:", err);
     }
+  }
 
-    // Formulário de produto
-    safeGetElement('productForm')?.addEventListener('submit', async (event) => {
-        event.preventDefault();
+  // Adicionar produto
+  document.getElementById("form-produto").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const name = document.getElementById("produto-nome").value;
+    const price = document.getElementById("produto-preco").value;
 
-        const token = localStorage.getItem('token');
-        if (!token) {
-            Swal.fire('Erro!', 'Sessão expirada. Faça login novamente.', 'error');
-            return;
-        }
-
-        const productData = {
-            name: safeGetElement('productName').value,
-            description: safeGetElement('productDescription').value,
-            price: parseFloat(safeGetElement('productPrice').value),
-            image: safeGetElement('productImage').value,
-            state: safeGetElement('productState').value,
-            city: safeGetElement('productCity').value,
-            category_id: parseInt(safeGetElement('productCategory').value),
-            available_quantity: parseInt(safeGetElement('productQuantity').value),
-            unit_of_measure: safeGetElement('productUnit').value
-        };
-
-        try {
-            const response = await fetch('http://localhost:3000/api/products', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'x-access-token': token
-                },
-                body: JSON.stringify(productData)
-            });
-
-            const result = await response.json();
-
-            if (response.ok) {
-                Swal.fire('Sucesso!', 'Produto cadastrado com sucesso.', 'success');
-                safeGetElement('productForm').reset();
-                loadSellerProducts();
-            } else {
-                Swal.fire('Erro!', `Falha ao cadastrar: ${result.message}`, 'error');
-            }
-        } catch (error) {
-            Swal.fire('Erro!', 'Não foi possível se conectar ao servidor.', 'error');
-        }
-    });
-
-    // Carregar produtos
-    async function loadSellerProducts() {
-        const productsContainer = safeGetElement('myProducts');
-        if (!productsContainer) return;
-
-        productsContainer.innerHTML = '<p>Carregando produtos...</p>';
-
-        try {
-            const token = localStorage.getItem('token');
-            const sellerId = localStorage.getItem('user_id');
-            const response = await fetch(`http://localhost:3000/api/products/seller/${sellerId}`, {
-                headers: { 'x-access-token': token }
-            });
-            
-            const products = await response.json();
-
-            if (response.ok) {
-                productsContainer.innerHTML = '';
-                if (products.length === 0) {
-                    productsContainer.innerHTML = '<p>Nenhum produto cadastrado</p>';
-                    return;
-                }
-                
-                products.forEach(product => {
-                    const productItem = document.createElement('div');
-                    productItem.classList.add('product-item');
-                    productItem.innerHTML = `
-                        <div class="product-image-container">
-                            <img src="${product.image_url}" alt="${product.name}" class="product-image">
-                        </div>
-                        <div class="product-details">
-                            <h3 class="product-name">${product.name}</h3>
-                            <p class="product-description">${product.description}</p>
-                            <p class="product-price">R$ ${product.price.toFixed(2)}/${product.unit_of_measure}</p>
-                            <p class="product-quantity">Disponível: ${product.available_quantity}</p>
-                            <div class="product-actions">
-                                <button class="action-btn edit-btn" data-id="${product.id}">
-                                    <i class="fas fa-edit"></i> Editar
-                                </button>
-                                <button class="action-btn delete-btn" data-id="${product.id}">
-                                    <i class="fas fa-trash-alt"></i> Excluir
-                                </button>
-                            </div>
-                        </div>
-                    `;
-                    productsContainer.appendChild(productItem);
-                });
-                setupProductActions();
-            }
-        } catch (error) {
-            productsContainer.innerHTML = '<p>Erro ao carregar produtos</p>';
-        }
+    try {
+      await fetch("/api/products", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify({ name, price })
+      });
+      alert("Produto adicionado!");
+      carregarProdutos();
+    } catch (err) {
+      console.error("Erro ao adicionar produto:", err);
     }
+  });
 
-    // Ações de produto
-    function setupProductActions() {
-        safeGetElement('myProducts')?.addEventListener('click', (e) => {
-            const btn = e.target.closest('.action-btn');
-            if (!btn) return;
-            
-            const productId = btn.dataset.id;
-            if (btn.classList.contains('delete-btn')) {
-                Swal.fire({
-                    title: 'Confirmar exclusão?',
-                    text: "Esta ação não pode ser revertida!",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#d33',
-                    cancelButtonColor: '#3085d6',
-                    confirmButtonText: 'Sim, excluir!'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        // Lógica de exclusão
-                        Swal.fire('Excluído!', 'Produto removido com sucesso.', 'success');
-                        loadSellerProducts();
-                    }
-                });
-            }
-        });
+  window.removerProduto = async (id) => {
+    if (!confirm("Deseja excluir este produto?")) return;
+    try {
+      await fetch(`/api/products/${id}`, {
+        method: "DELETE",
+        headers: { "Authorization": `Bearer ${token}` }
+      });
+      carregarProdutos();
+    } catch (err) {
+      console.error("Erro ao remover produto:", err);
     }
+  };
 
-    // Inicialização
-    loadSellerProducts();
+  carregarProdutos();
 });

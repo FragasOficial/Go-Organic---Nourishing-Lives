@@ -1,56 +1,38 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Painel do Cliente - Go Organic</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Painel do Cliente - Go Organic</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <header>
+    <h1>Painel do Cliente</h1>
+    <nav>
+      <button onclick="logout()">Sair</button>
+    </nav>
+  </header>
 
-    <header class="header">
-        <div class="container">
-            <div class="logo">
-                <h1>Go Organic</h1>
-            </div>
-            <nav class="nav">
-                <a href="index.html" class="btn btn-primary">Ir para Loja</a>
-                <a href="#" class="btn btn-primary" id="logoutBtn">Sair</a>
-            </nav>
-        </div>
-    </header>
+  <main>
+    <!-- 🔹 Lista de Produtos -->
+    <section>
+      <h2 class="section-title">Produtos Disponíveis</h2>
+      <div id="allProducts" class="products-container">
+        <!-- Produtos serão carregados dinamicamente pelo painel-cliente.js -->
+      </div>
+    </section>
 
-    <main class="main container">
-        <h2 class="page-title">Bem-vindo(a), <span id="userName">Cliente</span>!</h2>
+    <!-- 🔹 Meus Pedidos -->
+    <section>
+      <h2 class="section-title">Meus Pedidos</h2>
+      <div id="myOrders" class="orders-container">
+        <!-- Pedidos do cliente logado serão exibidos aqui -->
+      </div>
+    </section>
+  </main>
 
-        <section class="dashboard-section">
-            <h3 class="section-title">Minhas Informações</h3>
-            <div class="info-card">
-                <p><strong>Nome:</strong> <span id="clientName"></span></p>
-                <p><strong>Email:</strong> <span id="clientEmail"></span></p>
-                <p><strong>Telefone:</strong> <span id="clientPhone"></span></p>
-                <p><strong>Endereço:</strong> <span id="clientAddress"></span></p>
-                <button class="btn btn-secondary"><i class="fas fa-edit"></i> Editar Informações</button>
-            </div>
-        </section>
-
-        <section class="dashboard-section">
-            <h3 class="section-title">Meus Pedidos</h3>
-            <div id="clientOrders" class="orders-list">
-                <p class="placeholder-text">Carregando seus pedidos...</p>
-            </div>
-        </section>
-    </main>
-
-    <footer class="footer">
-        <div class="container">
-            <p>&copy; 2024 Go Organic. Todos os direitos reservados.</p>
-        </div>
-    </footer>
-
-    <script src="script.js"></script>
-    <script src="painel-cliente.js"></script>
+  <script src="script.js"></script>
+  <script src="painel-cliente.js"></script>
 </body>
 </html>
