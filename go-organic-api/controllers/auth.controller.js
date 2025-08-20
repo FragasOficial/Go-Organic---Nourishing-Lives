@@ -2,7 +2,8 @@
 
 const db = require("../models");
 const config = require("../config/auth.config");
-const User = db.User; // ✅ corrigido
+const { ROLES } = require("../config/roles.config"); // ✅ usa lista única
+const User = db.User;
 
 const Op = db.Sequelize.Op;
 const jwt = require("jsonwebtoken");
@@ -14,18 +15,18 @@ exports.signup = async (req, res) => {
     const { username, email, password, user_type } = req.body;
 
     if (!username || !email || !password || !user_type) {
-      return res.status(400).send({ message: "Preencha todos os campos obrigatórios." });
+      return res
+        .status(400)
+        .send({ message: "Preencha todos os campos obrigatórios." });
     }
 
     // Normaliza o tipo de usuário
     const normalizedType = user_type.toLowerCase();
 
-    // Tipos aceitos
-    const validTypes = ["cliente", "vendedor", "administrador", "moderador"];
-
-    if (!validTypes.includes(normalizedType)) {
+    // Verifica se é válido
+    if (!ROLES.includes(normalizedType)) {
       return res.status(400).send({
-        message: `Tipo de usuário inválido. Valores aceitos: ${validTypes.join(", ")}.`
+        message: `Tipo de usuário inválido. Valores aceitos: ${ROLES.join(", ")}.`
       });
     }
 
@@ -62,7 +63,9 @@ exports.signin = async (req, res) => {
     const passwordIsValid = bcrypt.compareSync(password, user.password);
 
     if (!passwordIsValid) {
-      return res.status(401).send({ accessToken: null, message: "Senha inválida!" });
+      return res
+        .status(401)
+        .send({ accessToken: null, message: "Senha inválida!" });
     }
 
     const token = jwt.sign({ id: user.id }, config.secret, {

@@ -1,38 +1,111 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Painel do Cliente - Go Organic</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Painel do Cliente</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f9;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background: #2d6a4f;
+      color: white;
+      padding: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 1.5em;
+    }
+
+    header button {
+      background: #d00000;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 5px;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    header button:hover {
+      background: #a00000;
+    }
+
+    main {
+      max-width: 900px;
+      margin: 20px auto;
+      padding: 20px;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0px 2px 6px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      margin-top: 0;
+      color: #2d6a4f;
+    }
+
+    .pedido {
+      border: 1px solid #ddd;
+      padding: 15px;
+      margin-bottom: 15px;
+      border-radius: 6px;
+      background: #fafafa;
+    }
+
+    .pedido h3 {
+      margin: 0 0 10px 0;
+    }
+
+    .pedido ul {
+      margin: 5px 0;
+      padding-left: 20px;
+    }
+
+    .pedido li {
+      margin: 4px 0;
+    }
+  </style>
 </head>
 <body>
   <header>
-    <h1>Painel do Cliente</h1>
-    <nav>
-      <button onclick="logout()">Sair</button>
-    </nav>
+    <h1>Bem-vindo ao seu Painel</h1>
+    <button id="logoutBtn">Sair</button>
   </header>
 
   <main>
-    <!-- 🔹 Lista de Produtos -->
-    <section>
-      <h2 class="section-title">Produtos Disponíveis</h2>
-      <div id="allProducts" class="products-container">
-        <!-- Produtos serão carregados dinamicamente pelo painel-cliente.js -->
-      </div>
+    <section id="perfil">
+      <h2>Seus Dados</h2>
+      <p><strong>Nome:</strong> <span id="userName"></span></p>
+      <p><strong>Email:</strong> <span id="userEmail"></span></p>
     </section>
 
-    <!-- 🔹 Meus Pedidos -->
-    <section>
-      <h2 class="section-title">Meus Pedidos</h2>
-      <div id="myOrders" class="orders-container">
-        <!-- Pedidos do cliente logado serão exibidos aqui -->
+    <section id="pedidos">
+      <h2>Seus Pedidos</h2>
+      <div id="orderList">
+        <p>Carregando pedidos...</p>
       </div>
     </section>
   </main>
 
-  <script src="script.js"></script>
   <script src="painel-cliente.js"></script>
+  <script>
+    // Função de logout
+    document.getElementById("logoutBtn").addEventListener("click", () => {
+      localStorage.removeItem("token"); // Remove o token
+      window.location.href = "index.html"; // Redireciona para login
+    });
+  </script>
 </body>
 </html>

@@ -25,4 +25,7 @@ require('./routes/admin.routes')(app);
 // Rotas de usuário
 require('./routes/user.routes')(app);
 
+// 🔥 Rotas de pedidos (faltava essa)
+require('./routes/order.routes')(app);
+
 module.exports = app;

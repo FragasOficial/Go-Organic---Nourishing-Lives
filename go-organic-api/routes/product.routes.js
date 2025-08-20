@@ -1,39 +1,25 @@
-const controller = require("../controllers/product.controller");
-const authJwt = require("../middleware/auth.jwt");
+// routes/product.routes.js
+const express = require("express");
+const router = express.Router();
+const productController = require("../controllers/product.controller");
 
-module.exports = function(app) {
-  app.use(function(req, res, next) {
-    res.header(
-      "Access-Control-Allow-Headers",
-      "x-access-token, Origin, Content-Type, Accept"
-    );
-    next();
-  });
+// ============================
+// 📌 Rotas de Produtos
+// ============================
 
-  // Criar produto (apenas vendedor autenticado)
-  app.post(
-    "/api/products",
-    [authJwt.verifyToken, authJwt.isSeller],
-    controller.createProduct
-  );
+// Buscar todos os produtos
+router.get("/", productController.findAllProducts);
 
-  // Buscar todos os produtos (público)
-  app.get("/api/products", controller.findAllProducts);
+// Buscar produto por ID
+router.get("/:id", productController.findProductById);
 
-  // Buscar produtos de um vendedor específico (público)
-  app.get("/api/products/seller/:sellerId", controller.findBySeller);
+// Criar novo produto
+router.post("/", productController.createProduct);
 
-  // Atualizar produto (apenas o próprio vendedor dono do produto)
-  app.put(
-    "/api/products/:id",
-    [authJwt.verifyToken, authJwt.isSeller],
-    controller.updateProduct
-  );
+// Atualizar produto
+router.put("/:id", productController.updateProduct);
 
-  // Excluir produto (apenas o próprio vendedor dono do produto)
-  app.delete(
-    "/api/products/:id",
-    [authJwt.verifyToken, authJwt.isSeller],
-    controller.deleteProduct
-  );
-};
+// Deletar produto
+router.delete("/:id", productController.deleteProduct);
+
+module.exports = router;

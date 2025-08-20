@@ -1,6 +1,3 @@
-const { Sequelize } = require('sequelize');
-require('dotenv').config();
-
 const sequelize = new Sequelize(
   process.env.DB_NAME,
   process.env.DB_USER,
@@ -10,10 +7,10 @@ const sequelize = new Sequelize(
     dialect: 'mssql',
     dialectOptions: {
       options: {
-        encrypt: false,         // como é local, podemos deixar false
+        encrypt: false,
         enableArithAbort: true,
-        trustServerCertificate: true, // importante se for local
-        instanceName: 'SQLEXPRESS'   // conecta na instância correta
+        trustServerCertificate: true,
+        instanceName: 'SQLEXPRESS'
       }
     },
     pool: {
